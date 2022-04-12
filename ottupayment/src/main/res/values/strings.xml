@@ -1,0 +1,27 @@
+<resources>
+    <string name="card_number_not_correct">"Card number is not correct "</string>
+    <string name="expire_data_notbe_past">Expiry date should not be in the past</string>
+    <string name="click_save_card">Click to save your card</string>
+    <string name="saved_card">Saved Cards</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="apple_pay">Apple Pay</string>
+    <string name="paynow">Pay Now</string>
+    <string name="enter_carddetail">Enter card detail</string>
+    <string name="title_activity_web_payment">WebPaymentActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="confirm_delete">Are you sure to delete this card ?</string>
+    <string name="payment_detail">Payment Details</string>
+    <string name="reference_number">Reference Number : </string>
+    <string name="Amount">"Amount : "</string>
+    <string name="Gatway">"Gateway : "</string>
+    <string name="transaction_successfull">"Your transaction was successfull"</string>
+    <string name="transaction_fail">"Your transaction was unsuccessfull, please check your detail and try again \n or \n Your clicked cancel "</string>
+    <string name="Status">"Status : "</string>
+</resources>

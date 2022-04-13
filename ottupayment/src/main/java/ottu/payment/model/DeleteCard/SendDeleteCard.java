@@ -1,8 +1,8 @@
 package ottu.payment.model.DeleteCard;
 
 public class SendDeleteCard {
-    String type;
-    String customer_id;
+   public String type;
+   public String customer_id;
 
     public SendDeleteCard(String type, String customer_id) {
         this.type = type;

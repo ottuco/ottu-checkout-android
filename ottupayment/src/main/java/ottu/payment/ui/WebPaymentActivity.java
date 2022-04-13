@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -22,38 +23,35 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 
-import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 import ottu.payment.R;
 import ottu.payment.databinding.ActivityWebPaymentBinding;
-import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
-import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
+import ottu.payment.model.SocketData.SendToSocket;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
-import ottu.payment.model.submitCHD.Card_SubmitCHD;
-import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import ottu.payment.network.GetDataService;
 import ottu.payment.network.RetrofitClientInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static ottu.payment.adapter.PaymentMethodAdapter.selectedCardPos;
-import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstance;
-import static ottu.payment.ui.PaymentActivity.Amount;
-import static ottu.payment.ui.PaymentActivity.ApiId;
+import static ottu.payment.util.Constant.ApiId;
+import static ottu.payment.util.Constant.MerchantId;
 import static ottu.payment.util.Util.isNetworkAvailable;
 
 public class WebPaymentActivity extends AppCompatActivity {
 
     private ActivityWebPaymentBinding binding;
-    private Socket mSocket;
+    private WebSocketClient mWebSocketClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +75,7 @@ public class WebPaymentActivity extends AppCompatActivity {
                 url = getIntent().getStringExtra("html");
                 webView.loadData(url, "text/html; charset=utf-8", "UTF-8");
                 String socketUrl = getIntent().getStringExtra("ws_url");
-                try {
-                    mSocket = IO.socket(socketUrl);
-                } catch (URISyntaxException e) {
-
-                }
-                mSocket.connect();
-                mSocket.on("new message", socketListner);
+                connectWebSocket(socketUrl);
 
 
             }
@@ -183,26 +175,58 @@ public class WebPaymentActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
 
-        mSocket.disconnect();
-        mSocket.off("new message", socketListner);
+        if (mWebSocketClient != null) {
+            mWebSocketClient.close();
+        }
     }
 
-    private Emitter.Listener socketListner = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    Toast.makeText(WebPaymentActivity.this, ""+data.toString(), Toast.LENGTH_SHORT).show();
 
 
-
-                }
-            });
+    private void connectWebSocket(String socketUrl) {
+        URI uri;
+        try {
+            uri = new URI(socketUrl);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
         }
 
+        mWebSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen(ServerHandshake serverHandshake) {
+                Log.i("Websocket", "Opened");
+                String jsonString = new com.google.gson.Gson().toJson(new SendToSocket("mobile-sdk-redirect",getIntent().getStringExtra("reference_number"),MerchantId));
+                mWebSocketClient.send(jsonString);
+
+            }
+
+            @Override
+            public void onMessage(String s) {
+                final String message = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("Websocket", "onMessage " + s);
+                    }
+                });
+            }
+
+            @Override
+            public void onClose(int i, String s, boolean b) {
+                Log.e("Websocket", "Closed " + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("Websocket", "Error " + e.getMessage());
+            }
+        };
+        mWebSocketClient.connect();
+    }
 
 
-    };
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

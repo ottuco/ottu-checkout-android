@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
+import ottu.payment.interfaces.OttuPaymentCallback;
+import ottu.payment.interfaces.SendPaymentCallback;
 import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
 import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
@@ -34,12 +36,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static ottu.payment.adapter.PaymentMethodAdapter.selectedCardPos;
 import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstance;
-import static ottu.payment.ui.PaymentActivity.Amount;
-import static ottu.payment.util.Util.isNetworkAvailable;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OttuPaymentCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 ,"https://postapp.knpay.net/redirected/"
                 ,"mani"
                 ,"1");
-
+        SendPaymentCallback paymentCallback = new SendPaymentCallback(this);
         if (isNetworkAvailable(MainActivity.this)) {
             final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
             dialog.setMessage("Please wait for a moment. Fetching data.");
@@ -127,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+
     }
 
     public static boolean isNetworkAvailable(Activity activity) {
@@ -141,4 +141,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onSuccess(String callback) {
+
+    }
+
+    @Override
+    public void onFail(String callback) {
+
+    }
 }

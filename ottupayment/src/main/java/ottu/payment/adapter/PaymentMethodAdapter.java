@@ -42,8 +42,8 @@ import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.ui.PaymentActivity;
 import ottu.payment.util.ImageLoader;
 
-import static ottu.payment.ui.PaymentActivity.Amount;
-import static ottu.payment.ui.PaymentActivity.savedCardSelected;
+import static ottu.payment.util.Constant.savedCardSelected;
+import static ottu.payment.util.Constant.selectedCardPos;
 import static ottu.payment.util.Util.listCardPatter;
 
 public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdapter.ViewHolder>{
@@ -54,7 +54,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     ItemPaymentMethodBinding itemBinding1;
     PaymentActivity context;
     ImageLoader imageLoader ;
-    public static int selectedCardPos = -1;
+
     int lastSeected = -1;
     SparseArray<Pattern> mCCPatterns = listCardPatter();
     final Pattern CODE_PATTERN = Pattern.compile("([0-9]{0,4})|([0-9]{4}-)+|([0-9]{4}-[0-9]{0,4})+");
@@ -100,6 +100,11 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
         public void bindData(PaymentMethod paymentMethod, int position) {
 
+            if (selectedCardPos == -1){
+                if (itemBinding1 != null) {
+                    itemBinding1.layoutCardDetail.setVisibility(View.GONE);
+                }
+            }
             if (selectedCardPos == position){
                 itemBinding.layoutCardInfo.setBackgroundColor(context.getResources().getColor(R.color.text_gray7));
             }else {

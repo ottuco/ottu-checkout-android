@@ -21,9 +21,12 @@ import ottu.payment.model.fetchTxnDetail.Card;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import ottu.payment.ui.PaymentActivity;
 
-import static ottu.payment.ui.PaymentActivity.MerchantId;
-import static ottu.payment.ui.PaymentActivity.SessionId;
-import static ottu.payment.ui.PaymentActivity.savedCardSelected;
+import static ottu.payment.util.Constant.MerchantId;
+import static ottu.payment.util.Constant.SessionId;
+import static ottu.payment.util.Constant.lastSelected;
+import static ottu.payment.util.Constant.savedCardSelected;
+import static ottu.payment.util.Constant.selectedCardPosision;
+
 
 public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.ViewHolder>{
 
@@ -31,8 +34,7 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
     private ItemSavedcardBinding binding;
     private ItemSavedcardBinding bindingWithData;
     PaymentActivity activity;
-    public static int selectedCardPosision = -1;
-    public static int lastSelected = -1 ;
+
 
     public SavedCardAdapter(PaymentActivity paymentActivity, ArrayList<ottu.payment.model.redirect.Card> cards) {
         listCards = cards;

@@ -14,6 +14,7 @@ import ottu.payment.model.redirect.ResponceFetchTxnDetail;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -46,7 +47,8 @@ public interface GetDataService {
                                              @Body CreateRedirectUrl redirectUrl);
 
     @Headers({"Content-Type: application/json", "Authorization: Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR"})
-    @GET("pbl/v1/card/{Token}")
+    @DELETE("pbl/v1/card/{Token}")
     Call<ResponseBody> deleteCard(@Path ("Token") String token,
-                                            @Body SendDeleteCard card);
+                                            @Query("customer_id")String customerId,
+                                            @Query("type")String type);
 }

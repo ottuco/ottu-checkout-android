@@ -8,6 +8,9 @@
     android:background="@color/white"
     tools:context=".ui.PaymentActivity">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -186,4 +189,15 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+        <RelativeLayout
+            android:id="@+id/progressLayout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent1">
+
+
+
+        </RelativeLayout>
+    </FrameLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

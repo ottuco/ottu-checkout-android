@@ -41,10 +41,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static ottu.payment.adapter.PaymentMethodAdapter.selectedCardPos;
-import static ottu.payment.adapter.SavedCardAdapter.selectedCardPosision;
 import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstance;
 import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstancePg;
+import static ottu.payment.util.Constant.Amount;
+import static ottu.payment.util.Constant.ApiId;
+import static ottu.payment.util.Constant.MerchantId;
+import static ottu.payment.util.Constant.SessionId;
+import static ottu.payment.util.Constant.savedCardSelected;
+import static ottu.payment.util.Constant.selectedCardPos;
+import static ottu.payment.util.Constant.selectedCardPosision;
+import static ottu.payment.util.Constant.sessionId;
 import static ottu.payment.util.Util.isNetworkAvailable;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -52,12 +58,7 @@ public class PaymentActivity extends AppCompatActivity {
     ActivityPaymentBinding binding;
     private PaymentMethodAdapter adapterPaymentMethod;
     private SavedCardAdapter adapterSavedCard;
-    private static String sessionId = "" ;
-    public static String Amount = "" ;
-    public static String ApiId = "" ;
-    public static String MerchantId = "" ;
-    public static String SessionId = "" ;
-    public static boolean savedCardSelected = false ;
+
     private List<String> pg_codes;
 
 
@@ -342,7 +343,7 @@ public class PaymentActivity extends AppCompatActivity {
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
             GetDataService apiendPoint = getRetrofitInstance();
-            Call<ResponseBody> register = apiendPoint.deleteCard(token,deleteCard);
+            Call<ResponseBody> register = apiendPoint.deleteCard(token,deleteCard.customer_id,deleteCard.type);
             register.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -371,4 +372,15 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        notifySavedCardAdapter();
+        notifyPaymentMethodAdapter();
+    }
 }

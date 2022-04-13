@@ -51,6 +51,9 @@ dependencies {
     implementation ('io.socket:socket.io-client:2.0.0') {
         exclude group: 'org.json', module: 'json'
     }
+    implementation "org.java-websocket:Java-WebSocket:1.5.1"
+//    implementation 'tech.gusavila92:java-android-websocket-client:1.2.2'
+
 
     //Circle imageview
     implementation 'com.mikhaellopez:circularimageview:4.3.0'

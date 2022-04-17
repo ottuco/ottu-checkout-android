@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,10 +33,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 
-import io.socket.client.Socket;
+
 import ottu.payment.R;
 import ottu.payment.databinding.ActivityWebPaymentBinding;
 import ottu.payment.model.SocketData.SendToSocket;
+import ottu.payment.model.SocketData.SocketRespo;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
 import ottu.payment.network.GetDataService;
 import ottu.payment.network.RetrofitClientInstance;
@@ -43,6 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static ottu.payment.util.Constant.Amount;
 import static ottu.payment.util.Constant.ApiId;
 import static ottu.payment.util.Constant.MerchantId;
 import static ottu.payment.util.Util.isNetworkAvailable;
@@ -51,7 +54,7 @@ public class WebPaymentActivity extends AppCompatActivity {
 
     private ActivityWebPaymentBinding binding;
     private WebSocketClient mWebSocketClient;
-
+    private String referenceNo = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +70,11 @@ public class WebPaymentActivity extends AppCompatActivity {
         webView.getSettings().setDomStorageEnabled(true);
 
         String url = null;
-        if (getIntent().hasExtra("RedirectUrl")){
+        if (getIntent().hasExtra("RedirectUrl")) {
             url = getIntent().getStringExtra("RedirectUrl");
             webView.loadUrl(url);
-        }else if (getIntent().hasExtra("is3DS")){
-            if (getIntent().hasExtra("is3DS")){
+        } else if (getIntent().hasExtra("is3DS")) {
+            if (getIntent().hasExtra("is3DS")) {
                 url = getIntent().getStringExtra("html");
                 webView.loadData(url, "text/html; charset=utf-8", "UTF-8");
                 String socketUrl = getIntent().getStringExtra("ws_url");
@@ -95,7 +98,7 @@ public class WebPaymentActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             proceedUrl(view, request.getUrl());
-            if (request.getUrl().toString().contains("mobile-sdk-redirect")){
+            if (request.getUrl().toString().contains("mobile-sdk-redirect")) {
 
 
                 getTrnDetail();
@@ -111,6 +114,7 @@ public class WebPaymentActivity extends AppCompatActivity {
             }
         }
     }
+
     private class MyWebViewClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
@@ -131,32 +135,33 @@ public class WebPaymentActivity extends AppCompatActivity {
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId,true);
+            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, true);
             register.enqueue(new Callback<ResponceFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
                     dialog.dismiss();
 
                     if (response.isSuccessful() && response.body() != null) {
-                        Intent intent = new Intent(WebPaymentActivity.this,PaymentResultActivity.class);
+                        Intent intent = new Intent(WebPaymentActivity.this, PaymentResultActivity.class);
 
                         String state = response.body().state;
-                        if (state.equals("expired")){
-                            intent.putExtra("Result",false);
-                        }else if (state.equals("")){
-                            intent.putExtra("Result",true);
-                        }else {
-                            intent.putExtra("Result",false);
+                        if (state.equals("expired")) {
+                            intent.putExtra("Result", false);
+                        } else if (state.equals("success")) {
+                            intent.putExtra("Result", true);
+                        } else {
+                            intent.putExtra("Result", false);
                         }
-                        intent.putExtra("name",response.body().customer_first_name + " " +response.body().customer_last_name);
-                        intent.putExtra("amount",response.body().amount);
-                        intent.putExtra("status",response.body().state);
-                        intent.putExtra("gateway",response.body().mode);
+                        intent.putExtra("name", response.body().customer_first_name + " " + response.body().customer_last_name);
+                        intent.putExtra("amount", response.body().amount);
+                        intent.putExtra("status", response.body().state);
+                        intent.putExtra("gateway", response.body().mode);
+                        intent.putExtra("referanceNo", referenceNo);
                         startActivity(intent);
                         finish();
-                        Log.e("=======",response.body().toString());
-                    }else {
-                        Toast.makeText(WebPaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
+                        Log.e("=======", response.body().toString());
+                    } else {
+                        Toast.makeText(WebPaymentActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
@@ -181,7 +186,6 @@ public class WebPaymentActivity extends AppCompatActivity {
     }
 
 
-
     private void connectWebSocket(String socketUrl) {
         URI uri;
         try {
@@ -195,18 +199,57 @@ public class WebPaymentActivity extends AppCompatActivity {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 Log.i("Websocket", "Opened");
-                String jsonString = new com.google.gson.Gson().toJson(new SendToSocket("mobile-sdk-redirect",getIntent().getStringExtra("reference_number"),MerchantId));
+                String jsonString = new com.google.gson.Gson().toJson(
+                        new SendToSocket("sdk"
+                                , getIntent().getStringExtra("reference_number")
+                                , MerchantId));
                 mWebSocketClient.send(jsonString);
 
             }
 
             @Override
             public void onMessage(String s) {
-                final String message = s;
+                SocketRespo response = null;
+
+                response = new Gson().fromJson(s, SocketRespo.class);
+                Log.e("Websocket", "onMessage " + s);
+
+
+                SocketRespo finalResponse = response;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("Websocket", "onMessage " + s);
+                        if (finalResponse != null) {
+//                            Intent intent = new Intent(WebPaymentActivity.this, PaymentResultActivity.class);
+//
+//                            String state = finalResponse.getStatus();
+//                            if (state.equals("expired")) {
+//                                intent.putExtra("Result", false);
+//                            } else if (state.equals("success")) {
+//                                intent.putExtra("Result", true);
+//                            } else {
+//                                intent.putExtra("Result", false);
+//                            }
+//                            intent.putExtra("name", "");
+//                            intent.putExtra("amount", Amount);
+//                            intent.putExtra("status", finalResponse.getStatus());
+//                            intent.putExtra("gateway", finalResponse.getOperation());
+//                            startActivity(intent);
+//                            finish();
+
+                            referenceNo = finalResponse.getReference_number();
+                            getTrnDetail();
+
+                        } else {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                Log.e("Websocket", "onMessage " + jsonObject.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
                     }
                 });
             }

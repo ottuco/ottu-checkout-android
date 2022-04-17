@@ -123,11 +123,22 @@ public class PaymentActivity extends AppCompatActivity {
                 }
             }
         });
+        binding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
     public void setPayEnable(boolean isenble){
         binding.payNow.setEnabled(isenble);
+        if (isenble){
+            binding.payNow.setBackground(getResources().getDrawable(R.drawable.payenable));
+        }else {
+            binding.payNow.setBackground(getResources().getDrawable(R.drawable.buttondisable));
+        }
     }
 
     private void payNow(SubmitCHDToOttoPG submitCHDToPG) {
@@ -224,6 +235,7 @@ public class PaymentActivity extends AppCompatActivity {
              MerchantId = getIntent().getStringExtra("MerchantId");
             SessionId = getIntent().getStringExtra("SessionId");
              ApiId = apiId;
+             binding.amountTextView.setText("Amount : "+Amount);
         }else {
             Toast.makeText(this, "No sessionid", Toast.LENGTH_SHORT).show();
             finish();

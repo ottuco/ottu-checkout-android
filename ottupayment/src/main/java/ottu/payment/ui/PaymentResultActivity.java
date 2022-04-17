@@ -36,8 +36,9 @@ public class PaymentResultActivity extends AppCompatActivity {
             String amount = getIntent().getStringExtra("amount");
             String status = getIntent().getStringExtra("status");
             String gateway = getIntent().getStringExtra("gateway");
+            String referanceNo = getIntent().getStringExtra("referanceNo");
 
-            binding.name.setText(name);
+            binding.referanceNo.setText(referanceNo);
             binding.amount.setText(amount);
             binding.status.setText(status);
             binding.gateway.setText(gateway);

@@ -1,11 +1,13 @@
 package ottu.payment.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
@@ -16,8 +18,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +41,7 @@ import java.util.regex.Pattern;
 
 import ottu.payment.R;
 import ottu.payment.databinding.ItemPaymentMethodBinding;
+import ottu.payment.model.DeleteCard.SendDeleteCard;
 import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
 import ottu.payment.model.redirect.PaymentMethod;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
@@ -117,19 +124,15 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 //            imageLoader.DisplayImage(listPaymentMethod.get(position).icon, itemBinding.cardImage);
             Glide.with(context).load(listPaymentMethod.get(position).icon).into(itemBinding.cardImage);
 
+
             itemBinding.cardNumberTextView.addTextChangedListener(new TextWatcher() {
                 boolean considerChange = false;
 
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 }
-
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-
 
                     if (considerChange)
                     {
@@ -145,11 +148,17 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             }
                         }
                         if (mDrawableResId > 0 && mDrawableResId != 0) {
-                            binding.cardIndicatorImage.setImageDrawable(context.getResources().getDrawable(mDrawableResId));
+                            Drawable d = context.getResources().getDrawable(mDrawableResId);
+//                            binding.cardIndicatorImage.setImageDrawable(d);
+                            Bitmap bitmap= BitmapFactory.decodeResource(context.getResources(), mDrawableResId);
+                            itemBinding1.cardIndicatorImage.setImageBitmap(bitmap);
+
                         }
                     }
                     considerChange = !considerChange;
                 }
+
+
 
                 @Override
                 public void afterTextChanged(Editable s) {
@@ -169,6 +178,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     }
                 }
             });
+
             itemBinding.datetextView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int start, int removed, int added) {
@@ -267,6 +277,25 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         return true;
                     }
                     return true;
+                }
+            });
+
+            binding.infoImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog dialog = new Dialog(context, R.style.MyDialog);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setCancelable(true);
+                    dialog.setContentView(R.layout.dialog_savecard);
+
+                    Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
                 }
             });
         }

@@ -138,13 +138,12 @@
                     android:textColor="@color/text_gray1"
                     android:inputType="number"
                     android:hint="1111 1111 1111 1111"/>
-                <androidx.appcompat.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/cardIndicatorImage"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/card2"/>
+                    android:layout_marginRight="5dp"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -153,10 +152,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="30dp"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="10dp"/>
                 <TextView
                     android:layout_weight="1"
                     android:id="@+id/cardNumberErrorTextView"
@@ -264,7 +259,6 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/red"
                     android:textSize="12dp"
-                    android:gravity="center"
                     android:text=""/>
 
 
@@ -284,7 +278,7 @@
                 android:textSize="12dp"
                 android:text="@string/click_save_card"/>
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/errorImage"
+                android:id="@+id/infoImage"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"

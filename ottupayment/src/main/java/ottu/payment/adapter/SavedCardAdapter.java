@@ -62,9 +62,9 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
         binding.deleteImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 Dialog dialog = new Dialog(activity);
+                 Dialog dialog = new Dialog(activity, R.style.MyDialog);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setCancelable(false);
+                dialog.setCancelable(true);
                 dialog.setContentView(R.layout.dialog_delete);
 
                 Button no = (Button) dialog.findViewById(R.id.btnNo);

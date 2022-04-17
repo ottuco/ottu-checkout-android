@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                 ,"https://postapp.knpay.net/disclose_ok/"
                 ,"https://postapp.knpay.net/redirected/"
                 ,"mani"
-                ,"1");
+                ,"300");
         SendPaymentCallback paymentCallback = new SendPaymentCallback(this);
         if (isNetworkAvailable(MainActivity.this)) {
             final ProgressDialog dialog = new ProgressDialog(MainActivity.this);

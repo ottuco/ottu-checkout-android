@@ -126,7 +126,7 @@ public class PaymentActivity extends AppCompatActivity {
         binding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                onBackPressed();
             }
         });
 
@@ -392,6 +392,8 @@ public class PaymentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        selectedCardPos = -1;
+        selectedCardPosision = -1;
         notifySavedCardAdapter();
         notifyPaymentMethodAdapter();
     }

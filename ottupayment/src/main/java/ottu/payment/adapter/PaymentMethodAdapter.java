@@ -2,12 +2,10 @@ package ottu.payment.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
@@ -20,10 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -41,8 +37,6 @@ import java.util.regex.Pattern;
 
 import ottu.payment.R;
 import ottu.payment.databinding.ItemPaymentMethodBinding;
-import ottu.payment.model.DeleteCard.SendDeleteCard;
-import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
 import ottu.payment.model.redirect.PaymentMethod;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
 import ottu.payment.model.submitCHD.Card_SubmitCHD;
@@ -148,7 +142,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             }
                         }
                         if (mDrawableResId > 0 && mDrawableResId != 0) {
-                            Drawable d = context.getResources().getDrawable(mDrawableResId);
+//                            Drawable d = context.getResources().getDrawable(mDrawableResId);
 //                            binding.cardIndicatorImage.setImageDrawable(d);
                             Bitmap bitmap= BitmapFactory.decodeResource(context.getResources(), mDrawableResId);
                             itemBinding1.cardIndicatorImage.setImageBitmap(bitmap);
@@ -156,6 +150,12 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         }
                     }
                     considerChange = !considerChange;
+
+                    if (charSequence.length() > 13){
+                        checkIfcardDetailfill(itemBinding1, true);
+                    }else {
+                        checkIfcardDetailfill(itemBinding1,false);
+                    }
                 }
 
 
@@ -188,7 +188,11 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                    if (charSequence.length() > 4){
+                        checkIfcardDetailfill(itemBinding1, true);
+                    }else {
+                        checkIfcardDetailfill(itemBinding1,false);
+                    }
                 }
 
                 @Override
@@ -210,6 +214,28 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         itemBinding1.expiredateErrorTextView.setText("");
                     }
                     }
+
+
+
+                }
+            });
+            itemBinding.cvvTextView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (charSequence.length() > 2){
+                        checkIfcardDetailfill(itemBinding1, true);
+                    }else {
+                        checkIfcardDetailfill(itemBinding1,false);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
 
                 }
             });
@@ -236,7 +262,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding1 = null;
                                 itemBinding1 = itemBinding;
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
-                                context.setPayEnable(true);
                             } else {
                                 selectedCardPos = -1;
                                 itemBinding1 = null;
@@ -447,6 +472,25 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         @Override
         public boolean onSingleTapUp(MotionEvent event) {
             return true;
+        }
+    }
+
+    private void checkIfcardDetailfill(ItemPaymentMethodBinding itemBinding1, boolean b){
+        boolean cardenable, dataenable, cvvenable = false;
+        if (itemBinding1.cardNumberTextView.getText().toString().trim().replace("-","").length() > 13){
+            cardenable = true;
+        }else {cardenable = false;}
+        if (itemBinding1.datetextView.getText().toString().trim().length() >= 4){
+            dataenable = true;
+        }else {dataenable = false;}
+        if (itemBinding1.cvvTextView.getText().toString().trim().length() >= 3 ){
+            cvvenable = true;
+        }else {cvvenable = false;}
+
+        if (cardenable == true && dataenable == true && cvvenable == true){
+            context.setPayEnable(true);
+        }else {
+            context.setPayEnable(false);
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -349,6 +352,14 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
+    public void manageKeyboard(InputConnection ic, int visible){
+        if (visible == View.VISIBLE) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+        }
+        binding.keyboard.setInputConnection(ic);
+        binding.keyboard.setVisibility(visible);
+    }
     public void deleteCard(SendDeleteCard deleteCard, String token) {
 
         if (isNetworkAvailable(PaymentActivity.this)) {
@@ -381,6 +392,11 @@ public class PaymentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        if (binding.keyboard.getVisibility() == View.VISIBLE){
+            binding.keyboard.setVisibility(View.GONE);
+            return;
+        }
         finish();
     }
 

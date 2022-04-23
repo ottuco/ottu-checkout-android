@@ -125,7 +125,7 @@
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:src="@drawable/creditcard"/>
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:layout_weight="1"
                     android:id="@+id/cardNumberTextView"
                     android:layout_width="match_parent"

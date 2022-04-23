@@ -12,5 +12,6 @@ extern "C"
 JNIEXPORT jstring JNICALL
 Java_ottu_payment_network_RetrofitClientInstance_getLinkPg(JNIEnv *env, jobject thiz) {
 
-
+    std::string hello = "https://pg.ottu.dev/pg/";
+    return env->NewStringUTF(hello.c_str());
 }

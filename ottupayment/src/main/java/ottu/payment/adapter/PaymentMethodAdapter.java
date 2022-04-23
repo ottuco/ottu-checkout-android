@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.TextWatcher;
 import android.text.style.ReplacementSpan;
@@ -20,8 +21,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -309,7 +313,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
             });
 
-            binding.infoImage.setOnClickListener(new View.OnClickListener() {
+            itemBinding.infoImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Dialog dialog = new Dialog(context, R.style.MyDialog);
@@ -337,9 +341,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
                             String months = String.valueOf(month + 1);
                             if (months.length() <= 1) {
-                               months = "0"+months;
+                                months = "0" + months;
                             }
-                            itemBinding.datetextView.setText(months  + "/" + String.valueOf(year).substring(2));
+                            itemBinding.datetextView.setText(months + "/" + String.valueOf(year).substring(2));
                         }
                     }, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH) {
                         @Override
@@ -354,7 +358,40 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     monthDatePickerDialog.show();
                 }
             });
+//            itemBinding.cardNumberTextView.setShowSoftInputOnFocus(false);
+//            itemBinding.cardNumberTextView.setRawInputType(InputType.TYPE_CLASS_TEXT);
+//            itemBinding.cardNumberTextView.setTextIsSelectable(true);
+//            context.manageKeyboard(ic,View.VISIBLE);
+            InputConnection ic = itemBinding.cardNumberTextView.onCreateInputConnection(new EditorInfo());
+            itemBinding.cardNumberTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    if (hasFocus) {
+                        itemBinding.cardNumberTextView.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                        itemBinding.cardNumberTextView.setTextIsSelectable(true);
+                        itemBinding.cardNumberTextView.setShowSoftInputOnFocus(false);
+                        context.manageKeyboard(ic, View.VISIBLE);
+                    }else {
+                        context.manageKeyboard(ic, View.GONE);
+                    }
+                }
+            });
+            InputConnection ic1 = itemBinding.cvvTextView.onCreateInputConnection(new EditorInfo());
+            itemBinding.cvvTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    if (hasFocus) {
+                        itemBinding.cvvTextView.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                        itemBinding.cvvTextView.setTextIsSelectable(true);
+                        itemBinding.cvvTextView.setShowSoftInputOnFocus(false);
+                        context.manageKeyboard(ic1, View.VISIBLE);
+                    }else {
+                        context.manageKeyboard(ic1, View.GONE);
+                    }
+                }
+            });
         }
+
     }
 
     private Bitmap getImage(String icon) {

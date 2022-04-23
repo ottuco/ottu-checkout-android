@@ -5,6 +5,10 @@ import android.content.Intent;
 
 public class OttoPaymentSdk {
 
+    static {
+        System.loadLibrary("native-lib");
+    }
+
     Intent intent;
     Activity activity;
     public OttoPaymentSdk(Activity activity) {

@@ -12,6 +12,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClientInstance {
 
+
+    public static native String getLink();
+    public static native String getLinkPg();
+
     private static Retrofit retrofit;
     private static Retrofit retrofit1;
     private static final String BASE_URL = "https://ksa.ottu.dev/b/";
@@ -32,7 +36,7 @@ public class RetrofitClientInstance {
                 .create();
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(getLink())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(client)
                     .build();
@@ -56,7 +60,7 @@ public class RetrofitClientInstance {
                 .create();
         if (retrofit1 == null) {
             retrofit1 = new Retrofit.Builder()
-                    .baseUrl(BASE_URLPg)
+                    .baseUrl(getLinkPg())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(client)
                     .build();

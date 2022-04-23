@@ -29,7 +29,7 @@ import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
 import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
-import ottu.payment.network.GetDataService;
+import ottu.payment.sdk.network.GetDataService;
 import ottu.payment.ui.OttoPaymentSdk;
 import ottu.payment.ui.PaymentActivity;
 import ottu.payment.ui.PaymentResultActivity;
@@ -37,7 +37,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstance;
+import static ottu.payment.sdk.network.RetrofitClientInstance.getRetrofitInstance;
+
 
 public class MainActivity extends AppCompatActivity implements OttuPaymentCallback {
 

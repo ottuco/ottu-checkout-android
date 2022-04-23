@@ -15,9 +15,9 @@ public class OttoPaymentSdk {
 
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(String amount) {
 
-        intent.putExtra("Amount",String.valueOf(amount));
+        intent.putExtra("Amount",amount);
     }
 
     public void build() {

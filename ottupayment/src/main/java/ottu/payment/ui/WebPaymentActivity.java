@@ -135,7 +135,7 @@ public class WebPaymentActivity extends AppCompatActivity {
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, true);
+            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, false);
             register.enqueue(new Callback<ResponceFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
@@ -220,25 +220,26 @@ public class WebPaymentActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (finalResponse != null) {
-//                            Intent intent = new Intent(WebPaymentActivity.this, PaymentResultActivity.class);
-//
-//                            String state = finalResponse.getStatus();
-//                            if (state.equals("expired")) {
-//                                intent.putExtra("Result", false);
-//                            } else if (state.equals("success")) {
-//                                intent.putExtra("Result", true);
-//                            } else {
-//                                intent.putExtra("Result", false);
-//                            }
-//                            intent.putExtra("name", "");
-//                            intent.putExtra("amount", Amount);
-//                            intent.putExtra("status", finalResponse.getStatus());
-//                            intent.putExtra("gateway", finalResponse.getOperation());
-//                            startActivity(intent);
-//                            finish();
+                            Intent intent = new Intent(WebPaymentActivity.this, PaymentResultActivity.class);
 
-                            referenceNo = finalResponse.getReference_number();
-                            getTrnDetail();
+                            String state = finalResponse.getStatus();
+                            if (state.equals("expired")) {
+                                intent.putExtra("Result", false);
+                            } else if (state.equals("success")) {
+                                intent.putExtra("Result", true);
+                            } else {
+                                intent.putExtra("Result", false);
+                            }
+                            intent.putExtra("name", "");
+                            intent.putExtra("referanceNo", finalResponse.getReference_number());
+                            intent.putExtra("amount", Amount);
+                            intent.putExtra("status", finalResponse.getStatus());
+                            intent.putExtra("gateway", finalResponse.getOperation());
+                            startActivity(intent);
+                            finish();
+
+//                            referenceNo = finalResponse.getReference_number();
+//                            getTrnDetail();
 
                         } else {
                             try {

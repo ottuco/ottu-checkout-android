@@ -1,5 +1,6 @@
 package ottu.payment.sdk;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
@@ -91,7 +92,10 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                 ,"https://postapp.knpay.net/redirected/"
                 ,"mani"
                 ,"300");
-        SendPaymentCallback paymentCallback = new SendPaymentCallback(this);
+        SendPaymentCallback paymentCallback = new SendPaymentCallback();
+        paymentCallback.setSendPaymentCallback(this);
+
+
         if (isNetworkAvailable(MainActivity.this)) {
             final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
             dialog.setMessage("Please wait for a moment. Fetching data.");
@@ -109,7 +113,10 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                         ottuPaymentSdk.setApiId(response.body().session_id);
                         ottuPaymentSdk.setMerchantId("ksa.ottu.dev");
                         ottuPaymentSdk.setSessionId(response.body().session_id);
+                        ottuPaymentSdk.setAmount(response.body().amount);
                         ottuPaymentSdk.build();
+
+
 
                         Log.e("=======",response.body().toString());
                     }else {
@@ -144,10 +151,23 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
     @Override
     public void onSuccess(String callback) {
 
+        Toast.makeText(this, "Payment Success", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFail(String callback) {
+        Toast.makeText(this, "Payment Fail", Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_OK ){
+            if (requestCode == 001){
+                Toast.makeText(this, ""+data.getStringExtra("Result"), Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, ""+data.getStringExtra("Intent Null"), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

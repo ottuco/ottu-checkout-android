@@ -176,6 +176,7 @@ public class PaymentActivity extends AppCompatActivity {
                                     .putExtra("html",jsonObject.getString("html"))
                                     .putExtra("reference_number",jsonObject.getString("reference_number"))
                                             .putExtra("ws_url",jsonObject.getString("ws_url")));
+                                    finish();
                                 }
 
                             }else {
@@ -249,7 +250,7 @@ public class PaymentActivity extends AppCompatActivity {
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId,true);
+            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId+1,true);
             register.enqueue(new Callback<ResponceFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
@@ -310,6 +311,7 @@ public class PaymentActivity extends AppCompatActivity {
                         if (response.body().getRedirect_url() != null){
                             startActivity(new Intent(PaymentActivity.this,WebPaymentActivity.class)
                             .putExtra("RedirectUrl",response.body().getRedirect_url()));
+                            finish();
                         }else {
                             Toast.makeText(PaymentActivity.this, response.body().getMessage() , Toast.LENGTH_SHORT).show();
                             finish();
@@ -361,17 +363,10 @@ public class PaymentActivity extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     dialog.dismiss();
 
+                    Toast.makeText(PaymentActivity.this, "Card Deleted" , Toast.LENGTH_SHORT).show();
 
-                    if (response.isSuccessful() && response.body() != null) {
-
-                        if (response.isSuccessful()){
-                            Toast.makeText(PaymentActivity.this, "Card Deleted" , Toast.LENGTH_SHORT).show();
-                            onRestart();
-                        }
-                        Log.e("=======",response.body().toString());
-                    }else {
-                        Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
-                    }
+                    finish();
+                    startActivity(getIntent());
 
                 }
 

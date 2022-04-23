@@ -194,7 +194,7 @@
                         android:layout_marginLeft="5dp"
                         android:padding="3dp"
                         android:src="@drawable/calander"/>
-                    <EditText
+                    <TextView
                         android:layout_weight="1"
                         android:id="@+id/datetextView"
                         android:layout_width="match_parent"

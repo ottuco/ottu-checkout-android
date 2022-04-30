@@ -69,6 +69,7 @@ public class PaymentResultActivity extends AppCompatActivity {
 //                    setResult(001,new Intent().putExtra("Result","Fail"));
                     finish();
 
+
                 }
             }, 3000);
         }

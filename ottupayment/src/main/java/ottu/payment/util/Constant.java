@@ -6,6 +6,7 @@ public class Constant {
     public static String ApiId = "" ;
     public static String MerchantId = "" ;
     public static String SessionId = "" ;
+    public static String LocalLan = "" ;
     public static boolean savedCardSelected = false ;
     public static int selectedCardPos = -1;
     public static int selectedCardPosision = -1;

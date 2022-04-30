@@ -9,10 +9,13 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="gray004">#DADADA</color>
+    <color name="screen_back">#f2f2f2</color>
 
+    <color name="green">#03a154</color>
     <color name="gradiunt_green">#84d397</color>
     <color name="gradiunt_blue">#3abbb3</color>
     <color name="transparent1">#45090909</color>
+    <color name="text_black">#FF000000</color>
     <color name="text_gray1">#555555</color>
     <color name="text_gray2">#676767</color>
     <color name="text_gray3">#838383</color>

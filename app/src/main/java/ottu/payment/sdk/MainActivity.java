@@ -42,6 +42,8 @@ import static ottu.payment.sdk.network.RetrofitClientInstance.getRetrofitInstanc
 
 public class MainActivity extends AppCompatActivity implements OttuPaymentCallback {
 
+    private EditText etLocalLan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
         isStoragePermissionGranted();
         EditText text = findViewById(R.id.etAmount);
         AppCompatButton pay = findViewById(R.id.pay);
+        etLocalLan = findViewById(R.id.localLan);
 
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                         ottuPaymentSdk.setMerchantId("ksa.ottu.dev");
                         ottuPaymentSdk.setSessionId(response.body().session_id);
                         ottuPaymentSdk.setAmount(response.body().amount);
+                        ottuPaymentSdk.setLocal(etLocalLan.getText().toString().trim());
                         ottuPaymentSdk.build();
 
 

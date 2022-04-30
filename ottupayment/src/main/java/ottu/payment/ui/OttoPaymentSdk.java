@@ -39,4 +39,8 @@ public class OttoPaymentSdk {
     public void setSessionId(String sessionId){
         intent.putExtra("SessionId",sessionId);
     }
+
+    public void setLocal(String local){
+        intent.putExtra("LocalLan",local);
+    }
 }

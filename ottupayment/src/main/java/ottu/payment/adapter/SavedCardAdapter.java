@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ottu.payment.R;
+import ottu.payment.databinding.DialogDeleteBinding;
 import ottu.payment.databinding.ItemSavedcardBinding;
 import ottu.payment.model.DeleteCard.SendDeleteCard;
 import ottu.payment.model.redirect.Card;
@@ -75,36 +76,40 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
 
         public void bindData(Card card, int position) {
             if (selectedCardPosision == position){
-                itemBinding.layoutCardData.setBackgroundColor(activity.getResources().getColor(R.color.text_gray7));
+                itemBinding.layoutCardData.setBackground(activity.getResources().getDrawable(R.drawable.item_bg_selected));
+                itemBinding.checkIndicator.setImageResource(R.drawable.item_selected);
+                itemBinding.deleteImage.setVisibility(View.VISIBLE);
             }else {
-                itemBinding.layoutCardData.setBackgroundColor(activity.getResources().getColor(R.color.white));
+//                itemBinding.layoutCardData.setBackgroundColor(activity.getResources().getColor(R.color.white));
+                itemBinding.layoutCardData.setBackground(activity.getResources().getDrawable(R.drawable.item_bg));
+                itemBinding.checkIndicator.setImageResource(R.drawable.item_unselected);
+                itemBinding.deleteImage.setVisibility(View.GONE);
             }
 
             itemBinding.cardNumber.setText(listCards.get(position).brand+" "+listCards.get(position).number);
-            itemBinding.expireDate.setText("Expired on "+listCards.get(position).expiry_month+"/"+listCards.get(position).expiry_year);
+            itemBinding.expireDate.setText(listCards.get(position).expiry_month+"/"+listCards.get(position).expiry_year);
             itemBinding.deleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    DialogDeleteBinding deleteBinding = DialogDeleteBinding.inflate(activity.getLayoutInflater());
                     Dialog dialog = new Dialog(activity, R.style.MyDialog);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setCancelable(true);
-                    dialog.setContentView(R.layout.dialog_delete);
+                    dialog.setContentView(deleteBinding.getRoot());
 
-                    Button no = (Button) dialog.findViewById(R.id.btnNo);
-                    Button yes = (Button) dialog.findViewById(R.id.btnYes);
 
-                    no.setOnClickListener(new View.OnClickListener() {
+                    deleteBinding.deleteTitle.setText("Remove : "+listCards.get(position).number);
+                    deleteBinding.no.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
                         }
                     });
-                    yes.setOnClickListener(new View.OnClickListener() {
+                    deleteBinding.yes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             SendDeleteCard card = new SendDeleteCard("sandbox",listCards.get(position).customer_id);
                             activity.deleteCard(card,listCards.get(position).token);
-
                             dialog.dismiss();
                         }
                     });

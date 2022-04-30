@@ -24,29 +24,22 @@ import retrofit2.http.Query;
 
 public interface GetDataService {
 
-    @Headers({
-            "Content-Type: application/json",
-            "Authorization: Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR"
-    })
+
     @GET("checkout/v1/pymt-txn/submit/{apiId}")
     Call<ResponceFetchTxnDetail> fetchTxnDetail(@Path ("apiId") String apiId,
                                                 @Query("enableCHD") boolean value);
-    @Headers({
-            "Content-Type: application/json",
-            "Authorization: Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR"})
+
     @POST("route")
     Call<JsonElement> respoSubmitCHD(@Body SubmitCHDToOttoPG submitCHDToOttoPG);
 
-    @Headers({"Content-Type: application/json", "Authorization: Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR"})
+
     @POST("checkout/v1/pymt-txn/")
     Call<ResponceFetchTxnDetail> createPaymentTxn(@Body CreatePaymentTransaction transaction);
 
-    @Headers({"Content-Type: application/json", "Authorization: Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR"})
     @POST("/b/checkout/v1/submit/{SessionId}/")
     Call<RespoRedirectUrl> createRedirectUrl(@Path("SessionId") String Id,
                                              @Body CreateRedirectUrl redirectUrl);
 
-    @Headers({"Content-Type: application/json", "Authorization: Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR"})
     @DELETE("pbl/v1/card/{Token}")
     Call<ResponseBody> deleteCard(@Path ("Token") String token,
                                             @Query("customer_id")String customerId,

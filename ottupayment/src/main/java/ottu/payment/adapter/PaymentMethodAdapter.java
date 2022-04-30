@@ -116,12 +116,15 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
             }
             if (selectedCardPos == position) {
-                itemBinding.layoutCardInfo.setBackgroundColor(context.getResources().getColor(R.color.text_gray7));
+                itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg_selected));
+
             } else {
-                itemBinding.layoutCardInfo.setBackgroundColor(context.getResources().getColor(R.color.white));
+                itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg));
+                itemBinding.arrow.setImageResource(R.drawable.arrow_right);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
             itemBinding.amount.setText(listPaymentMethod.get(position).amount + " " + listPaymentMethod.get(position).currency_code);
+
 
 //            itemBinding.cardImage.setImageBitmap(getImage(listPaymentMethod.get(position).icon));
 //            imageLoader.DisplayImage(listPaymentMethod.get(position).icon, itemBinding.cardImage);
@@ -264,19 +267,22 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 //                            break;
 //                    }
                     if (gestureDetector.onTouchEvent(event)) {
-                        if (position == 0) {
+
+                        if (listPaymentMethod.get(position).code.equals("ottu_pg_kwd_tkn")) {
                             selectedCardPos = position;
                             if (itemBinding.layoutCardDetail.getVisibility() == View.GONE) {
                                 itemBinding1 = null;
                                 itemBinding1 = itemBinding;
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
+                                itemBinding.arrow.setImageResource(R.drawable.arrow_down);
                             } else {
                                 selectedCardPos = -1;
                                 itemBinding1 = null;
                                 itemBinding.layoutCardDetail.setVisibility(View.GONE);
                                 context.setPayEnable(false);
+                                itemBinding.arrow.setImageResource(R.drawable.arrow_right);
                             }
-                        } else if (position == 1) {
+                        } else if (listPaymentMethod.get(position).code.equals("knet-test")) {
                             if (itemBinding1 != null) {
                                 itemBinding1.layoutCardDetail.setVisibility(View.GONE);
                             }
@@ -284,8 +290,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             selectedCardPos = position;
                             context.setPayEnable(true);
 
-
-                        } else if (position == 2) {
+                        } else if (listPaymentMethod.get(position).code.equals("mpgs")) {
                             if (itemBinding1 != null) {
                                 itemBinding1.layoutCardDetail.setVisibility(View.GONE);
                             }
@@ -313,24 +318,24 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
             });
 
-            itemBinding.infoImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Dialog dialog = new Dialog(context, R.style.MyDialog);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setCancelable(true);
-                    dialog.setContentView(R.layout.dialog_savecard);
-
-                    Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
-                    btnClose.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-                }
-            });
+//            itemBinding.infoImage.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Dialog dialog = new Dialog(context, R.style.MyDialog);
+//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    dialog.setCancelable(true);
+//                    dialog.setContentView(R.layout.dialog_savecard);
+//
+//                    Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
+//                    btnClose.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    dialog.show();
+//                }
+//            });
             itemBinding.datetextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

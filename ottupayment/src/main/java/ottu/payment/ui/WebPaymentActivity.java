@@ -1,21 +1,21 @@
 package ottu.payment.ui;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -31,11 +31,11 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 
 
 import ottu.payment.R;
 import ottu.payment.databinding.ActivityWebPaymentBinding;
+import ottu.payment.databinding.DialogResultBinding;
 import ottu.payment.model.SocketData.SendToSocket;
 import ottu.payment.model.SocketData.SocketRespo;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
@@ -130,36 +130,33 @@ public class WebPaymentActivity extends AppCompatActivity {
 
 
         if (isNetworkAvailable(WebPaymentActivity.this)) {
-            final ProgressDialog dialog = new ProgressDialog(WebPaymentActivity.this);
-            dialog.setMessage("Please wait for a moment. Fetching data.");
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.show();
+            showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
             Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, false);
             register.enqueue(new Callback<ResponceFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
-                    dialog.dismiss();
+                    showLoader(false);
 
                     if (response.isSuccessful() && response.body() != null) {
-                        Intent intent = new Intent(WebPaymentActivity.this, PaymentResultActivity.class);
+                        SocketRespo finalResponse = new SocketRespo();
+                        finalResponse.setStatus(response.body().state);
+                        finalResponse.setSession_id(response.body().session_id);
+                        finalResponse.setOrder_no(String.valueOf(response.body().order_no));
+                        finalResponse.setOperation(response.body().operation);
+                        finalResponse.setReference_number("");
+                        finalResponse.setRedirect_url(response.body().redirect_url);
+                        finalResponse.setMerchant_id(MerchantId);
 
                         String state = response.body().state;
                         if (state.equals("expired")) {
-                            intent.putExtra("Result", false);
+                            showFailDialog(finalResponse);
                         } else if (state.equals("success")) {
-                            intent.putExtra("Result", true);
+                            showSuccessDialog(finalResponse);
                         } else {
-                            intent.putExtra("Result", false);
+                            showFailDialog(finalResponse);
                         }
-                        intent.putExtra("name", response.body().customer_first_name + " " + response.body().customer_last_name);
-                        intent.putExtra("amount", response.body().amount);
-                        intent.putExtra("status", response.body().state);
-                        intent.putExtra("gateway", response.body().mode);
-                        intent.putExtra("referanceNo", referenceNo);
-                        startActivity(intent);
-                        finish();
-                        Log.e("=======", response.body().toString());
+
                     } else {
                         Toast.makeText(WebPaymentActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
                         finish();
@@ -169,7 +166,7 @@ public class WebPaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponceFetchTxnDetail> call, Throwable t) {
-                    dialog.dismiss();
+                    showLoader(false);
                     Toast.makeText(WebPaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -183,6 +180,55 @@ public class WebPaymentActivity extends AppCompatActivity {
         if (mWebSocketClient != null) {
             mWebSocketClient.close();
         }
+    }
+
+    public void showSuccessDialog(SocketRespo finalResponse){
+        DialogResultBinding dialogBinding = DialogResultBinding.inflate(getLayoutInflater());
+        Dialog dialog = new Dialog(this, R.style.MyDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(dialogBinding.getRoot());
+
+        dialogBinding.detailText.setText(getResources().getString(R.string.transaction_successfull));
+        dialogBinding.resultText.setText(getResources().getString(R.string.thankyou));
+        dialogBinding.resultText.setTextColor(getResources().getColor(R.color.green));
+        dialogBinding.paymentAmount.setVisibility(View.VISIBLE);
+        dialogBinding.paymentAmount.setText(Amount +" is paid");
+        dialogBinding.resultImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_success));
+
+        dialogBinding.ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void showFailDialog(SocketRespo finalResponse){
+        DialogResultBinding dialogBinding = DialogResultBinding.inflate(getLayoutInflater());
+        Dialog dialog = new Dialog(this, R.style.MyDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(dialogBinding.getRoot());
+
+        dialogBinding.detailText.setText(getResources().getString(R.string.transaction_fail));
+        dialogBinding.resultText.setTextColor(getResources().getColor(R.color.red));
+        dialogBinding.resultText.setText(getResources().getString(R.string.payment_fail));
+        dialogBinding.paymentAmount.setVisibility(View.GONE);
+        dialogBinding.resultImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_fail));
+
+        dialogBinding.ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        dialog.show();
     }
 
 
@@ -220,23 +266,15 @@ public class WebPaymentActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (finalResponse != null) {
-                            Intent intent = new Intent(WebPaymentActivity.this, PaymentResultActivity.class);
 
                             String state = finalResponse.getStatus();
                             if (state.equals("expired")) {
-                                intent.putExtra("Result", false);
+                                showFailDialog(finalResponse);
                             } else if (state.equals("success")) {
-                                intent.putExtra("Result", true);
+                                showSuccessDialog(finalResponse);
                             } else {
-                                intent.putExtra("Result", false);
+                                showFailDialog(finalResponse);
                             }
-                            intent.putExtra("name", "");
-                            intent.putExtra("referanceNo", finalResponse.getReference_number());
-                            intent.putExtra("amount", Amount);
-                            intent.putExtra("status", finalResponse.getStatus());
-                            intent.putExtra("gateway", finalResponse.getOperation());
-                            startActivity(intent);
-                            finish();
 
 //                            referenceNo = finalResponse.getReference_number();
 //                            getTrnDetail();
@@ -267,7 +305,14 @@ public class WebPaymentActivity extends AppCompatActivity {
         };
         mWebSocketClient.connect();
     }
-
+    public void showLoader(boolean visibility){
+        Glide.with(this).load(R.raw.loader).into(binding.loader);
+        if (visibility) {
+            binding.progressLayout.setVisibility(View.VISIBLE);
+        }else {
+            binding.progressLayout.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onBackPressed() {

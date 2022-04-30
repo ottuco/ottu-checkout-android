@@ -5,9 +5,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -16,8 +18,8 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
@@ -25,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import ottu.payment.R;
@@ -32,7 +35,6 @@ import ottu.payment.adapter.PaymentMethodAdapter;
 import ottu.payment.adapter.SavedCardAdapter;
 import ottu.payment.databinding.ActivityPaymentBinding;
 import ottu.payment.model.DeleteCard.SendDeleteCard;
-import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
 import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
 import ottu.payment.model.RedirectUrl.RespoRedirectUrl;
 import ottu.payment.model.redirect.ResponceFetchTxnDetail;
@@ -48,6 +50,7 @@ import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstance;
 import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstancePg;
 import static ottu.payment.util.Constant.Amount;
 import static ottu.payment.util.Constant.ApiId;
+import static ottu.payment.util.Constant.LocalLan;
 import static ottu.payment.util.Constant.MerchantId;
 import static ottu.payment.util.Constant.SessionId;
 import static ottu.payment.util.Constant.savedCardSelected;
@@ -84,6 +87,7 @@ public class PaymentActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this,R.color.gradiunt_blue));
+
 
         binding.rvSavedCards.setLayoutManager(new LinearLayoutManager(this));
         binding.rvPaymentMethod.setLayoutManager(new LinearLayoutManager(this));
@@ -126,36 +130,31 @@ public class PaymentActivity extends AppCompatActivity {
                 }
             }
         });
-        binding.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+
 
     }
 
     public void setPayEnable(boolean isenble){
+        binding.payNow.setBackground(getResources().getDrawable(R.drawable.payenable));
         binding.payNow.setEnabled(isenble);
         if (isenble){
             binding.payNow.setBackground(getResources().getDrawable(R.drawable.payenable));
+            binding.payNow.setTextColor(getResources().getColor(R.color.white));
         }else {
-            binding.payNow.setBackground(getResources().getDrawable(R.drawable.buttondisable));
+            binding.payNow.setBackground(getResources().getDrawable(R.drawable.paydisable));
+            binding.payNow.setTextColor(getResources().getColor(R.color.text_gray2));
         }
     }
 
     private void payNow(SubmitCHDToOttoPG submitCHDToPG) {
         if (isNetworkAvailable(PaymentActivity.this)) {
-            final ProgressDialog dialog = new ProgressDialog(PaymentActivity.this);
-            dialog.setMessage("Please wait for a moment. Fetching data.");
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.show();
+            showLoader(true);
             GetDataService apiendPoint = getRetrofitInstancePg();
             Call<JsonElement> register = apiendPoint.respoSubmitCHD(submitCHDToPG);
             register.enqueue(new Callback<JsonElement>() {
                 @Override
                 public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                    dialog.dismiss();
+                    showLoader(false);
 
                     if (response.isSuccessful()) {
 
@@ -222,7 +221,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<JsonElement> call, Throwable t) {
-                    dialog.dismiss();
+                    showLoader(false);
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -238,8 +237,10 @@ public class PaymentActivity extends AppCompatActivity {
              Amount = getIntent().getStringExtra("Amount");
              MerchantId = getIntent().getStringExtra("MerchantId");
             SessionId = getIntent().getStringExtra("SessionId");
+            LocalLan = getIntent().getStringExtra("LocalLan");
+            setLocal(LocalLan);
              ApiId = apiId;
-             binding.amountTextView.setText("Amount : "+Amount);
+             binding.amountTextView.setText(Amount);
         }else {
             Toast.makeText(this, "No sessionid", Toast.LENGTH_SHORT).show();
             finish();
@@ -248,16 +249,18 @@ public class PaymentActivity extends AppCompatActivity {
 
 
         if (isNetworkAvailable(PaymentActivity.this)) {
-            final ProgressDialog dialog = new ProgressDialog(PaymentActivity.this);
-            dialog.setMessage("Please wait for a moment. Fetching data.");
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.show();
+//            final ProgressDialog dialog = new ProgressDialog(PaymentActivity.this);
+//            dialog.setMessage("Please wait for a moment. Fetching data.");
+//            dialog.setCanceledOnTouchOutside(true);
+//            dialog.show();
+            showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
             Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId,true);
             register.enqueue(new Callback<ResponceFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
+                    showLoader(false);
 
                     if (response.isSuccessful() && response.body() != null) {
                         showData(response.body());
@@ -272,7 +275,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponceFetchTxnDetail> call, Throwable t) {
-                    dialog.dismiss();
+                    showLoader(false);
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -282,15 +285,28 @@ public class PaymentActivity extends AppCompatActivity {
 
     public void showData(ResponceFetchTxnDetail body) {
         if (body != null){
+            binding.savescardTxt.setText(getResources().getString(R.string.total_bill));
+            binding.titleSavedCard.setText(getResources().getString(R.string.saved_card));
+            binding.subTitleSavedCard.setText(getResources().getString(R.string.list_card_saved));
+            binding.txtpaymentMethod.setText(getResources().getString(R.string.payment_method));
+            binding.txtpaymentMethodsub.setText(getResources().getString(R.string.list_gatway));
 
+            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"  +"("+body.amount + body.currency_code+")"));
+            binding.currencyCode.setText(body.currency_code);
             if (body.cards != null) {
+                if (body.cards.size() < 1){
+                    binding.layoutSavedListTitle.setVisibility(View.GONE);
+                }
                 adapterSavedCard = new SavedCardAdapter(PaymentActivity.this,body.cards );
                 binding.rvSavedCards.setAdapter(adapterSavedCard);
+            }else {
+                binding.layoutSavedListTitle.setVisibility(View.GONE);
             }
             if (body.payment_methods != null) {
                adapterPaymentMethod =  new PaymentMethodAdapter(this,body );
                 binding.rvPaymentMethod.setAdapter(adapterPaymentMethod);
             }
+
         }
     }
 
@@ -298,16 +314,13 @@ public class PaymentActivity extends AppCompatActivity {
     private void createRedirectUrl(CreateRedirectUrl redirectUrl, String session_id) {
 
         if (isNetworkAvailable(PaymentActivity.this)) {
-            final ProgressDialog dialog = new ProgressDialog(PaymentActivity.this);
-            dialog.setMessage("Please wait for a moment. Fetching data.");
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.show();
+            showLoader(true);
             GetDataService apiendPoint = getRetrofitInstance();
             Call<RespoRedirectUrl> register = apiendPoint.createRedirectUrl(session_id,redirectUrl);
             register.enqueue(new Callback<RespoRedirectUrl>() {
                 @Override
                 public void onResponse(Call<RespoRedirectUrl> call, Response<RespoRedirectUrl> response) {
-                    dialog.dismiss();
+                    showLoader(false);
 
                     if (response.isSuccessful() && response.body() != null) {
 
@@ -329,7 +342,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<RespoRedirectUrl> call, Throwable t) {
-                    dialog.dismiss();
+                    showLoader(false);
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -363,16 +376,13 @@ public class PaymentActivity extends AppCompatActivity {
     public void deleteCard(SendDeleteCard deleteCard, String token) {
 
         if (isNetworkAvailable(PaymentActivity.this)) {
-            final ProgressDialog dialog = new ProgressDialog(PaymentActivity.this);
-            dialog.setMessage("Please wait for a moment. Fetching data.");
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.show();
+            showLoader(true);
             GetDataService apiendPoint = getRetrofitInstance();
             Call<ResponseBody> register = apiendPoint.deleteCard(token,deleteCard.customer_id,deleteCard.type);
             register.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    dialog.dismiss();
+                    showLoader(false);
 
                     Toast.makeText(PaymentActivity.this, "Card Deleted" , Toast.LENGTH_SHORT).show();
 
@@ -383,13 +393,36 @@ public class PaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    dialog.dismiss();
+                    showLoader(false);
                 }
             });
         }
 
     }
 
+    public void showLoader(boolean visibility){
+        Glide.with(this).load(R.raw.loader).into(binding.loader);
+        if (visibility) {
+            binding.progressLayout.setVisibility(View.VISIBLE);
+        }else {
+            binding.progressLayout.setVisibility(View.GONE);
+        }
+    }
+    public void setLocal(String local1){
+        Locale locale = new Locale(local1);
+        Locale.setDefault(locale);
+        Configuration conf = getResources().getConfiguration();
+        conf.setLocale(locale);
+        conf.setLayoutDirection(locale);
+        createConfigurationContext(conf);
+
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//        getResources().updateConfiguration(conf,metrics);
+//        Resources resources = new Resources(getAssets(), metrics, conf);
+        getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
+
+    }
     @Override
     public void onBackPressed() {
 

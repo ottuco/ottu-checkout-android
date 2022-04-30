@@ -2,10 +2,14 @@ package ottu.payment.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import ottu.payment.R;
@@ -35,5 +39,7 @@ public class Util {
 
         return mCCPatterns;
     }
+
+
 
 }

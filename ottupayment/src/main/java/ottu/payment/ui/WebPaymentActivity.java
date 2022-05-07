@@ -244,7 +244,6 @@ public class WebPaymentActivity extends AppCompatActivity {
         mWebSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
-                Log.i("Websocket", "Opened");
                 String jsonString = new com.google.gson.Gson().toJson(
                         new SendToSocket("sdk"
                                 , getIntent().getStringExtra("reference_number")
@@ -258,7 +257,6 @@ public class WebPaymentActivity extends AppCompatActivity {
                 SocketRespo response = null;
 
                 response = new Gson().fromJson(s, SocketRespo.class);
-                Log.e("Websocket", "onMessage " + s);
 
 
                 SocketRespo finalResponse = response;
@@ -282,7 +280,6 @@ public class WebPaymentActivity extends AppCompatActivity {
                         } else {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
-                                Log.e("Websocket", "onMessage " + jsonObject.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -295,12 +292,10 @@ public class WebPaymentActivity extends AppCompatActivity {
 
             @Override
             public void onClose(int i, String s, boolean b) {
-                Log.e("Websocket", "Closed " + s);
             }
 
             @Override
             public void onError(Exception e) {
-                Log.e("Websocket", "Error " + e.getMessage());
             }
         };
         mWebSocketClient.connect();

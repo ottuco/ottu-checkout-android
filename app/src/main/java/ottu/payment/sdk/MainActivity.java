@@ -72,16 +72,12 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v("TAG","Permission is granted");
                 return true;
             } else {
 
-                Log.v("TAG","Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("TAG","Permission is granted");
             return true;
         }
     }
@@ -123,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
 
 
 
-                        Log.e("=======",response.body().toString());
                     }else {
                         Toast.makeText(MainActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
                     }

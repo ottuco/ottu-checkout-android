@@ -83,6 +83,8 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void view() {
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -97,7 +99,6 @@ public class PaymentActivity extends AppCompatActivity {
 
                 if (savedCardSelected){
                     SubmitCHDToOttoPG cardDetail = adapterSavedCard.getCardDetail();
-                    Log.e("=========",cardDetail.toString());
                     payNow(cardDetail);
                 }else {
                     if (selectedCardPos == 0) {
@@ -266,7 +267,6 @@ public class PaymentActivity extends AppCompatActivity {
                         showData(response.body());
                         sessionId = response.body().session_id;
                         pg_codes = response.body().pg_codes;
-                        Log.e("=======",response.body().toString());
                     }else {
                         Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
                     }
@@ -332,7 +332,6 @@ public class PaymentActivity extends AppCompatActivity {
                             Toast.makeText(PaymentActivity.this, response.body().getMessage() , Toast.LENGTH_SHORT).show();
                             finish();
                         }
-                        Log.e("=======",response.body().toString());
                     }else {
                         Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
                         finish();

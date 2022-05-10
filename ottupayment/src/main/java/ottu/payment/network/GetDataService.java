@@ -25,7 +25,8 @@ import retrofit2.http.Query;
 public interface GetDataService {
 
 
-    @GET("checkout/v1/pymt-txn/submit/{apiId}")
+//    @GET("checkout/v1/pymt-txn/submit/{apiId}")
+    @GET("checkout/api/sdk/v1/pymt-txn/submit/{apiId}")
     Call<ResponceFetchTxnDetail> fetchTxnDetail(@Path ("apiId") String apiId,
                                                 @Query("enableCHD") boolean value);
 
@@ -36,7 +37,7 @@ public interface GetDataService {
     @POST("checkout/v1/pymt-txn/")
     Call<ResponceFetchTxnDetail> createPaymentTxn(@Body CreatePaymentTransaction transaction);
 
-    @POST("/b/checkout/v1/submit/{SessionId}/")
+    @POST("checkout/api/sdk/v1/submit/{SessionId}/")
     Call<RespoRedirectUrl> createRedirectUrl(@Path("SessionId") String Id,
                                              @Body CreateRedirectUrl redirectUrl);
 

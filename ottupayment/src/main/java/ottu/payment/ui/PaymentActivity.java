@@ -42,6 +42,7 @@ import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import ottu.payment.network.GetDataService;
 import ottu.payment.network.RetrofitClientInstance;
+import ottu.payment.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,6 +58,7 @@ import static ottu.payment.util.Constant.savedCardSelected;
 import static ottu.payment.util.Constant.selectedCardPos;
 import static ottu.payment.util.Constant.selectedCardPosision;
 import static ottu.payment.util.Constant.sessionId;
+import static ottu.payment.util.Util.isDeviceRooted;
 import static ottu.payment.util.Util.isNetworkAvailable;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -90,6 +92,10 @@ public class PaymentActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this,R.color.gradiunt_blue));
 
+        if (isDeviceRooted()){
+            Toast.makeText(this, "Device is rooted", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         binding.rvSavedCards.setLayoutManager(new LinearLayoutManager(this));
         binding.rvPaymentMethod.setLayoutManager(new LinearLayoutManager(this));

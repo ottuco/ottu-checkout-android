@@ -25,19 +25,16 @@ import java.util.Arrays;
 import ottu.payment.interfaces.OttuPaymentCallback;
 import ottu.payment.interfaces.SendPaymentCallback;
 import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
-import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
-import ottu.payment.model.redirect.ResponceFetchTxnDetail;
-import ottu.payment.model.submitCHD.Card_SubmitCHD;
-import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
+import ottu.payment.model.SocketData.SocketRespo;
+import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.sdk.network.GetDataService;
 import ottu.payment.ui.OttoPaymentSdk;
-import ottu.payment.ui.PaymentActivity;
-import ottu.payment.ui.PaymentResultActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static ottu.payment.sdk.network.RetrofitClientInstance.getRetrofitInstance;
+import static ottu.payment.util.Constant.OttuPaymentResult;
 
 
 public class MainActivity extends AppCompatActivity implements OttuPaymentCallback {
@@ -102,10 +99,10 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
             GetDataService apiendPoint = getRetrofitInstance();
-            Call<ResponceFetchTxnDetail> register = apiendPoint.createPaymentTxn(paymentTransaction);
-            register.enqueue(new Callback<ResponceFetchTxnDetail>() {
+            Call<RespoFetchTxnDetail> register = apiendPoint.createPaymentTxn(paymentTransaction);
+            register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
-                public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
+                public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {
                     dialog.dismiss();
 
                     if (response.isSuccessful() && response.body() != null) {
@@ -126,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                 }
 
                 @Override
-                public void onFailure(Call<ResponceFetchTxnDetail> call, Throwable t) {
+                public void onFailure(Call<RespoFetchTxnDetail> call, Throwable t) {
                     dialog.dismiss();
                     Toast.makeText(MainActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -162,12 +159,12 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK ){
-            if (requestCode == 001){
-                Toast.makeText(this, ""+data.getStringExtra("Result"), Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(this, ""+data.getStringExtra("Intent Null"), Toast.LENGTH_SHORT).show();
+        if (resultCode == RESULT_OK ){
+            if (requestCode == OttuPaymentResult ){
+                SocketRespo paymentResult = (SocketRespo) data.getSerializableExtra("paymentResult");
+                Toast.makeText(this, ""+paymentResult.getStatus(), Toast.LENGTH_SHORT).show();
             }
+
         }
     }
 }

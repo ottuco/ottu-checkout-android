@@ -1,5 +1,6 @@
 package ottu.payment.ui;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,7 +39,7 @@ import ottu.payment.databinding.ActivityPaymentBinding;
 import ottu.payment.model.DeleteCard.SendDeleteCard;
 import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
 import ottu.payment.model.RedirectUrl.RespoRedirectUrl;
-import ottu.payment.model.redirect.ResponceFetchTxnDetail;
+import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import ottu.payment.network.GetDataService;
@@ -50,10 +52,14 @@ import retrofit2.Response;
 import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstance;
 import static ottu.payment.network.RetrofitClientInstance.getRetrofitInstancePg;
 import static ottu.payment.util.Constant.Amount;
+import static ottu.payment.util.Constant.AmountCurrencyCode;
 import static ottu.payment.util.Constant.ApiId;
 import static ottu.payment.util.Constant.LocalLan;
 import static ottu.payment.util.Constant.MerchantId;
+import static ottu.payment.util.Constant.OttuPaymentResult;
 import static ottu.payment.util.Constant.SessionId;
+import static ottu.payment.util.Constant.SubmitUrlCard;
+import static ottu.payment.util.Constant.SubmitUrlRedirect;
 import static ottu.payment.util.Constant.savedCardSelected;
 import static ottu.payment.util.Constant.selectedCardPos;
 import static ottu.payment.util.Constant.selectedCardPosision;
@@ -155,18 +161,20 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void payNow(SubmitCHDToOttoPG submitCHDToPG) {
         if (isNetworkAvailable(PaymentActivity.this)) {
-            showLoader(true);
+            showButtonLoader(true);
             GetDataService apiendPoint = getRetrofitInstancePg();
-            Call<JsonElement> register = apiendPoint.respoSubmitCHD(submitCHDToPG);
-            register.enqueue(new Callback<JsonElement>() {
+            Call<ResponseBody> register = apiendPoint.respoSubmitCHD(SubmitUrlCard,submitCHDToPG);
+            register.enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                    showLoader(false);
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    showButtonLoader(false);
+
 
                     if (response.isSuccessful()) {
 
                         try {
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                            String aa = response.body().string();
+                            JSONObject jsonObject = new JSONObject(aa);
 
 
                             if (jsonObject.has("status")) {
@@ -180,12 +188,12 @@ public class PaymentActivity extends AppCompatActivity {
                                 }else if (status.equals("error")){
                                     Toast.makeText(PaymentActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                 }else if (status.equals("3DS")){
-                                    startActivity(new Intent(PaymentActivity.this,WebPaymentActivity.class)
+                                    startActivityForResult(new Intent(PaymentActivity.this,WebPaymentActivity.class)
                                             .putExtra("is3DS",true)
                                     .putExtra("html",jsonObject.getString("html"))
                                     .putExtra("reference_number",jsonObject.getString("reference_number"))
-                                            .putExtra("ws_url",jsonObject.getString("ws_url")));
-                                    finish();
+                                            .putExtra("ws_url",jsonObject.getString("ws_url")),OttuPaymentResult);
+
                                 }
 
                             }else {
@@ -216,7 +224,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
 
-                        } catch (JSONException e) {
+                        } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }
 
@@ -227,8 +235,8 @@ public class PaymentActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<JsonElement> call, Throwable t) {
-                    showLoader(false);
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    showButtonLoader(false);
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -241,13 +249,11 @@ public class PaymentActivity extends AppCompatActivity {
         String amount = null;
         if (getIntent().hasExtra("SessionId")) {
              apiId = getIntent().getStringExtra("ApiId");
-             Amount = getIntent().getStringExtra("Amount");
-             MerchantId = getIntent().getStringExtra("MerchantId");
-            SessionId = getIntent().getStringExtra("SessionId");
+            MerchantId = getIntent().getStringExtra("MerchantId");
             LocalLan = getIntent().getStringExtra("LocalLan");
             setLocal(LocalLan);
              ApiId = apiId;
-             binding.amountTextView.setText(Amount);
+
         }else {
             Toast.makeText(this, "No sessionid", Toast.LENGTH_SHORT).show();
             finish();
@@ -262,10 +268,10 @@ public class PaymentActivity extends AppCompatActivity {
 //            dialog.show();
             showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId,true);
-            register.enqueue(new Callback<ResponceFetchTxnDetail>() {
+            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId,true);
+            register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
-                public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
+                public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {
 //                    dialog.dismiss();
                     showLoader(false);
 
@@ -273,6 +279,8 @@ public class PaymentActivity extends AppCompatActivity {
                         showData(response.body());
                         sessionId = response.body().session_id;
                         pg_codes = response.body().pg_codes;
+                        SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
+                        SubmitUrlRedirect = response.body().submit_url;
                     }else {
                         Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
                     }
@@ -280,7 +288,7 @@ public class PaymentActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ResponceFetchTxnDetail> call, Throwable t) {
+                public void onFailure(Call<RespoFetchTxnDetail> call, Throwable t) {
                     showLoader(false);
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -289,16 +297,20 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
-    public void showData(ResponceFetchTxnDetail body) {
+    public void showData(RespoFetchTxnDetail body) {
         if (body != null){
-            binding.savescardTxt.setText(getResources().getString(R.string.total_bill));
+            Amount = body.amount;
+            SessionId = body.session_id;
+            AmountCurrencyCode = body.currency_code;
+            binding.finalAmountTxt.setText(Amount);
+            binding.finalAmountTitle.setText(getResources().getString(R.string.total_bill));
             binding.titleSavedCard.setText(getResources().getString(R.string.saved_card));
             binding.subTitleSavedCard.setText(getResources().getString(R.string.list_card_saved));
             binding.txtpaymentMethod.setText(getResources().getString(R.string.payment_method));
             binding.txtpaymentMethodsub.setText(getResources().getString(R.string.list_gatway));
 
-            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"  +"("+body.amount + body.currency_code+")"));
-            binding.currencyCode.setText(body.currency_code);
+            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"  ));
+            binding.finalAmountCurrencyCode.setText(body.currency_code);
             if (body.cards != null) {
                 if (body.cards.size() < 1){
                     binding.layoutSavedListTitle.setVisibility(View.GONE);
@@ -320,26 +332,33 @@ public class PaymentActivity extends AppCompatActivity {
     private void createRedirectUrl(CreateRedirectUrl redirectUrl, String session_id) {
 
         if (isNetworkAvailable(PaymentActivity.this)) {
-            showLoader(true);
+            showButtonLoader(true);
             GetDataService apiendPoint = getRetrofitInstance();
-            Call<RespoRedirectUrl> register = apiendPoint.createRedirectUrl(session_id,redirectUrl);
+            Call<RespoRedirectUrl> register = apiendPoint.createRedirectUrl(SubmitUrlRedirect,redirectUrl);
             register.enqueue(new Callback<RespoRedirectUrl>() {
                 @Override
                 public void onResponse(Call<RespoRedirectUrl> call, Response<RespoRedirectUrl> response) {
-                    showLoader(false);
+
+                    showButtonLoader(false);
 
                     if (response.isSuccessful() && response.body() != null) {
 
                         if (response.body().getRedirect_url() != null){
-                            startActivity(new Intent(PaymentActivity.this,WebPaymentActivity.class)
-                            .putExtra("RedirectUrl",response.body().getRedirect_url()));
-                            finish();
+                            startActivityForResult(new Intent(PaymentActivity.this,WebPaymentActivity.class)
+                            .putExtra("RedirectUrl",response.body().getRedirect_url()),OttuPaymentResult);
+
                         }else {
                             Toast.makeText(PaymentActivity.this, response.body().getMessage() , Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent();
+                            intent.putExtra("paymentResult","Payment Fail");
+                            setResult(OttuPaymentResult,intent);
                             finish();
                         }
                     }else {
                         Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.putExtra("paymentResult","Payment Fail");
+                        setResult(OttuPaymentResult,intent);
                         finish();
                     }
 
@@ -347,7 +366,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<RespoRedirectUrl> call, Throwable t) {
-                    showLoader(false);
+                    showButtonLoader(false);
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -413,6 +432,16 @@ public class PaymentActivity extends AppCompatActivity {
             binding.progressLayout.setVisibility(View.GONE);
         }
     }
+
+    public void showButtonLoader(boolean visibility){
+        if (visibility) {
+            binding.btnProgress.setVisibility(View.VISIBLE);
+            binding.payNow.setText("");
+        }else {
+            binding.btnProgress.setVisibility(View.GONE);
+            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"  ));
+        }
+    }
     public void setLocal(String local1){
         Locale locale = new Locale(local1);
         Locale.setDefault(locale);
@@ -426,6 +455,23 @@ public class PaymentActivity extends AppCompatActivity {
 //        getResources().updateConfiguration(conf,metrics);
 //        Resources resources = new Resources(getAssets(), metrics, conf);
         getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
+
+    }
+    public void setFee(boolean visibility,String amount,String amountCurrency,String feeAmount){
+        if (visibility){
+            binding.layoutFeeAmount.setVisibility(View.VISIBLE);
+            binding.amountTxt.setText(Amount);
+            binding.amountCurrencyCode.setText(AmountCurrencyCode);
+            binding.feeTxt.setText(feeAmount);
+            binding.feecurrencyCode.setText(amountCurrency);
+            binding.finalAmountTxt.setText(amount);
+            binding.finalAmountCurrencyCode.setText(amountCurrency);
+
+        }else {
+            binding.layoutFeeAmount.setVisibility(View.GONE);
+            binding.finalAmountTxt.setText(Amount);
+            binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
+        }
 
     }
     @Override
@@ -445,5 +491,17 @@ public class PaymentActivity extends AppCompatActivity {
         selectedCardPosision = -1;
         notifySavedCardAdapter();
         notifyPaymentMethodAdapter();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK ){
+            if (requestCode == OttuPaymentResult ){
+               setResult(RESULT_OK,data);
+               finish();
+            }
+
+        }
     }
 }

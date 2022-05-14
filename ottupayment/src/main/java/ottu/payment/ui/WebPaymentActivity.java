@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -38,7 +39,7 @@ import ottu.payment.databinding.ActivityWebPaymentBinding;
 import ottu.payment.databinding.DialogResultBinding;
 import ottu.payment.model.SocketData.SendToSocket;
 import ottu.payment.model.SocketData.SocketRespo;
-import ottu.payment.model.redirect.ResponceFetchTxnDetail;
+import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.network.GetDataService;
 import ottu.payment.network.RetrofitClientInstance;
 import retrofit2.Call;
@@ -48,6 +49,7 @@ import retrofit2.Response;
 import static ottu.payment.util.Constant.Amount;
 import static ottu.payment.util.Constant.ApiId;
 import static ottu.payment.util.Constant.MerchantId;
+import static ottu.payment.util.Constant.OttuPaymentResult;
 import static ottu.payment.util.Util.isNetworkAvailable;
 
 public class WebPaymentActivity extends AppCompatActivity {
@@ -132,26 +134,24 @@ public class WebPaymentActivity extends AppCompatActivity {
         if (isNetworkAvailable(WebPaymentActivity.this)) {
             showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<ResponceFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, false);
-            register.enqueue(new Callback<ResponceFetchTxnDetail>() {
+            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, false);
+            register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
-                public void onResponse(Call<ResponceFetchTxnDetail> call, Response<ResponceFetchTxnDetail> response) {
+                public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {
                     showLoader(false);
 
                     if (response.isSuccessful() && response.body() != null) {
                         SocketRespo finalResponse = new SocketRespo();
-                        finalResponse.setStatus(response.body().state);
+                        finalResponse.setStatus(response.body().response.status);
                         finalResponse.setSession_id(response.body().session_id);
-                        finalResponse.setOrder_no(String.valueOf(response.body().order_no));
+                        finalResponse.setOrder_no(String.valueOf(response.body().response.order_no));
                         finalResponse.setOperation(response.body().operation);
-                        finalResponse.setReference_number("");
+                        finalResponse.setReference_number(response.body().response.reference_number);
                         finalResponse.setRedirect_url(response.body().redirect_url);
                         finalResponse.setMerchant_id(MerchantId);
 
-                        String state = response.body().state;
-                        if (state.equals("expired")) {
-                            showFailDialog(finalResponse);
-                        } else if (state.equals("success")) {
+                        String state = response.body().response.status;
+                        if (state.equals("success")) {
                             showSuccessDialog(finalResponse);
                         } else {
                             showFailDialog(finalResponse);
@@ -165,7 +165,7 @@ public class WebPaymentActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ResponceFetchTxnDetail> call, Throwable t) {
+                public void onFailure(Call<RespoFetchTxnDetail> call, Throwable t) {
                     showLoader(false);
                     Toast.makeText(WebPaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -200,9 +200,24 @@ public class WebPaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                Intent intent = new Intent();
+                intent.putExtra("paymentResult",finalResponse);
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                Intent intent = new Intent();
+                intent.putExtra("paymentResult",finalResponse);
+                setResult(RESULT_OK,intent);
+                finish();
+            }
+        }, 5000);
 
         dialog.show();
     }
@@ -224,9 +239,24 @@ public class WebPaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                Intent intent = new Intent();
+                intent.putExtra("paymentResult",finalResponse);
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                Intent intent = new Intent();
+                intent.putExtra("paymentResult",finalResponse);
+                setResult(RESULT_OK,intent);
+                finish();
+            }
+        }, 5000);
 
         dialog.show();
     }
@@ -266,9 +296,7 @@ public class WebPaymentActivity extends AppCompatActivity {
                         if (finalResponse != null) {
 
                             String state = finalResponse.getStatus();
-                            if (state.equals("expired")) {
-                                showFailDialog(finalResponse);
-                            } else if (state.equals("success")) {
+                             if (state.equals("success")) {
                                 showSuccessDialog(finalResponse);
                             } else {
                                 showFailDialog(finalResponse);

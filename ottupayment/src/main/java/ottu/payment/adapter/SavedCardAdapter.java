@@ -4,7 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +19,19 @@ import android.widget.DatePicker;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import ottu.payment.R;
 import ottu.payment.databinding.DialogDeleteBinding;
 import ottu.payment.databinding.ItemSavedcardBinding;
 import ottu.payment.model.DeleteCard.SendDeleteCard;
-import ottu.payment.model.redirect.Card;
+import ottu.payment.model.fetchTxnDetail.Card;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import ottu.payment.ui.PaymentActivity;
 
@@ -35,13 +44,13 @@ import static ottu.payment.util.Constant.selectedCardPosision;
 
 public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.ViewHolder>{
 
-    ArrayList<ottu.payment.model.redirect.Card> listCards;
+    ArrayList<Card> listCards;
     private ItemSavedcardBinding binding;
     private ItemSavedcardBinding bindingWithData;
     PaymentActivity activity;
 
 
-    public SavedCardAdapter(PaymentActivity paymentActivity, ArrayList<ottu.payment.model.redirect.Card> cards) {
+    public SavedCardAdapter(PaymentActivity paymentActivity, ArrayList<Card> cards) {
         listCards = cards;
         activity = paymentActivity;
     }
@@ -133,6 +142,7 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                         bindingWithData = itemBinding;
                         lastSelected = position;
                     }
+                    activity.setFee(true,"","","");
 
                     notifyDataSetChanged();
                     activity.notifyPaymentMethodAdapter();

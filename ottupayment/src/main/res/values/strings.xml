@@ -25,7 +25,7 @@
     <string name="transaction_fail">"sorry! your payment is failed \n please check your card detail."</string>
     <string name="Status">"Status : "</string>
     <string name="save_card_info">With saved card you can skip entering card detail in your next transactions</string>
-    <string name="total_bill">Total Bill</string>
+    <string name="total_bill">Total</string>
     <string name="list_gatway">List of all gatways we support</string>
     <string name="list_card_saved">List of all cards saved</string>
     <string name="payment_fail">Payment Failed</string>
@@ -42,4 +42,7 @@
     <string name="expire_on">Expires on</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="will_applied"><font color='#FF000000'>will applied</font></string>
+    <string name="sub_total">Sub-Total</string>
+    <string name="fee">Fee</string>
 </resources>

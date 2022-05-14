@@ -1,7 +1,8 @@
 package ottu.payment.model.SocketData;
 
-public class SocketRespo
-{
+import java.io.Serializable;
+
+public class SocketRespo implements Serializable {
     private String status;
 
     private String message;

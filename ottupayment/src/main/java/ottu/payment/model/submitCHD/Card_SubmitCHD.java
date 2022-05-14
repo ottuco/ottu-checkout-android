@@ -10,11 +10,11 @@ public class Card_SubmitCHD
 
     private String expiry_month;
 
-    private int cvv;
+    private String cvv;
 
     private boolean save_card;
 
-    public Card_SubmitCHD(String name_on_card, String number, String expiry_month, String  expiry_year, int cvv, boolean save_card) {
+    public Card_SubmitCHD(String name_on_card, String number, String expiry_month, String  expiry_year, String cvv, boolean save_card) {
         this.name_on_card = name_on_card;
         this.number = number;
         this.expiry_year = expiry_year;
@@ -47,10 +47,10 @@ public class Card_SubmitCHD
     public String getExpiry_month(){
         return this.expiry_month;
     }
-    public void setCvv(int cvv){
+    public void setCvv(String cvv){
         this.cvv = cvv;
     }
-    public int getCvv(){
+    public String getCvv(){
         return this.cvv;
     }
     public void setSave_card(boolean save_card){

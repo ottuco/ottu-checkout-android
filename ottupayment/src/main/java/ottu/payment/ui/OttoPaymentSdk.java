@@ -3,6 +3,8 @@ package ottu.payment.ui;
 import android.app.Activity;
 import android.content.Intent;
 
+import static ottu.payment.util.Constant.OttuPaymentResult;
+
 public class OttoPaymentSdk {
 
     static {
@@ -25,7 +27,7 @@ public class OttoPaymentSdk {
     }
 
     public void build() {
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent,OttuPaymentResult);
     }
 
 

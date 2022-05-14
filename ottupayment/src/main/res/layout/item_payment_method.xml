@@ -8,6 +8,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutCardInfoShort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -41,15 +42,15 @@
                 android:textColor="@color/text_gray2"
                 android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:maxLines="1"
-                android:text="Amount"
-                android:textColor="@color/text_gray2"
-                android:textSize="10dp" />
+<!--            <TextView-->
+<!--                android:id="@+id/amount"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:maxLines="1"-->
+<!--                android:text="Amount"-->
+<!--                android:textColor="@color/green"-->
+<!--                android:textSize="10dp" />-->
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

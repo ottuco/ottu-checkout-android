@@ -9,7 +9,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
+import android.text.Html;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.TextWatcher;
@@ -40,25 +43,29 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ottu.payment.R;
 import ottu.payment.databinding.ItemPaymentMethodBinding;
-import ottu.payment.model.redirect.PaymentMethod;
-import ottu.payment.model.redirect.ResponceFetchTxnDetail;
+import ottu.payment.model.fetchTxnDetail.PaymentMethod;
+import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.ui.PaymentActivity;
 import ottu.payment.util.ImageLoader;
 
+import static ottu.payment.util.Constant.CardListPosition;
 import static ottu.payment.util.Constant.savedCardSelected;
 import static ottu.payment.util.Constant.selectedCardPos;
+import static ottu.payment.util.Util.listCardName;
 import static ottu.payment.util.Util.listCardPatter;
 
 public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdapter.ViewHolder> {
 
-    ArrayList<ottu.payment.model.redirect.PaymentMethod> listPaymentMethod;
-    ResponceFetchTxnDetail transactionDetail;
+    ArrayList<PaymentMethod> listPaymentMethod;
+    RespoFetchTxnDetail transactionDetail;
     private ItemPaymentMethodBinding binding;
     ItemPaymentMethodBinding itemBinding1;
     PaymentActivity context;
@@ -72,7 +79,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     private boolean internalStopFormatFlag;
 
 
-    public PaymentMethodAdapter(PaymentActivity paymentActivity, ResponceFetchTxnDetail cards) {
+    public PaymentMethodAdapter(PaymentActivity paymentActivity, RespoFetchTxnDetail cards) {
         context = paymentActivity;
         listPaymentMethod = cards.payment_methods;
         imageLoader = new ImageLoader(paymentActivity);
@@ -123,13 +130,31 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 itemBinding.arrow.setImageResource(R.drawable.arrow_right);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
-            itemBinding.amount.setText(listPaymentMethod.get(position).amount + " " + listPaymentMethod.get(position).currency_code);
 
 
-//            itemBinding.cardImage.setImageBitmap(getImage(listPaymentMethod.get(position).icon));
-//            imageLoader.DisplayImage(listPaymentMethod.get(position).icon, itemBinding.cardImage);
-            Glide.with(context).load(listPaymentMethod.get(position).icon).into(itemBinding.cardImage);
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        InputStream stream = new URL(listPaymentMethod.get(position).icon).openStream();
 
+                        Bitmap image = BitmapFactory.decodeStream(stream);
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                itemBinding.cardImage.setImageBitmap(image);
+                            }
+                        });
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
             itemBinding.cardNumberTextView.addTextChangedListener(new TextWatcher() {
                 boolean considerChange = false;
@@ -145,11 +170,13 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         int mDrawableResId = 0;
                         for (int n = 0; n < mCCPatterns.size(); n++) {
                             int key = mCCPatterns.keyAt(n);
+
                             // get the object by the key.
                             Pattern p = mCCPatterns.get(key);
                             Matcher m = p.matcher(charSequence);
                             if (m.find()) {
                                 mDrawableResId = key;
+                                CardListPosition = n;
                                 break;
                             }
                         }
@@ -254,7 +281,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
             GestureDetector gestureDetector = new GestureDetector(context, new SingleTapConfirm());
 
-            itemBinding.layoutCardInfo.setOnTouchListener(new View.OnTouchListener() {
+            itemBinding.layoutCardInfoShort.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent event) {
 //                    switch(event.getAction())
@@ -275,12 +302,16 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding1 = itemBinding;
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
                                 itemBinding.arrow.setImageResource(R.drawable.arrow_down);
+                                context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
+                                        ,listPaymentMethod.get(position).fee);
                             } else {
                                 selectedCardPos = -1;
                                 itemBinding1 = null;
                                 itemBinding.layoutCardDetail.setVisibility(View.GONE);
                                 context.setPayEnable(false);
                                 itemBinding.arrow.setImageResource(R.drawable.arrow_right);
+                                context.setFee(false,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
+                                        ,listPaymentMethod.get(position).fee);
                             }
                         } else if (listPaymentMethod.get(position).code.equals("knet-test")) {
                             if (itemBinding1 != null) {
@@ -289,6 +320,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             itemBinding1 = null;
                             selectedCardPos = position;
                             context.setPayEnable(true);
+                            context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
+                                    ,listPaymentMethod.get(position).fee);
 
                         } else if (listPaymentMethod.get(position).code.equals("mpgs")) {
                             if (itemBinding1 != null) {
@@ -297,7 +330,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             itemBinding1 = null;
                             selectedCardPos = position;
                             context.setPayEnable(true);
-
+                            context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
+                                    ,listPaymentMethod.get(position).fee);
 //                            CreatePaymentTransaction paymentTransaction = new CreatePaymentTransaction(transactionDetail.type
 //                                    ,transactionDetail.pg_codes
 //                                    ,Amount
@@ -428,7 +462,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             return submitCHD;
         } else {
 
-            String name = listPaymentMethod.get(selectedCardPos).name;
+            String cardBrand = listCardName().get(CardListPosition);
+            String name = cardBrand;
             String cardNumber = itemBinding1.cardNumberTextView.getText().toString().trim().replace("-", "");
             String date = itemBinding1.datetextView.getText().toString().trim();
 //            String[] time = date.split("/");
@@ -471,7 +506,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 return submitCHD;
             }
 
-            submitCHD = new Card_SubmitCHD(name, cardNumber, expiryMonth, expiryYear, Integer.parseInt(cvv), saveCard);
+            submitCHD = new Card_SubmitCHD(name, cardNumber, expiryMonth, expiryYear, cvv, saveCard);
             return submitCHD;
         }
     }

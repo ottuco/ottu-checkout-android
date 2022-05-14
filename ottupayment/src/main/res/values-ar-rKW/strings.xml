@@ -26,7 +26,7 @@
     <string name="transaction_fail">"sorry! your payment is failed \n please check your card detail."</string>
     <string name="Status">"Status : "</string>
     <string name="save_card_info">With saved card you can skip entering card detail in your next transactions</string>
-    <string name="total_bill">إجمالي المبلغ</string>
+    <string name="total_bill">المجموع</string>
     <string name="list_gatway">قائمة بجميع البوابات التي ندعمها</string>
     <string name="list_card_saved">قائمة البطاقات المحفوظة</string>
     <string name="payment_fail">Payment Failed</string>
@@ -43,4 +43,7 @@
     <string name="expire_on">تنتهي في</string>
     <string name="delete">حذف</string>
     <string name="cancel">الغاء</string>
+    <string name="will_applied">سوف تطبق</string>
+    <string name="sub_total">المجموع الفرعي</string>
+    <string name="fee">مصاريف</string>
 </resources>

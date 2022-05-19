@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
-import android.text.Html;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.TextWatcher;
@@ -28,12 +27,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +56,7 @@ import ottu.payment.ui.PaymentActivity;
 import ottu.payment.util.ImageLoader;
 
 import static ottu.payment.util.Constant.CardListPosition;
+import static ottu.payment.util.Constant.LocalLan;
 import static ottu.payment.util.Constant.savedCardSelected;
 import static ottu.payment.util.Constant.selectedCardPos;
 import static ottu.payment.util.Util.listCardName;
@@ -124,10 +124,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             }
             if (selectedCardPos == position) {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg_selected));
-
+                setArrow(itemBinding.arrow,true,listPaymentMethod.get(position).code);
             } else {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg));
-                itemBinding.arrow.setImageResource(R.drawable.arrow_right);
+                setArrow(itemBinding.arrow,false,listPaymentMethod.get(position).code);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
 
@@ -301,7 +301,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding1 = null;
                                 itemBinding1 = itemBinding;
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
-                                itemBinding.arrow.setImageResource(R.drawable.arrow_down);
+//                                setArrow(itemBinding.arrow,true);
                                 context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
                                         ,listPaymentMethod.get(position).fee);
                             } else {
@@ -309,7 +309,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding1 = null;
                                 itemBinding.layoutCardDetail.setVisibility(View.GONE);
                                 context.setPayEnable(false);
-                                itemBinding.arrow.setImageResource(R.drawable.arrow_right);
+//                                setArrow(itemBinding.arrow,false);
                                 context.setFee(false,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
                                         ,listPaymentMethod.get(position).fee);
                             }
@@ -352,24 +352,24 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
             });
 
-//            itemBinding.infoImage.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Dialog dialog = new Dialog(context, R.style.MyDialog);
-//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    dialog.setCancelable(true);
-//                    dialog.setContentView(R.layout.dialog_savecard);
-//
-//                    Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
-//                    btnClose.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    dialog.show();
-//                }
-//            });
+            itemBinding.infoImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog dialog = new Dialog(context, R.style.MyDialog);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setCancelable(true);
+                    dialog.setContentView(R.layout.dialog_savecard);
+
+                    TextView btnClose = (TextView) dialog.findViewById(R.id.btnClose);
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+            });
             itemBinding.datetextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -429,6 +429,20 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     }
                 }
             });
+        }
+
+        private void setArrow(ImageView arrow, boolean selected, String pgCode) {
+            if (selected){
+                if (pgCode.equals("ottu_pg_kwd_tkn")){
+                    binding.arrow.setImageResource(R.drawable.arrow_down);
+                }
+            }else {
+                if (LocalLan.equals("ar")) {
+                    binding.arrow.setImageResource(R.drawable.arrow_left__24);
+                } else {
+                    binding.arrow.setImageResource(R.drawable.arrow_right_24);
+                }
+            }
         }
 
     }

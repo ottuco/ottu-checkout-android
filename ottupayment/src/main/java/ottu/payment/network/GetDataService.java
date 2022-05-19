@@ -47,4 +47,7 @@ public interface GetDataService {
     Call<ResponseBody> deleteCard(@Path ("Token") String token,
                                             @Query("customer_id")String customerId,
                                             @Query("type")String type);
+
+    @DELETE()
+    Call<ResponseBody> deleteCard1(@Url String token);
 }

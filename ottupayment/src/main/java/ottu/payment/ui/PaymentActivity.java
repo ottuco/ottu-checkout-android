@@ -8,6 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.AnimatedImageDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -18,8 +22,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -28,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +42,9 @@ import ottu.payment.databinding.ActivityPaymentBinding;
 import ottu.payment.model.DeleteCard.SendDeleteCard;
 import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
 import ottu.payment.model.RedirectUrl.RespoRedirectUrl;
+import ottu.payment.model.SocketData.SocketRespo;
+import ottu.payment.model.fetchTxnDetail.Card;
+import ottu.payment.model.fetchTxnDetail.PaymentMethod;
 import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
@@ -72,7 +78,7 @@ public class PaymentActivity extends AppCompatActivity {
     ActivityPaymentBinding binding;
     private PaymentMethodAdapter adapterPaymentMethod;
     private SavedCardAdapter adapterSavedCard;
-
+    public ArrayList<PaymentMethod> listPaymentMethods;
     private List<String> pg_codes;
 
 
@@ -91,7 +97,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void view() {
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -262,10 +268,6 @@ public class PaymentActivity extends AppCompatActivity {
 
 
         if (isNetworkAvailable(PaymentActivity.this)) {
-//            final ProgressDialog dialog = new ProgressDialog(PaymentActivity.this);
-//            dialog.setMessage("Please wait for a moment. Fetching data.");
-//            dialog.setCanceledOnTouchOutside(true);
-//            dialog.show();
             showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
             Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId,true);
@@ -281,8 +283,21 @@ public class PaymentActivity extends AppCompatActivity {
                         pg_codes = response.body().pg_codes;
                         SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
                         SubmitUrlRedirect = response.body().submit_url;
+                        listPaymentMethods = response.body().payment_methods;
                     }else {
-                        Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PaymentActivity.this,, "Please try again!" , Toast.LENGTH_SHORT).show();
+                        SocketRespo finalResponse = new SocketRespo();
+                        finalResponse.setStatus("failed");
+                        finalResponse.setSession_id("");
+                        finalResponse.setOrder_no("");
+                        finalResponse.setOperation("");
+                        finalResponse.setReference_number("");
+                        finalResponse.setRedirect_url("");
+                        finalResponse.setMerchant_id(MerchantId);
+                        Intent intent = new Intent();
+                        intent.putExtra("paymentResult",finalResponse);
+                        setResult(RESULT_OK,intent);
+                        finish();
                     }
 
                 }
@@ -299,6 +314,11 @@ public class PaymentActivity extends AppCompatActivity {
 
     public void showData(RespoFetchTxnDetail body) {
         if (body != null){
+
+            binding.layoutContaint.setVisibility(View.VISIBLE);
+            binding.shimmerViewContainer.stopShimmerAnimation();
+            binding.shimmerViewContainer.setVisibility(View.GONE);
+
             Amount = body.amount;
             SessionId = body.session_id;
             AmountCurrencyCode = body.currency_code;
@@ -356,10 +376,6 @@ public class PaymentActivity extends AppCompatActivity {
                         }
                     }else {
                         Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
-                        intent.putExtra("paymentResult","Payment Fail");
-                        setResult(OttuPaymentResult,intent);
-                        finish();
                     }
 
                 }
@@ -370,6 +386,8 @@ public class PaymentActivity extends AppCompatActivity {
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }else {
+            Toast.makeText(this, "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -397,21 +415,28 @@ public class PaymentActivity extends AppCompatActivity {
         binding.keyboard.setInputConnection(ic);
         binding.keyboard.setVisibility(visible);
     }
-    public void deleteCard(SendDeleteCard deleteCard, String token) {
+    public void deleteCard(SendDeleteCard deleteCard, String token, int position, ArrayList<Card> listCards) {
 
         if (isNetworkAvailable(PaymentActivity.this)) {
             showLoader(true);
             GetDataService apiendPoint = getRetrofitInstance();
-            Call<ResponseBody> register = apiendPoint.deleteCard(token,deleteCard.customer_id,deleteCard.type);
+//            Call<ResponseBody> register = apiendPoint.deleteCard(token,deleteCard.customer_id,deleteCard.type);
+            Call<ResponseBody> register = apiendPoint.deleteCard1(token);
             register.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     showLoader(false);
 
-                    Toast.makeText(PaymentActivity.this, "Card Deleted" , Toast.LENGTH_SHORT).show();
-
-                    finish();
-                    startActivity(getIntent());
+                    if (response.isSuccessful()) {
+                        Toast.makeText(PaymentActivity.this, "Card Deleted", Toast.LENGTH_SHORT).show();
+                        listCards.remove(position);
+                        adapterSavedCard = new SavedCardAdapter(PaymentActivity.this,listCards );
+                        binding.rvSavedCards.setAdapter(adapterSavedCard);
+                        setFee(false,"","","");
+                        setPayEnable(false);
+                    }else {
+                        Toast.makeText(PaymentActivity.this, "Card not deleted", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
 
@@ -425,7 +450,20 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void showLoader(boolean visibility){
-        Glide.with(this).load(R.raw.loader).into(binding.loader);
+//        Glide.with(this).load(R.raw.loader).into(binding.loader);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                Drawable drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(getResources(), R.drawable.loader));
+                binding.loader.setImageDrawable(drawable);
+
+                if (drawable instanceof AnimatedImageDrawable) {
+                    ((AnimatedImageDrawable) drawable).start();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (visibility) {
             binding.progressLayout.setVisibility(View.VISIBLE);
         }else {
@@ -450,13 +488,13 @@ public class PaymentActivity extends AppCompatActivity {
         conf.setLayoutDirection(locale);
         createConfigurationContext(conf);
 
-//        DisplayMetrics metrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//        getResources().updateConfiguration(conf,metrics);
-//        Resources resources = new Resources(getAssets(), metrics, conf);
         getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
 
+
+
+
     }
+
     public void setFee(boolean visibility,String amount,String amountCurrency,String feeAmount){
         if (visibility){
             binding.layoutFeeAmount.setVisibility(View.VISIBLE);
@@ -467,10 +505,22 @@ public class PaymentActivity extends AppCompatActivity {
             binding.finalAmountTxt.setText(amount);
             binding.finalAmountCurrencyCode.setText(amountCurrency);
 
+            Amount = amount;
+            AmountCurrencyCode = amountCurrency;
+
         }else {
             binding.layoutFeeAmount.setVisibility(View.GONE);
             binding.finalAmountTxt.setText(Amount);
             binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
+        }
+
+    }
+    public void setSavedCardFee( String pg_code) {
+
+        for (int i = 0; i < listPaymentMethods.size(); i++) {
+            if (listPaymentMethods.get(i).code.equals(pg_code)){
+                setFee(true,listPaymentMethods.get(i).amount,listPaymentMethods.get(i).currency_code,listPaymentMethods.get(i).fee);
+            }
         }
 
     }
@@ -491,8 +541,13 @@ public class PaymentActivity extends AppCompatActivity {
         selectedCardPosision = -1;
         notifySavedCardAdapter();
         notifyPaymentMethodAdapter();
+        binding.shimmerViewContainer.startShimmerAnimation();
     }
-
+    @Override
+    protected void onPause() {
+        binding.shimmerViewContainer.stopShimmerAnimation();
+        super.onPause();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -504,4 +559,6 @@ public class PaymentActivity extends AppCompatActivity {
 
         }
     }
+
+
 }

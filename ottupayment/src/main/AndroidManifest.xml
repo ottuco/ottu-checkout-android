@@ -17,6 +17,7 @@
         <activity
             android:name=".ui.PaymentActivity"
             android:exported="false"
+            android:supportsRtl="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />

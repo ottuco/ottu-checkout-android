@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_number_not_correct">"Card number is not correct "</string>
+    <string name="card_number_not_correct">"رقم البطاقة غير صحيح"</string>
     <string name="expire_data_notbe_past">لقد أدخلت تاريخ انتهاء الصلاحية بشكل غير صحيح</string>
     <string name="click_save_card">حفظ البطاقة</string>
     <string name="saved_card">البطاقات المحفوظة</string>
@@ -22,15 +22,15 @@
     <string name="reference_number">Reference Number : </string>
     <string name="Amount">"Amount : "</string>
     <string name="Gatway">"Gateway : "</string>
-    <string name="transaction_successfull">"Congratulations your transfer was completed successfully"</string>
-    <string name="transaction_fail">"sorry! your payment is failed \n please check your card detail."</string>
+    <string name="transaction_successfull">"مبروك تم تحويلك بنجاح"</string>
+    <string name="transaction_fail">"آسف! فشل الدفع يرجى التحقق من تفاصيل بطاقتك."</string>
     <string name="Status">"Status : "</string>
-    <string name="save_card_info">With saved card you can skip entering card detail in your next transactions</string>
+    <string name="save_card_info">باستخدام البطاقة المحفوظة ، يمكنك تخطي إدخال تفاصيل البطاقة في معاملاتك التالية</string>
     <string name="total_bill">المجموع</string>
     <string name="list_gatway">قائمة بجميع البوابات التي ندعمها</string>
     <string name="list_card_saved">قائمة البطاقات المحفوظة</string>
-    <string name="payment_fail">Payment Failed</string>
-    <string name="thankyou">Thank You!</string>
+    <string name="payment_fail">عملية الدفع فشلت</string>
+    <string name="thankyou">شكرا!</string>
     <string name="ok">موافق</string>
     <string name="loading">loading...</string>
     <string name="No">No</string>
@@ -46,4 +46,6 @@
     <string name="will_applied">سوف تطبق</string>
     <string name="sub_total">المجموع الفرعي</string>
     <string name="fee">مصاريف</string>
+    <string name="close">قريب</string>
+    <string name="is_paid">مدفوع</string>
 </resources>

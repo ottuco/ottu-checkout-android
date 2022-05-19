@@ -45,4 +45,6 @@
     <string name="will_applied"><font color='#FF000000'>will applied</font></string>
     <string name="sub_total">Sub-Total</string>
     <string name="fee">Fee</string>
+    <string name="close">Close</string>
+    <string name="is_paid">is paid</string>
 </resources>

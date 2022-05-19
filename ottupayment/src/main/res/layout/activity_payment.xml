@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     android:background="@color/screen_back"
     tools:context=".ui.PaymentActivity">
 
@@ -15,6 +16,10 @@
         app:layout_constraintTop_toBottomOf="@id/keyboard"
         app:layout_constraintTop_toTopOf="parent">
 
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
         <ScrollView
             android:scrollbars="none"
@@ -24,61 +29,10 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="gone"
+                android:id="@+id/layoutContaint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-<!--                <RelativeLayout-->
-<!--                    android:id="@+id/layoutHeader"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="110dp"-->
-<!--                    android:background="@drawable/header"-->
-<!--                    app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                    &lt;!&ndash;                <com.mikhaellopez.circularimageview.CircularImageView&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    android:id="@+id/profileImage"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    android:layout_width="90dp"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    android:layout_height="90dp"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    android:layout_centerVertical="true"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    android:layout_marginLeft="20dp"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    android:src="@drawable/ic_baseline_person_24"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    android:tint="@color/black"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    app:civ_border_color="@color/gradiunt_green"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    app:civ_border_width="3dp"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    app:civ_shadow="true"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    app:civ_shadow_color="@color/transparent1"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    app:civ_shadow_radius="5dp" />&ndash;&gt;-->
-
-<!--                    <androidx.appcompat.widget.LinearLayoutCompat-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_marginLeft="25dp"-->
-<!--                        android:layout_marginRight="25dp"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:orientation="vertical">-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/nameTextView"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_centerVertical="true"-->
-<!--                            android:maxLines="1"-->
-<!--                            android:padding="5dp"-->
-<!--                            android:text="Name Surname"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="15dp" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/amountTextView"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_below="@id/nameTextView"-->
-<!--                            android:maxLines="1"-->
-<!--                            android:padding="5dp"-->
-<!--                            android:text="Amount : 45 "-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="15dp" />-->
-<!--                    </androidx.appcompat.widget.LinearLayoutCompat>-->
-<!--                </RelativeLayout>-->
 
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -418,6 +372,64 @@
                 android:text="@string/loading"/>
 
         </RelativeLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        shimmer:duration="800">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/shimmerback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:background="@color/text_gray5"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"/>
+                <View
+                    android:layout_marginTop="30dp"
+                    android:background="@color/text_gray5"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_marginTop="50dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/shimmerback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:background="@color/text_gray5"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+                <View
+                    android:layout_marginTop="20dp"
+                    android:background="@color/text_gray5"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+</FrameLayout>
 
     </FrameLayout>
 

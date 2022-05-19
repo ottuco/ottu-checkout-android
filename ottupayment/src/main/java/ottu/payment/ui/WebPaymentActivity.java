@@ -4,16 +4,20 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.AnimatedImageDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -30,8 +34,13 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 import ottu.payment.R;
@@ -47,6 +56,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static ottu.payment.util.Constant.Amount;
+import static ottu.payment.util.Constant.AmountCurrencyCode;
 import static ottu.payment.util.Constant.ApiId;
 import static ottu.payment.util.Constant.MerchantId;
 import static ottu.payment.util.Constant.OttuPaymentResult;
@@ -193,7 +203,7 @@ public class WebPaymentActivity extends AppCompatActivity {
         dialogBinding.resultText.setText(getResources().getString(R.string.thankyou));
         dialogBinding.resultText.setTextColor(getResources().getColor(R.color.green));
         dialogBinding.paymentAmount.setVisibility(View.VISIBLE);
-        dialogBinding.paymentAmount.setText(Amount +" is paid");
+        dialogBinding.paymentAmount.setText(Amount+" "+AmountCurrencyCode +" "+ getResources().getString(R.string.is_paid));
         dialogBinding.resultImg.setImageDrawable(getResources().getDrawable(R.drawable.icon_success));
 
         dialogBinding.ok.setOnClickListener(new View.OnClickListener() {
@@ -329,7 +339,20 @@ public class WebPaymentActivity extends AppCompatActivity {
         mWebSocketClient.connect();
     }
     public void showLoader(boolean visibility){
-        Glide.with(this).load(R.raw.loader).into(binding.loader);
+//        Glide.with(this).load(R.raw.loader).into(binding.loader);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                Drawable drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(getResources(), R.drawable.loader));
+                binding.loader.setImageDrawable(drawable);
+
+                if (drawable instanceof AnimatedImageDrawable) {
+                    ((AnimatedImageDrawable) drawable).start();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (visibility) {
             binding.progressLayout.setVisibility(View.VISIBLE);
         }else {

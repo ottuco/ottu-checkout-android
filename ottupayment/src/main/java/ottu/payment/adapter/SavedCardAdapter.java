@@ -118,7 +118,7 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                         @Override
                         public void onClick(View v) {
                             SendDeleteCard card = new SendDeleteCard("sandbox",listCards.get(position).customer_id);
-                            activity.deleteCard(card,listCards.get(position).token);
+                            activity.deleteCard(card,listCards.get(position).delete_url,position,listCards);
                             dialog.dismiss();
                         }
                     });
@@ -132,17 +132,18 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                     savedCardSelected = true;
                     activity.setPayEnable(true);
                     selectedCardPosision = position;
-                    if (lastSelected == position){
-                        selectedCardPosision = -1;
-                        lastSelected = -1;
-                        bindingWithData = null;
-                        activity.setPayEnable(false);
-                        savedCardSelected = false;
-                    }else {
-                        bindingWithData = itemBinding;
-                        lastSelected = position;
-                    }
-                    activity.setFee(true,"","","");
+//                    if (lastSelected == position){
+//                        selectedCardPosision = -1;
+//                        lastSelected = -1;
+//                        bindingWithData = null;
+//                        activity.setPayEnable(false);
+//                        savedCardSelected = false;
+//                    }else {
+//                        bindingWithData = itemBinding;
+//                        lastSelected = position;
+//                    }
+                    bindingWithData = itemBinding;
+                    activity.setSavedCardFee(listCards.get(position).pg_code);
 
                     notifyDataSetChanged();
                     activity.notifyPaymentMethodAdapter();

@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/app/src/main/res/layout/activity_main.xml" value="0.16799999999999998" />
+        <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/arrow_left__24.xml" value="0.208" />
+        <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/arrow_right_24.xml" value="0.208" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/background_gray.xml" value="0.1645" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/background_white.xml" value="0.1645" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/black_button.xml" value="0.1645" />
@@ -24,8 +26,9 @@
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/payable1.xml" value="0.1375" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/paydisable.xml" value="0.1375" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/payenable.xml" value="0.1375" />
+        <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/drawable/shimmerback.xml" value="0.208" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/layout-ar/activity_payment.xml" value="0.2" />
-        <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/layout/activity_payment.xml" value="0.2" />
+        <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/layout/activity_payment.xml" value="0.264" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/layout/activity_paymet_result.xml" value="0.25416666666666665" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/layout/activity_web_payment.xml" value="0.2" />
         <entry key="..\:/Freelancing work/#Offsite Work/OpenUpi/OttuPaymentSdk/ottupayment/src/main/res/layout/dialog_delete.xml" value="0.2" />

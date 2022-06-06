@@ -50,7 +50,7 @@ allprojects {
 }
     
 dependencies {
-       implementation 'com.github.sdkpayment:Android-SDK:Tag'
+       implementation 'com.github.sdkpayment:OttuCheckoutAndroidV1:1.0.1'
 }
 ```
 

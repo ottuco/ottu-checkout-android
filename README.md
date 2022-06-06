@@ -12,8 +12,8 @@ The OttuCheckout is iOS SDK makes it quick and easy to build an excellent paymen
 **Native UI**: We provide native screens and elements to collect payment details.
 
 <p float="left">
-<img src="https://github.com/Maninder1991/screens/blob/main/Cardfree.png" alt="PaymentUI" align="center"  width="200" height="400"/>
-<img src="https://github.com/Maninder1991/screens/blob/main/WithCardPayment.png" alt="PaymentUI" align="center"  width="200" height="400"/>
+<img src="https://github.com/sdkpayment/OttuCheckoutAndroidV1/blob/ayush_v1/PayoutScreen.jpg" alt="PaymentUI" align="center"  width="200" height="400"/>
+<!-- <img src="https://github.com/Maninder1991/screens/blob/main/WithCardPayment.png" alt="PaymentUI" align="center"  width="200" height="400"/> -->
 
 **Localized**: We support the following localizations: English, Arabic.
 

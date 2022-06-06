@@ -27,7 +27,7 @@ The OttuCheckout SDK collects data to help us improve our products and prevent f
 
 ## Requirements
 
-The OttuCheckout requires IDE to develop android app. Sdk is compatible with minimume sdk 22 and above.
+The OttuCheckout requires IDE to develop android app. Sdk is compatible with minimum sdk 22 and above.
 
 ## Getting started
 

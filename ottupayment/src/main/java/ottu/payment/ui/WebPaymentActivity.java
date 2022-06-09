@@ -3,6 +3,7 @@ package ottu.payment.ui;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,8 +18,6 @@ import com.google.gson.Gson;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -31,16 +30,11 @@ import android.widget.Toast;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 import ottu.payment.R;
@@ -80,6 +74,8 @@ public class WebPaymentActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewOverrideUrl());
         webView.setWebChromeClient(new MyWebViewClient());
         webView.getSettings().setDomStorageEnabled(true);
+//        webView.getSettings().setLoadWithOverviewMode(true);
+//        webView.getSettings().setUseWideViewPort(true);
 
         String url = null;
         if (getIntent().hasExtra("RedirectUrl")) {
@@ -158,13 +154,19 @@ public class WebPaymentActivity extends AppCompatActivity {
                         finalResponse.setOperation(response.body().operation);
                         finalResponse.setReference_number(response.body().response.reference_number);
                         finalResponse.setRedirect_url(response.body().redirect_url);
+                        finalResponse.setMessage(response.body().response.message);
                         finalResponse.setMerchant_id(MerchantId);
 
                         String state = response.body().response.status;
                         if (state.equals("success")) {
-                            showSuccessDialog(finalResponse);
+//                            showSuccessDialog(finalResponse);
+                            sendResult(finalResponse);
+
+                        } else if(state.equals("error")){
+                            sendResult(finalResponse);
                         } else {
-                            showFailDialog(finalResponse);
+//                            showFailDialog(finalResponse);
+                            sendResult(finalResponse);
                         }
 
                     } else {
@@ -271,6 +273,12 @@ public class WebPaymentActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void sendResult(SocketRespo finalResponse){
+        Intent intent = new Intent();
+        intent.putExtra("paymentResult",finalResponse);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
 
     private void connectWebSocket(String socketUrl) {
         URI uri;
@@ -307,20 +315,27 @@ public class WebPaymentActivity extends AppCompatActivity {
 
                             String state = finalResponse.getStatus();
                              if (state.equals("success")) {
-                                showSuccessDialog(finalResponse);
+//                                showSuccessDialog(finalResponse);
+
+                                 sendResult(finalResponse);
                             } else {
-                                showFailDialog(finalResponse);
+//                                showFailDialog(finalResponse);
+                                 sendResult(finalResponse);
                             }
 
 //                            referenceNo = finalResponse.getReference_number();
 //                            getTrnDetail();
 
                         } else {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            SocketRespo finalResponse = new SocketRespo();
+                            finalResponse.setStatus("fail");
+                            finalResponse.setSession_id("");
+                            finalResponse.setOrder_no("");
+                            finalResponse.setOperation("");
+                            finalResponse.setReference_number("");
+                            finalResponse.setRedirect_url("");
+                            finalResponse.setMerchant_id(MerchantId);
+                            sendResult(finalResponse);
 
                         }
 
@@ -359,6 +374,7 @@ public class WebPaymentActivity extends AppCompatActivity {
             binding.progressLayout.setVisibility(View.GONE);
         }
     }
+
 
     @Override
     public void onBackPressed() {

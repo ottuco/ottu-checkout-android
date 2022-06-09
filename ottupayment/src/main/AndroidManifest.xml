@@ -3,11 +3,7 @@
     package="ottu.payment">
 
     <application>
-        <activity
-            android:name=".ui.PaymentResultActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+
         <activity
             android:name=".ui.WebPaymentActivity"
             android:exported="false"

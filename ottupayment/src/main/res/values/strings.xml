@@ -47,4 +47,6 @@
     <string name="fee">Fee</string>
     <string name="close">Close</string>
     <string name="is_paid">is paid</string>
+    <string name="confirm">Confirm</string>
+    <string name="card_name_error">"Enter name of card holder "</string>
 </resources>

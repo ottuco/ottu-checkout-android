@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,7 +54,6 @@ import ottu.payment.model.fetchTxnDetail.PaymentMethod;
 import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.ui.PaymentActivity;
-import ottu.payment.util.ImageLoader;
 
 import static ottu.payment.util.Constant.CardListPosition;
 import static ottu.payment.util.Constant.LocalLan;
@@ -69,7 +69,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     private ItemPaymentMethodBinding binding;
     ItemPaymentMethodBinding itemBinding1;
     PaymentActivity context;
-    ImageLoader imageLoader;
+
 
     int lastSeected = -1;
     SparseArray<Pattern> mCCPatterns = listCardPatter();
@@ -82,7 +82,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     public PaymentMethodAdapter(PaymentActivity paymentActivity, RespoFetchTxnDetail cards) {
         context = paymentActivity;
         listPaymentMethod = cards.payment_methods;
-        imageLoader = new ImageLoader(paymentActivity);
+
         transactionDetail = cards;
     }
 
@@ -108,6 +108,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ItemPaymentMethodBinding itemBinding;
+        public String SPACE_CHAR = " ";
 
         public ViewHolder(ItemPaymentMethodBinding itemView) {
             super(itemView.getRoot());
@@ -156,6 +157,27 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
             });
 
+            itemBinding.nameTextView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if (editable.length() > 2) {
+                        checkIfcardDetailfill(itemBinding1, true);
+                    } else {
+                        checkIfcardDetailfill(itemBinding1, false);
+                    }
+                }
+            });
+
             itemBinding.cardNumberTextView.addTextChangedListener(new TextWatcher() {
                 boolean considerChange = false;
 
@@ -184,16 +206,16 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 //                            Drawable d = context.getResources().getDrawable(mDrawableResId);
 //                            binding.cardIndicatorImage.setImageDrawable(d);
                             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), mDrawableResId);
-                            itemBinding1.cardIndicatorImage.setImageBitmap(bitmap);
+                            itemBinding.cardIndicatorImage.setImageBitmap(bitmap);
 
                         }
                     }
                     considerChange = !considerChange;
 
                     if (charSequence.length() > 13) {
-                        checkIfcardDetailfill(itemBinding1, true);
+                        checkIfcardDetailfill(itemBinding, true);
                     } else {
-                        checkIfcardDetailfill(itemBinding1, false);
+                        checkIfcardDetailfill(itemBinding, false);
                     }
                 }
 
@@ -208,55 +230,92 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         itemBinding.cardNumberTextView.removeTextChangedListener(this);
                         itemBinding.cardNumberTextView.setText(code);
                         // You could also remember the previous position of the cursor
-                        itemBinding.cardNumberTextView.setSelection(code.length());
+                        itemBinding.cardNumberTextView.setSelection(itemBinding.cardNumberTextView.getText().toString().length());
                         itemBinding.cardNumberTextView.addTextChangedListener(this);
+
+                        int cursorPos = itemBinding.cardNumberTextView.getSelectionStart();
+                        String ts = String.valueOf(code.charAt(cursorPos - 1));
+                        boolean isspace = ts == SPACE_CHAR;
+                        if (cursorPos > 0 && ts.equals(SPACE_CHAR) ) {
+                            itemBinding.cardNumberTextView.setSelection(cursorPos - 1);
+                        }
+
+//                         String c = String.valueOf(code.charAt(code.length()));
                     }
                     if (s.length() > 14) {
-                        itemBinding1.cardNumberErrorTextView.setText("");
+                        itemBinding.cardNumberErrorTextView.setText("");
                     }
+
                 }
             });
-
-//            itemBinding.datetextView.addTextChangedListener(new TextWatcher() {
+//            itemBinding.datetextView.setOnClickListener(new View.OnClickListener() {
 //                @Override
-//                public void beforeTextChanged(CharSequence charSequence, int start, int removed, int added) {
+//                public void onClick(View view) {
+//                    DatePickerDialog monthDatePickerDialog = new DatePickerDialog(context,
+//                            AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+//                        @Override
+//                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 //
+//                            String months = String.valueOf(month + 1);
+//                            if (months.length() <= 1) {
+//                                months = "0" + months;
+//                            }
+//                            itemBinding.datetextView.setText(months + "/" + String.valueOf(year).substring(2));
+//                            checkIfcardDetailfill(itemBinding,true);
+//                        }
+//                    }, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH) {
+//                        @Override
+//                        protected void onCreate(Bundle savedInstanceState) {
+//                            super.onCreate(savedInstanceState);
+//                            getDatePicker().findViewById(context.getResources().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
+//                        }
+//                    };
+//                    monthDatePickerDialog.setTitle("Select Expiry Date");
+//                    monthDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
 //
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                    if (charSequence.length() > 4){
-//                        checkIfcardDetailfill(itemBinding1, true);
-//                    }else {
-//                        checkIfcardDetailfill(itemBinding1,false);
-//                    }
-//                }
-//
-//                @Override
-//                public void afterTextChanged(Editable editable) {
-//                    if (internalStopFormatFlag) {
-//                        return;
-//                    }
-//                    internalStopFormatFlag = true;
-//                    formatExpiryDate(editable, 4);
-//                    internalStopFormatFlag = false;
-//                    if (editable.length() > 4){
-//                        itemBinding1.expiredateErrorTextView.setText("");
-//                    }
-//
-//                    if (editable.length() > 1){
-//                    if (Integer.parseInt(String.valueOf(editable.charAt(0))) > 1 || Integer.parseInt(String.valueOf(editable.subSequence(0,2))) > 12){
-//                        itemBinding1.expiredateErrorTextView.setText("Month is wrong");
-//                    }else {
-//                        itemBinding1.expiredateErrorTextView.setText("");
-//                    }
-//                    }
-//
-//
-//
+//                    monthDatePickerDialog.show();
 //                }
 //            });
+            itemBinding.datetextView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int start, int removed, int added) {
+
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (charSequence.length() > 4){
+                        checkIfcardDetailfill(itemBinding1, true);
+                    }else {
+                        checkIfcardDetailfill(itemBinding1,false);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if (internalStopFormatFlag) {
+                        return;
+                    }
+                    internalStopFormatFlag = true;
+                    formatExpiryDate(editable, 4);
+                    internalStopFormatFlag = false;
+                    if (editable.length() > 4){
+                        itemBinding1.expiredateErrorTextView.setText("");
+                    }
+
+                    if (editable.length() > 1){
+                    if (Integer.parseInt(String.valueOf(editable.charAt(0))) > 1 || Integer.parseInt(String.valueOf(editable.subSequence(0,2))) > 12){
+                        itemBinding1.expiredateErrorTextView.setText("Month is wrong");
+                    }else {
+                        itemBinding1.expiredateErrorTextView.setText("");
+                    }
+                    }
+
+
+
+                }
+            });
             itemBinding.cvvTextView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -304,6 +363,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 //                                setArrow(itemBinding.arrow,true);
                                 context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
                                         ,listPaymentMethod.get(position).fee);
+                                checkIfcardDetailfill(itemBinding,true);
                             } else {
                                 selectedCardPos = -1;
                                 itemBinding1 = null;
@@ -370,37 +430,12 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     dialog.show();
                 }
             });
-            itemBinding.datetextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DatePickerDialog monthDatePickerDialog = new DatePickerDialog(context,
-                            AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                            String months = String.valueOf(month + 1);
-                            if (months.length() <= 1) {
-                                months = "0" + months;
-                            }
-                            itemBinding.datetextView.setText(months + "/" + String.valueOf(year).substring(2));
-                        }
-                    }, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH) {
-                        @Override
-                        protected void onCreate(Bundle savedInstanceState) {
-                            super.onCreate(savedInstanceState);
-                            getDatePicker().findViewById(context.getResources().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
-                        }
-                    };
-                    monthDatePickerDialog.setTitle("Select Expiry Date");
-                    monthDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-
-                    monthDatePickerDialog.show();
-                }
-            });
 //            itemBinding.cardNumberTextView.setShowSoftInputOnFocus(false);
 //            itemBinding.cardNumberTextView.setRawInputType(InputType.TYPE_CLASS_TEXT);
 //            itemBinding.cardNumberTextView.setTextIsSelectable(true);
 //            context.manageKeyboard(ic,View.VISIBLE);
+
             InputConnection ic = itemBinding.cardNumberTextView.onCreateInputConnection(new EditorInfo());
             itemBinding.cardNumberTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -415,6 +450,16 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     }
                 }
             });
+            binding.cardNumberTextView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                    if (context.getKeyboardvisibility() == View.GONE) {
+                        context.manageKeyboard(ic, View.VISIBLE);
+                    }
+                    return false;
+                }
+            });
             InputConnection ic1 = itemBinding.cvvTextView.onCreateInputConnection(new EditorInfo());
             itemBinding.cvvTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -427,6 +472,16 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     }else {
                         context.manageKeyboard(ic1, View.GONE);
                     }
+                }
+            });
+            binding.cvvTextView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                    if (context.getKeyboardvisibility() == View.GONE) {
+                        context.manageKeyboard(ic1, View.VISIBLE);
+                    }
+                    return false;
                 }
             });
         }
@@ -477,15 +532,18 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         } else {
 
             String cardBrand = listCardName().get(CardListPosition);
-            String name = cardBrand;
-            String cardNumber = itemBinding1.cardNumberTextView.getText().toString().trim().replace("-", "");
+//            String name = cardBrand;
+            String name = itemBinding1.nameTextView.getText().toString().trim();
+            String cardNumber = itemBinding1.cardNumberTextView.getText().toString().trim().replace(" ", "");
             String date = itemBinding1.datetextView.getText().toString().trim();
 //            String[] time = date.split("/");
-
 
             String cvv = itemBinding1.cvvTextView.getText().toString().trim();
             boolean saveCard = itemBinding1.saveCard.isChecked();
 
+            if (name.equals("") || name.length() < 2){
+                itemBinding1.cardNameErrorTextView.setText(context.getResources().getString(R.string.card_name_error));
+            }
             if (cardNumber.equals("") || cardNumber.length() < 15) {
                 itemBinding1.cardNumberErrorTextView.setText(context.getText(R.string.card_number_not_correct));
                 return submitCHD;
@@ -495,7 +553,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 return submitCHD;
             }
             String expiryMonth = date.substring(0, 2);
-            String expiryYear = date.substring(3);
+            String expiryYear = date.substring(2,4);
             String innput = expiryMonth + "/" + expiryYear;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
             simpleDateFormat.setLenient(false);
@@ -508,7 +566,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             if (expired) {
                 itemBinding1.expiredateErrorTextView.setText(context.getText(R.string.expire_data_notbe_past));
                 return submitCHD;
-            } else if (Integer.parseInt(String.valueOf(date.charAt(0))) > 1) {
+            } else if (Integer.parseInt(date.substring(0 , 2)) > 12) {
                 itemBinding1.expiredateErrorTextView.setText("Month is wrong");
             } else {
                 itemBinding1.expiredateErrorTextView.setText("");
@@ -537,7 +595,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             tmp += s.charAt(i);
             ++groupDigits;
             if (groupDigits == 4) {
-                tmp += "-";
+                tmp += " ";
                 groupDigits = 0;
             }
         }
@@ -599,8 +657,13 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     }
 
     private void checkIfcardDetailfill(ItemPaymentMethodBinding itemBinding1, boolean b) {
-        boolean cardenable, dataenable, cvvenable = false;
-        if (itemBinding1.cardNumberTextView.getText().toString().trim().replace("-", "").length() > 13) {
+        boolean cardName,cardenable, dataenable, cvvenable = false;
+        if (itemBinding1.nameTextView.getText().toString().trim().length() < 2){
+            cardName = false;
+        }else {
+            cardName = true;
+        }
+            if (itemBinding1.cardNumberTextView.getText().toString().trim().replace(" ", "").length() > 13) {
             cardenable = true;
         } else {
             cardenable = false;
@@ -616,7 +679,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             cvvenable = false;
         }
 
-        if (cardenable == true && dataenable == true && cvvenable == true) {
+        if (cardName == true &&cardenable == true && dataenable == true && cvvenable == true) {
             context.setPayEnable(true);
         } else {
             context.setPayEnable(false);

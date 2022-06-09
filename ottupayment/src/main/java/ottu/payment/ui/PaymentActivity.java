@@ -2,10 +2,13 @@ package ottu.payment.ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ImageDecoder;
@@ -14,16 +17,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +52,6 @@ import ottu.payment.model.submitCHD.Card_SubmitCHD;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import ottu.payment.network.GetDataService;
 import ottu.payment.network.RetrofitClientInstance;
-import ottu.payment.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,6 +63,7 @@ import static ottu.payment.util.Constant.AmountCurrencyCode;
 import static ottu.payment.util.Constant.ApiId;
 import static ottu.payment.util.Constant.LocalLan;
 import static ottu.payment.util.Constant.MerchantId;
+import static ottu.payment.util.Constant.NetAmount;
 import static ottu.payment.util.Constant.OttuPaymentResult;
 import static ottu.payment.util.Constant.SessionId;
 import static ottu.payment.util.Constant.SubmitUrlCard;
@@ -80,14 +82,14 @@ public class PaymentActivity extends AppCompatActivity {
     private SavedCardAdapter adapterSavedCard;
     public ArrayList<PaymentMethod> listPaymentMethods;
     private List<String> pg_codes;
-
-
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPaymentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         view();
         getTrnDetail();
@@ -99,12 +101,19 @@ public class PaymentActivity extends AppCompatActivity {
 
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 
+        binding.finalAmountTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLocal(LocalLan);
+            }
+        });
+
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.gradiunt_blue));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gradiunt_blue));
 
-        if (isDeviceRooted()){
+        if (isDeviceRooted()) {
             Toast.makeText(this, "Device is rooted", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -115,10 +124,10 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (savedCardSelected){
+                if (savedCardSelected) {
                     SubmitCHDToOttoPG cardDetail = adapterSavedCard.getCardDetail();
                     payNow(cardDetail);
-                }else {
+                } else {
                     if (selectedCardPos == 0) {
                         Card_SubmitCHD submitCHD = adapterPaymentMethod.getCardData();
                         if (submitCHD == null) {
@@ -153,13 +162,13 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
-    public void setPayEnable(boolean isenble){
+    public void setPayEnable(boolean isenble) {
         binding.payNow.setBackground(getResources().getDrawable(R.drawable.payenable));
         binding.payNow.setEnabled(isenble);
-        if (isenble){
+        if (isenble) {
             binding.payNow.setBackground(getResources().getDrawable(R.drawable.payenable));
             binding.payNow.setTextColor(getResources().getColor(R.color.white));
-        }else {
+        } else {
             binding.payNow.setBackground(getResources().getDrawable(R.drawable.paydisable));
             binding.payNow.setTextColor(getResources().getColor(R.color.text_gray2));
         }
@@ -169,7 +178,7 @@ public class PaymentActivity extends AppCompatActivity {
         if (isNetworkAvailable(PaymentActivity.this)) {
             showButtonLoader(true);
             GetDataService apiendPoint = getRetrofitInstancePg();
-            Call<ResponseBody> register = apiendPoint.respoSubmitCHD(SubmitUrlCard,submitCHDToPG);
+            Call<ResponseBody> register = apiendPoint.respoSubmitCHD(SubmitUrlCard, submitCHDToPG);
             register.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -186,56 +195,89 @@ public class PaymentActivity extends AppCompatActivity {
                             if (jsonObject.has("status")) {
                                 // got success
                                 String status = jsonObject.getString("status");
-                                if (status.equals("success")){
+                                if (status.equals("success")) {
 
                                     Toast.makeText(PaymentActivity.this, "Payment Successfull", Toast.LENGTH_SHORT).show();
-                                }else if (status.equals("failed")){
+                                    finishPayment(jsonObject);
+                                } else if (status.equals("failed")) {
                                     Toast.makeText(PaymentActivity.this, "Payment Failed", Toast.LENGTH_SHORT).show();
-                                }else if (status.equals("error")){
+                                } else if (status.equals("error")) {
                                     Toast.makeText(PaymentActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                                }else if (status.equals("3DS")){
-                                    startActivityForResult(new Intent(PaymentActivity.this,WebPaymentActivity.class)
-                                            .putExtra("is3DS",true)
-                                    .putExtra("html",jsonObject.getString("html"))
-                                    .putExtra("reference_number",jsonObject.getString("reference_number"))
-                                            .putExtra("ws_url",jsonObject.getString("ws_url")),OttuPaymentResult);
+                                } else if (status.equals("3DS")) {
+                                    startActivityForResult(new Intent(PaymentActivity.this, WebPaymentActivity.class)
+                                            .putExtra("is3DS", true)
+                                            .putExtra("html", jsonObject.getString("html"))
+                                            .putExtra("reference_number", jsonObject.getString("reference_number"))
+                                            .putExtra("ws_url", jsonObject.getString("ws_url")), OttuPaymentResult);
 
-                                }
-
-                            }else {
-                                //got payment error
-
-                                JSONObject cardFieldError = jsonObject.getJSONObject("card");
-                                JSONArray cardGlobleError = jsonObject.getJSONArray("card");
-                                JSONArray nonFieldErrors = jsonObject.getJSONArray("non_field_errors");
-                                JSONArray merchantId = jsonObject.getJSONArray("merchant_id");
-                                JSONArray payment_method = jsonObject.getJSONArray("payment_method");
-
-                                
-                                if (cardFieldError != null){
-                                    Toast.makeText(PaymentActivity.this, "Card Filed Error", Toast.LENGTH_SHORT).show();
-                                }
-                                if (cardGlobleError != null){
-                                    Toast.makeText(PaymentActivity.this, ""+cardGlobleError.get(0), Toast.LENGTH_SHORT).show();
-                                }
-                                if (nonFieldErrors != null){
-                                    Toast.makeText(PaymentActivity.this, nonFieldErrors.getString(0), Toast.LENGTH_SHORT).show();
-                                }
-                                if (merchantId != null){
-                                    Toast.makeText(PaymentActivity.this, merchantId.getString(0), Toast.LENGTH_SHORT).show();
                                 }
 
                             }
-
-
-
 
                         } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }
 
-                    }else {
-                        Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        try {
+                            JSONObject errorBody = new JSONObject(response.errorBody().string());
+                            JSONObject cardFieldError = null;
+                            JSONArray cardGlobleError = null, nonFieldErrors = null, merchantId = null, payment_method = null;
+                            if (errorBody.has("card")) {
+
+                                String st = String.valueOf(errorBody.toString().trim().charAt(8));
+                                if (st.equals("[")) {
+                                    cardGlobleError = errorBody.getJSONArray("card");
+                                } else {
+                                    cardFieldError = errorBody.getJSONObject("card");
+                                }
+                            }
+
+                            if (errorBody.has("non_field_errors")) {
+                                nonFieldErrors = errorBody.getJSONArray("non_field_errors");
+                            }
+                            if (errorBody.has("merchant_id")) {
+                                merchantId = errorBody.getJSONArray("merchant_id");
+                            }
+                            if (errorBody.has("payment_method")) {
+                                payment_method = errorBody.getJSONArray("payment_method");
+                            }
+                            if (cardFieldError != null) {
+                                JSONArray numberEr = null, dateEr = null, cvvEr = null;
+                                JSONArray nameEr = cardFieldError.getJSONArray("name_on_card");
+                                if (cardFieldError.has("number")) {
+                                    numberEr = cardFieldError.getJSONArray("number");
+                                } else if (cardFieldError.has("expiry_year")) {
+                                    dateEr = cardFieldError.getJSONArray("expiry_year");
+                                } else if (cardFieldError.has("cvv")) {
+                                    cvvEr = cardFieldError.getJSONArray("cvv");
+                                }
+
+                                if (nameEr != null) {
+                                    Toast.makeText(PaymentActivity.this, "" + nameEr.get(0), Toast.LENGTH_SHORT).show();
+                                } else if (numberEr != null) {
+                                    Toast.makeText(PaymentActivity.this, "" + numberEr.get(0), Toast.LENGTH_SHORT).show();
+                                } else if (dateEr != null) {
+                                    Toast.makeText(PaymentActivity.this, "" + dateEr.get(0), Toast.LENGTH_SHORT).show();
+                                } else if (cvvEr != null) {
+                                    Toast.makeText(PaymentActivity.this, "" + cvvEr.get(0), Toast.LENGTH_SHORT).show();
+                                }
+
+                            } else if (cardGlobleError != null) {
+                                Toast.makeText(PaymentActivity.this, "" + cardGlobleError.get(0), Toast.LENGTH_SHORT).show();
+                            } else if (nonFieldErrors != null) {
+                                Toast.makeText(PaymentActivity.this, nonFieldErrors.getString(0), Toast.LENGTH_SHORT).show();
+                            } else if (merchantId != null) {
+                                Toast.makeText(PaymentActivity.this, merchantId.getString(0), Toast.LENGTH_SHORT).show();
+                            } else if (payment_method != null) {
+                                Toast.makeText(PaymentActivity.this, payment_method.getString(0), Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException | IOException e) {
+
+                            Log.i("JSONException ", e.getMessage());
+                        }
                     }
 
                 }
@@ -250,17 +292,18 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
+
     private void getTrnDetail() {
         String apiId = null;
         String amount = null;
         if (getIntent().hasExtra("SessionId")) {
-             apiId = getIntent().getStringExtra("ApiId");
+            apiId = getIntent().getStringExtra("ApiId");
             MerchantId = getIntent().getStringExtra("MerchantId");
             LocalLan = getIntent().getStringExtra("LocalLan");
             setLocal(LocalLan);
-             ApiId = apiId;
+            ApiId = apiId;
 
-        }else {
+        } else {
             Toast.makeText(this, "No sessionid", Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -268,14 +311,14 @@ public class PaymentActivity extends AppCompatActivity {
 
 
         if (isNetworkAvailable(PaymentActivity.this)) {
-            showLoader(true);
+
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId,true);
+            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId, true);
             register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {
 //                    dialog.dismiss();
-                    showLoader(false);
+
 
                     if (response.isSuccessful() && response.body() != null) {
                         showData(response.body());
@@ -284,7 +327,7 @@ public class PaymentActivity extends AppCompatActivity {
                         SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
                         SubmitUrlRedirect = response.body().submit_url;
                         listPaymentMethods = response.body().payment_methods;
-                    }else {
+                    } else {
 //                        Toast.makeText(PaymentActivity.this,, "Please try again!" , Toast.LENGTH_SHORT).show();
                         SocketRespo finalResponse = new SocketRespo();
                         finalResponse.setStatus("failed");
@@ -295,8 +338,8 @@ public class PaymentActivity extends AppCompatActivity {
                         finalResponse.setRedirect_url("");
                         finalResponse.setMerchant_id(MerchantId);
                         Intent intent = new Intent();
-                        intent.putExtra("paymentResult",finalResponse);
-                        setResult(RESULT_OK,intent);
+                        intent.putExtra("paymentResult", finalResponse);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
 
@@ -304,8 +347,8 @@ public class PaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<RespoFetchTxnDetail> call, Throwable t) {
-                    showLoader(false);
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    finishPayment("Doen't connect to server.");
                 }
 
             });
@@ -313,48 +356,51 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void showData(RespoFetchTxnDetail body) {
-        if (body != null){
+        if (body != null) {
 
             binding.layoutContaint.setVisibility(View.VISIBLE);
             binding.shimmerViewContainer.stopShimmerAnimation();
             binding.shimmerViewContainer.setVisibility(View.GONE);
 
             Amount = body.amount;
+            NetAmount = body.amount;
             SessionId = body.session_id;
             AmountCurrencyCode = body.currency_code;
             binding.finalAmountTxt.setText(Amount);
             binding.finalAmountTitle.setText(getResources().getString(R.string.total_bill));
+            binding.feeTitle.setText(getResources().getString(R.string.fee));
+            binding.feeTitle.setText(getResources().getString(R.string.fee));
+            binding.amountTitle.setText(getResources().getString(R.string.sub_total));
             binding.titleSavedCard.setText(getResources().getString(R.string.saved_card));
             binding.subTitleSavedCard.setText(getResources().getString(R.string.list_card_saved));
             binding.txtpaymentMethod.setText(getResources().getString(R.string.payment_method));
             binding.txtpaymentMethodsub.setText(getResources().getString(R.string.list_gatway));
 
-            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"  ));
+            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"));
             binding.finalAmountCurrencyCode.setText(body.currency_code);
             if (body.cards != null) {
-                if (body.cards.size() < 1){
+                if (body.cards.size() < 1) {
                     binding.layoutSavedListTitle.setVisibility(View.GONE);
                 }
-                adapterSavedCard = new SavedCardAdapter(PaymentActivity.this,body.cards );
+                adapterSavedCard = new SavedCardAdapter(PaymentActivity.this, body.cards);
                 binding.rvSavedCards.setAdapter(adapterSavedCard);
-            }else {
+            } else {
                 binding.layoutSavedListTitle.setVisibility(View.GONE);
             }
             if (body.payment_methods != null) {
-               adapterPaymentMethod =  new PaymentMethodAdapter(this,body );
+                adapterPaymentMethod = new PaymentMethodAdapter(this, body);
                 binding.rvPaymentMethod.setAdapter(adapterPaymentMethod);
             }
 
         }
     }
 
-
     private void createRedirectUrl(CreateRedirectUrl redirectUrl, String session_id) {
 
         if (isNetworkAvailable(PaymentActivity.this)) {
             showButtonLoader(true);
             GetDataService apiendPoint = getRetrofitInstance();
-            Call<RespoRedirectUrl> register = apiendPoint.createRedirectUrl(SubmitUrlRedirect,redirectUrl);
+            Call<RespoRedirectUrl> register = apiendPoint.createRedirectUrl(SubmitUrlRedirect, redirectUrl);
             register.enqueue(new Callback<RespoRedirectUrl>() {
                 @Override
                 public void onResponse(Call<RespoRedirectUrl> call, Response<RespoRedirectUrl> response) {
@@ -363,19 +409,19 @@ public class PaymentActivity extends AppCompatActivity {
 
                     if (response.isSuccessful() && response.body() != null) {
 
-                        if (response.body().getRedirect_url() != null){
-                            startActivityForResult(new Intent(PaymentActivity.this,WebPaymentActivity.class)
-                            .putExtra("RedirectUrl",response.body().getRedirect_url()),OttuPaymentResult);
+                        if (response.body().getRedirect_url() != null) {
+                            startActivityForResult(new Intent(PaymentActivity.this, WebPaymentActivity.class)
+                                    .putExtra("RedirectUrl", response.body().getRedirect_url()), OttuPaymentResult);
 
-                        }else {
-                            Toast.makeText(PaymentActivity.this, response.body().getMessage() , Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(PaymentActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent();
-                            intent.putExtra("paymentResult","Payment Fail");
-                            setResult(OttuPaymentResult,intent);
+                            intent.putExtra("paymentResult", "Payment Fail");
+                            setResult(OttuPaymentResult, intent);
                             finish();
                         }
-                    }else {
-                        Toast.makeText(PaymentActivity.this, "Please try again!" , Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PaymentActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -386,41 +432,78 @@ public class PaymentActivity extends AppCompatActivity {
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        }else {
+        } else {
             Toast.makeText(this, "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    public void notifySavedCardAdapter(){
-        if (adapterSavedCard != null){
+    public void notifySavedCardAdapter() {
+        if (adapterSavedCard != null) {
             selectedCardPosision = -1;
             adapterSavedCard.notifyDataSetChanged();
         }
     }
-    public void notifyPaymentMethodAdapter(){
 
-        if (adapterPaymentMethod != null){
+    public void notifyPaymentMethodAdapter() {
+
+        if (adapterPaymentMethod != null) {
 //            binding.rvPaymentMethod.setAdapter(adapterPaymentMethod);
             selectedCardPos = -1;
             adapterPaymentMethod.notifyDataSetChanged();
         }
     }
 
-    public void manageKeyboard(InputConnection ic, int visible){
-        if (visible == View.VISIBLE) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
-        }
-        binding.keyboard.setInputConnection(ic);
-        binding.keyboard.setVisibility(visible);
+    public void manageKeyboard(InputConnection ic, int visible) {
+        Thread t = new Thread() {
+            public void run() {
+
+                if (visible == View.VISIBLE) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        setMargins(binding.layoutPaybutton, 0, 30, 0, 200);
+
+                        binding.keyboard.setInputConnection(ic);
+                        binding.keyboard.setVisibility(visible);
+                    }
+                });
+
+            }
+        };
+        t.start();
+
     }
+
+    private void setMargins(View view, int left, int top, int right, int bottom) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+            final float scale = getBaseContext().getResources().getDisplayMetrics().density;
+            // convert the DP into pixel
+            int l = (int) (left * scale + 0.5f);
+            int r = (int) (right * scale + 0.5f);
+            int t = (int) (top * scale + 0.5f);
+            int b = (int) (bottom * scale + 0.5f);
+
+            p.setMargins(l, t, r, b);
+            view.requestLayout();
+        }
+    }
+
+    public int getKeyboardvisibility() {
+        return binding.keyboard.getVisibility();
+    }
+
     public void deleteCard(SendDeleteCard deleteCard, String token, int position, ArrayList<Card> listCards) {
 
         if (isNetworkAvailable(PaymentActivity.this)) {
             showLoader(true);
             GetDataService apiendPoint = getRetrofitInstance();
-//            Call<ResponseBody> register = apiendPoint.deleteCard(token,deleteCard.customer_id,deleteCard.type);
             Call<ResponseBody> register = apiendPoint.deleteCard1(token);
             register.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -430,11 +513,11 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Toast.makeText(PaymentActivity.this, "Card Deleted", Toast.LENGTH_SHORT).show();
                         listCards.remove(position);
-                        adapterSavedCard = new SavedCardAdapter(PaymentActivity.this,listCards );
+                        adapterSavedCard = new SavedCardAdapter(PaymentActivity.this, listCards);
                         binding.rvSavedCards.setAdapter(adapterSavedCard);
-                        setFee(false,"","","");
+                        setFee(false, "", "", "");
                         setPayEnable(false);
-                    }else {
+                    } else {
                         Toast.makeText(PaymentActivity.this, "Card not deleted", Toast.LENGTH_SHORT).show();
                     }
 
@@ -449,7 +532,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
-    public void showLoader(boolean visibility){
+    public void showLoader(boolean visibility) {
 //        Glide.with(this).load(R.raw.loader).into(binding.loader);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
@@ -466,21 +549,22 @@ public class PaymentActivity extends AppCompatActivity {
         }
         if (visibility) {
             binding.progressLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             binding.progressLayout.setVisibility(View.GONE);
         }
     }
 
-    public void showButtonLoader(boolean visibility){
+    public void showButtonLoader(boolean visibility) {
         if (visibility) {
             binding.btnProgress.setVisibility(View.VISIBLE);
             binding.payNow.setText("");
-        }else {
+        } else {
             binding.btnProgress.setVisibility(View.GONE);
-            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"  ));
+            binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"));
         }
     }
-    public void setLocal(String local1){
+
+    public void setLocal(String local1) {
         Locale locale = new Locale(local1);
         Locale.setDefault(locale);
         Configuration conf = getResources().getConfiguration();
@@ -491,12 +575,10 @@ public class PaymentActivity extends AppCompatActivity {
         getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
 
 
-
-
     }
 
-    public void setFee(boolean visibility,String amount,String amountCurrency,String feeAmount){
-        if (visibility){
+    public void setFee(boolean visibility, String amount, String amountCurrency, String feeAmount) {
+        if (visibility) {
             binding.layoutFeeAmount.setVisibility(View.VISIBLE);
             binding.amountTxt.setText(Amount);
             binding.amountCurrencyCode.setText(AmountCurrencyCode);
@@ -508,30 +590,78 @@ public class PaymentActivity extends AppCompatActivity {
             Amount = amount;
             AmountCurrencyCode = amountCurrency;
 
-        }else {
+        } else {
             binding.layoutFeeAmount.setVisibility(View.GONE);
-            binding.finalAmountTxt.setText(Amount);
+            binding.finalAmountTxt.setText(NetAmount);
             binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
         }
 
-    }
-    public void setSavedCardFee( String pg_code) {
-
-        for (int i = 0; i < listPaymentMethods.size(); i++) {
-            if (listPaymentMethods.get(i).code.equals(pg_code)){
-                setFee(true,listPaymentMethods.get(i).amount,listPaymentMethods.get(i).currency_code,listPaymentMethods.get(i).fee);
+        if (!feeAmount.isEmpty()) {
+            float fee = Float.parseFloat(feeAmount);
+            if (fee <= 0) {
+                binding.layoutFeeAmount.setVisibility(View.GONE);
+                binding.finalAmountTxt.setText(NetAmount);
+                binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
             }
         }
 
     }
+
+    public void setSavedCardFee(String pg_code) {
+
+        for (int i = 0; i < listPaymentMethods.size(); i++) {
+            if (listPaymentMethods.get(i).code.equals(pg_code)) {
+                setFee(true, listPaymentMethods.get(i).amount, listPaymentMethods.get(i).currency_code, listPaymentMethods.get(i).fee);
+            }
+        }
+
+    }
+
     @Override
     public void onBackPressed() {
 
-        if (binding.keyboard.getVisibility() == View.VISIBLE){
+        if (binding.keyboard.getVisibility() == View.VISIBLE) {
             binding.keyboard.setVisibility(View.GONE);
+            setMargins(binding.layoutPaybutton, 0, 30, 0, 30);
             return;
         }
+        finishPayment("Payment Canceled");
+    }
+
+    private void finishPayment(String message) {
+        SocketRespo finalResponse = new SocketRespo();
+        finalResponse.setStatus("Cancel");
+        finalResponse.setSession_id(SessionId);
+        finalResponse.setOrder_no(String.valueOf(""));
+        finalResponse.setOperation("");
+        finalResponse.setReference_number("");
+        finalResponse.setRedirect_url("");
+        finalResponse.setMessage("Payment Canceled");
+        finalResponse.setMerchant_id(MerchantId);
+        Intent intent = new Intent();
+        intent.putExtra("paymentResult", finalResponse);
+        setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void finishPayment(JSONObject jsonObject) {
+        SocketRespo finalResponse = new SocketRespo();
+        try {
+            finalResponse.setStatus(jsonObject.getString("status"));
+            finalResponse.setSession_id(jsonObject.getString("session_id"));
+            finalResponse.setOrder_no(jsonObject.getString("order_no"));
+            finalResponse.setOperation(jsonObject.getString("operation"));
+            finalResponse.setReference_number(jsonObject.getString("reference_number"));
+            finalResponse.setRedirect_url(jsonObject.getString("redirect_url"));
+            finalResponse.setMessage(jsonObject.getString("message"));
+            finalResponse.setMerchant_id(MerchantId);
+            Intent intent = new Intent();
+            intent.putExtra("paymentResult", finalResponse);
+            setResult(RESULT_OK, intent);
+            finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -541,20 +671,24 @@ public class PaymentActivity extends AppCompatActivity {
         selectedCardPosision = -1;
         notifySavedCardAdapter();
         notifyPaymentMethodAdapter();
+        setPayEnable(false);
+        setFee(false, "", "", "");
         binding.shimmerViewContainer.startShimmerAnimation();
     }
+
     @Override
     protected void onPause() {
         binding.shimmerViewContainer.stopShimmerAnimation();
         super.onPause();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK ){
-            if (requestCode == OttuPaymentResult ){
-               setResult(RESULT_OK,data);
-               finish();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == OttuPaymentResult) {
+                setResult(RESULT_OK, data);
+                finish();
             }
 
         }

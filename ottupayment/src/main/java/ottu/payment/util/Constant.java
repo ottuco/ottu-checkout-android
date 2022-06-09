@@ -3,6 +3,7 @@ package ottu.payment.util;
 public class Constant {
     public static String sessionId = "" ;
     public static String Amount = "" ;
+    public static String NetAmount = "" ;
     public static String AmountCurrencyCode = "" ;
     public static String ApiId = "" ;
     public static String MerchantId = "" ;

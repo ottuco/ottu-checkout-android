@@ -43,11 +43,6 @@ public interface GetDataService {
     Call<RespoRedirectUrl> createRedirectUrl(@Url String url,
                                              @Body CreateRedirectUrl redirectUrl);
 
-    @DELETE("pbl/v1/card/{Token}")
-    Call<ResponseBody> deleteCard(@Path ("Token") String token,
-                                            @Query("customer_id")String customerId,
-                                            @Query("type")String type);
-
     @DELETE()
     Call<ResponseBody> deleteCard1(@Url String token);
 }

@@ -48,4 +48,6 @@
     <string name="fee">مصاريف</string>
     <string name="close">قريب</string>
     <string name="is_paid">مدفوع</string>
+    <string name="confirm">يتأكد</string>
+    <string name="card_name_error">"أدخل اسم صاحب البطاقة"</string>
 </resources>

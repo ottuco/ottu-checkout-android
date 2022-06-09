@@ -1,20 +1,15 @@
 package ottu.payment.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,7 +31,6 @@ import ottu.payment.ui.PaymentActivity;
 
 import static ottu.payment.util.Constant.MerchantId;
 import static ottu.payment.util.Constant.SessionId;
-import static ottu.payment.util.Constant.lastSelected;
 import static ottu.payment.util.Constant.savedCardSelected;
 import static ottu.payment.util.Constant.selectedCardPosision;
 
@@ -89,12 +82,13 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                 itemBinding.checkIndicator.setImageResource(R.drawable.item_selected);
                 itemBinding.deleteImage.setVisibility(View.VISIBLE);
             }else {
-//                itemBinding.layoutCardData.setBackgroundColor(activity.getResources().getColor(R.color.white));
+//              itemBinding.layoutCardData.setBackgroundColor(activity.getResources().getColor(R.color.white));
                 itemBinding.layoutCardData.setBackground(activity.getResources().getDrawable(R.drawable.item_bg));
                 itemBinding.checkIndicator.setImageResource(R.drawable.item_unselected);
                 itemBinding.deleteImage.setVisibility(View.GONE);
             }
 
+            binding.cardImage.setImageResource(getcard(listCards.get(position).brand));
             itemBinding.cardNumber.setText(listCards.get(position).brand+" "+listCards.get(position).number);
             itemBinding.expireDate.setText(listCards.get(position).expiry_month+"/"+listCards.get(position).expiry_year);
             itemBinding.deleteImage.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +148,31 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
 
 
         }
+    }
+
+    private int getcard(String brand) {
+
+        if (brand.toLowerCase().equals("visa")){
+            return R.drawable.icon_visa;
+        }else if (brand.toLowerCase().equals("mastercard")){
+            return R.drawable.icon_mastercard;
+        } else if (brand.toLowerCase().equals("americanexpress")){
+            return R.drawable.icon_amex;
+        }else if (brand.toLowerCase().equals("dinner")){
+            return R.drawable.icon_diner;
+        }else if (brand.toLowerCase().equals("discover")){
+            return R.drawable.icon_diner;                   // set true card icon
+        }else if (brand.toLowerCase().equals("jcb")){
+            return R.drawable.icon_jcb;
+        }else if (brand.toLowerCase().equals("maestro")){
+            return R.drawable.icon_maestro;
+        }else if (brand.toLowerCase().equals("rupay")){
+            return R.drawable.icon_rupay;
+        } else if (brand.toLowerCase().equals("unionpay")){
+            return R.drawable.icon_unionpay;
+        }
+
+        return 0;
     }
 
     public SubmitCHDToOttoPG getCardDetail(){

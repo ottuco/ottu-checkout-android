@@ -196,8 +196,6 @@ public class PaymentActivity extends AppCompatActivity {
                                 // got success
                                 String status = jsonObject.getString("status");
                                 if (status.equals("success")) {
-
-                                    Toast.makeText(PaymentActivity.this, "Payment Successfull", Toast.LENGTH_SHORT).show();
                                     finishPayment(jsonObject);
                                 } else if (status.equals("failed")) {
                                     Toast.makeText(PaymentActivity.this, "Payment Failed", Toast.LENGTH_SHORT).show();
@@ -244,14 +242,16 @@ public class PaymentActivity extends AppCompatActivity {
                                 payment_method = errorBody.getJSONArray("payment_method");
                             }
                             if (cardFieldError != null) {
-                                JSONArray numberEr = null, dateEr = null, cvvEr = null;
-                                JSONArray nameEr = cardFieldError.getJSONArray("name_on_card");
+                                JSONArray numberEr = null, dateEr = null, cvvEr = null,nameEr = null;
+//                                JSONArray nameEr = cardFieldError.getJSONArray("name_on_card");
                                 if (cardFieldError.has("number")) {
                                     numberEr = cardFieldError.getJSONArray("number");
                                 } else if (cardFieldError.has("expiry_year")) {
                                     dateEr = cardFieldError.getJSONArray("expiry_year");
                                 } else if (cardFieldError.has("cvv")) {
                                     cvvEr = cardFieldError.getJSONArray("cvv");
+                                }else if (cardFieldError.has("name_on_card")) {
+                                    nameEr = cardFieldError.getJSONArray("name_on_card");
                                 }
 
                                 if (nameEr != null) {
@@ -267,9 +267,9 @@ public class PaymentActivity extends AppCompatActivity {
                             } else if (cardGlobleError != null) {
                                 Toast.makeText(PaymentActivity.this, "" + cardGlobleError.get(0), Toast.LENGTH_SHORT).show();
                             } else if (nonFieldErrors != null) {
-                                Toast.makeText(PaymentActivity.this, nonFieldErrors.getString(0), Toast.LENGTH_SHORT).show();
+                                finishPayment(nonFieldErrors.getString(0));
                             } else if (merchantId != null) {
-                                Toast.makeText(PaymentActivity.this, merchantId.getString(0), Toast.LENGTH_SHORT).show();
+                                finishPayment(merchantId.getString(0));
                             } else if (payment_method != null) {
                                 Toast.makeText(PaymentActivity.this, payment_method.getString(0), Toast.LENGTH_SHORT).show();
                             }
@@ -636,7 +636,7 @@ public class PaymentActivity extends AppCompatActivity {
         finalResponse.setOperation("");
         finalResponse.setReference_number("");
         finalResponse.setRedirect_url("");
-        finalResponse.setMessage("Payment Canceled");
+        finalResponse.setMessage(message);
         finalResponse.setMerchant_id(MerchantId);
         Intent intent = new Intent();
         intent.putExtra("paymentResult", finalResponse);

@@ -316,6 +316,30 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
                 }
             });
+            InputConnection ic3 = itemBinding.datetextView.onCreateInputConnection(new EditorInfo());
+            itemBinding.datetextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    if (hasFocus) {
+                        itemBinding.datetextView.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                        itemBinding.datetextView.setTextIsSelectable(true);
+                        itemBinding.datetextView.setShowSoftInputOnFocus(false);
+                        context.manageKeyboard(ic3, View.VISIBLE);
+                    }else {
+                        context.manageKeyboard(ic3, View.GONE);
+                    }
+                }
+            });
+            binding.datetextView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                    if (context.getKeyboardvisibility() == View.GONE) {
+                        context.manageKeyboard(ic3, View.VISIBLE);
+                    }
+                    return false;
+                }
+            });
             itemBinding.cvvTextView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

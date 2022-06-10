@@ -203,7 +203,16 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
         if (resultCode == RESULT_OK ){
             if (requestCode == OttuPaymentResult ){
                 SocketRespo paymentResult = (SocketRespo) data.getSerializableExtra("paymentResult");
-                Toast.makeText(this, ""+paymentResult.getStatus(), Toast.LENGTH_SHORT).show();
+                StringBuilder sb = new StringBuilder("");
+                sb.append("Status : "+paymentResult.getStatus()+"\n");
+                sb.append("Message : "+paymentResult.getMessage()+"\n");
+                sb.append("Session id : "+paymentResult.getSession_id()+"\n");
+                sb.append("Order no : "+paymentResult.getOrder_no()+"\n");
+                sb.append("operation : "+paymentResult.getOperation()+"\n");
+                sb.append("Reference number : "+paymentResult.getReference_number()+"\n");
+                sb.append("Redirect url : "+paymentResult.getRedirect_url()+"\n");
+                sb.append("Merchant id : "+paymentResult.getMerchant_id());
+                Toast.makeText(this, ""+sb, Toast.LENGTH_SHORT).show();
             }
 
         }

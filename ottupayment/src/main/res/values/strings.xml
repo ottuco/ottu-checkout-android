@@ -3,7 +3,7 @@
     <string name="expire_data_notbe_past">You have incorrectly entered your expiration date</string>
     <string name="click_save_card">Click To Save Your Card</string>
     <string name="saved_card">Saved Cards</string>
-    <string name="payment_method">Payment Method</string>
+    <string name="payment_method">Payment Methods</string>
     <string name="apple_pay">Apple Pay</string>
     <string name="paynow">Pay Now</string>
     <string name="enter_carddetail">Enter card detail</string>

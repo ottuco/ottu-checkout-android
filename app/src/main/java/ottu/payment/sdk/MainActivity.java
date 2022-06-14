@@ -7,8 +7,10 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
 
 
                     }else {
-                        Log.e("========",response.errorBody().toString());
+                        Log.i("========",response.errorBody().toString());
 //                        Toast.makeText(MainActivity.this, "Please try again!" +response.errorBody().toString(), Toast.LENGTH_SHORT).show();
 
                         try {
@@ -212,7 +214,15 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                 sb.append("Reference number : "+paymentResult.getReference_number()+"\n");
                 sb.append("Redirect url : "+paymentResult.getRedirect_url()+"\n");
                 sb.append("Merchant id : "+paymentResult.getMerchant_id());
-                Toast.makeText(this, ""+sb, Toast.LENGTH_SHORT).show();
+
+                new AlertDialog.Builder(this)
+                        .setMessage(sb)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
 
         }

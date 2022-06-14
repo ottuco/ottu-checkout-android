@@ -1,14 +1,11 @@
 package ottu.payment.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -25,11 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -125,10 +118,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             }
             if (selectedCardPos == position) {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg_selected));
-                setArrow(itemBinding.arrow,true,listPaymentMethod.get(position).code);
+                setArrow(itemBinding,true,listPaymentMethod.get(position).code);
             } else {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg));
-                setArrow(itemBinding.arrow,false,listPaymentMethod.get(position).code);
+                setArrow(itemBinding,false,listPaymentMethod.get(position).code);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
 
@@ -384,7 +377,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding1 = null;
                                 itemBinding1 = itemBinding;
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
-//                                setArrow(itemBinding.arrow,true);
+                                setArrow(itemBinding,true,listPaymentMethod.get(position).code);
                                 context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
                                         ,listPaymentMethod.get(position).fee);
                                 checkIfcardDetailfill(itemBinding,true);
@@ -510,9 +503,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             });
         }
 
-        private void setArrow(ImageView arrow, boolean selected, String pgCode) {
+        private void setArrow(ItemPaymentMethodBinding binding, boolean selected, String pgCode) {
             if (selected){
-                if (pgCode.equals("ottu_pg_kwd_tkn")){
+                if (pgCode.equals(listPaymentMethod.get(0).code)){
                     binding.arrow.setImageResource(R.drawable.arrow_down);
                 }
             }else {

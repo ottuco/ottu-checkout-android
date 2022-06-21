@@ -23,5 +23,6 @@
     <color name="text_gray5">#A6A6A6</color>
     <color name="text_gray6">#C1C1C1</color>
     <color name="text_gray7">#DADADA</color>
+    <color name="text_gray8">#E4E4E4</color>
     <color name="red">#F44336</color>
 </resources>

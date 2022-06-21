@@ -10,7 +10,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_1"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:textSize="26dp"
             android:layout_marginTop="5dp"
@@ -24,7 +24,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_2"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:textSize="26dp"
             android:layout_weight="1"
             android:layout_marginTop="5dp"
@@ -38,7 +38,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_3"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:textSize="26dp"
             android:layout_marginTop="5dp"
@@ -59,7 +59,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_4"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:textSize="26dp"
             android:layout_marginTop="5dp"
@@ -73,7 +73,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_5"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:textSize="26dp"
             android:layout_weight="1"
             android:layout_marginTop="5dp"
@@ -87,7 +87,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_6"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:textSize="26dp"
             android:layout_weight="1"
             android:layout_marginTop="5dp"
@@ -110,7 +110,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_7"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:textSize="26dp"
             android:layout_weight="1"
             android:layout_marginTop="5dp"
@@ -124,7 +124,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_8"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:textSize="26dp"
             android:layout_marginTop="5dp"
@@ -138,7 +138,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_9"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:textSize="26dp"
             android:layout_marginTop="5dp"
@@ -159,7 +159,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_enter"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
@@ -174,7 +174,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_0"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
@@ -189,7 +189,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/button_delete"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"

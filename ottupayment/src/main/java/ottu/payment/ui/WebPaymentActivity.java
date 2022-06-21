@@ -83,8 +83,23 @@ public class WebPaymentActivity extends AppCompatActivity {
             webView.loadUrl(url);
         } else if (getIntent().hasExtra("is3DS")) {
             if (getIntent().hasExtra("is3DS")) {
+
                 url = getIntent().getStringExtra("html");
-                webView.loadData(url, "text/html; charset=utf-8", "UTF-8");
+
+                String finalUrl = "<html>\n" +
+                        "    <head>\n" +
+                        "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                        "    <style>\n" +
+                        "    iframe{\n" +
+                        "      width:100%;\n" +
+                        "    }\n" +
+                        "    </style>\n" +
+                        "    </head>\n" +
+                        "    <body>\n" +
+                        url +
+                        "    </body>\n" +
+                        "    </html>\n" ;
+                webView.loadData(finalUrl, "text/html; charset=utf-8", "UTF-8");
                 String socketUrl = getIntent().getStringExtra("ws_url");
                 connectWebSocket(socketUrl);
 
@@ -138,13 +153,13 @@ public class WebPaymentActivity extends AppCompatActivity {
 
 
         if (isNetworkAvailable(WebPaymentActivity.this)) {
-            showLoader(true);
+//            showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
             Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, false);
             register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {
-                    showLoader(false);
+//                    showLoader(false);
 
                     if (response.isSuccessful() && response.body() != null) {
                         SocketRespo finalResponse = new SocketRespo();
@@ -178,7 +193,7 @@ public class WebPaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<RespoFetchTxnDetail> call, Throwable t) {
-                    showLoader(false);
+//                    showLoader(false);
                     Toast.makeText(WebPaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

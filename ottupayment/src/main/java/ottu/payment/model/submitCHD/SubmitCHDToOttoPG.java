@@ -8,6 +8,7 @@ public class SubmitCHDToOttoPG
 
     private String payment_method;
     private String token;
+    private String cvv;
 
     private Card_SubmitCHD card;
 
@@ -18,11 +19,12 @@ public class SubmitCHDToOttoPG
         this.card = card;
     }
 
-    public SubmitCHDToOttoPG(String merchant_id, String session_id, String payment_method, String token) {
-        this.merchant_id = merchant_id;
+    public SubmitCHDToOttoPG(String merchantId, String  session_id , String payment_method, String token, String cvv) {
+        this.merchant_id = merchantId;
         this.session_id = session_id;
         this.payment_method = payment_method;
         this.token = token;
+        this.cvv = cvv;
     }
 
     public void setMerchant_id(String merchant_id){

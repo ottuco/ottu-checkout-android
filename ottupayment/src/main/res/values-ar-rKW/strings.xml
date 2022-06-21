@@ -50,4 +50,5 @@
     <string name="is_paid">مدفوع</string>
     <string name="confirm">يتأكد</string>
     <string name="card_name_error">"أدخل اسم صاحب البطاقة"</string>
+    <string name="enter_valid_cvv">أدخل رمز CVV صالحًا</string>
 </resources>

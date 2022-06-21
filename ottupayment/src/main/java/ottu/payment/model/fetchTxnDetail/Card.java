@@ -10,6 +10,7 @@ public class Card{
     public String token;
     public boolean preferred;
     public boolean is_expired;
+    public boolean cvv_required;
     public String pg_code;
     public String delete_url;
     public String submit_url;

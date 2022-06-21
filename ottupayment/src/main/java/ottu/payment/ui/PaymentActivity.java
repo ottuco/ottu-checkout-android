@@ -159,6 +159,12 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
 
+        binding.hidekeyboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.layoutKeyboard.setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -208,6 +214,8 @@ public class PaymentActivity extends AppCompatActivity {
                                             .putExtra("reference_number", jsonObject.getString("reference_number"))
                                             .putExtra("ws_url", jsonObject.getString("ws_url")), OttuPaymentResult);
 
+                                }else {
+
                                 }
 
                             }
@@ -221,7 +229,7 @@ public class PaymentActivity extends AppCompatActivity {
                         try {
                             JSONObject errorBody = new JSONObject(response.errorBody().string());
                             JSONObject cardFieldError = null;
-                            JSONArray cardGlobleError = null, nonFieldErrors = null, merchantId = null, payment_method = null;
+                            JSONArray cardGlobleError = null, nonFieldErrors = null, merchantId = null, payment_method = null, sessioinId = null;
                             if (errorBody.has("card")) {
 
                                 String st = String.valueOf(errorBody.toString().trim().charAt(8));
@@ -241,13 +249,18 @@ public class PaymentActivity extends AppCompatActivity {
                             if (errorBody.has("payment_method")) {
                                 payment_method = errorBody.getJSONArray("payment_method");
                             }
+                            if (errorBody.has("session_id")) {
+                                sessioinId = errorBody.getJSONArray("session_id");
+                            }
                             if (cardFieldError != null) {
-                                JSONArray numberEr = null, dateEr = null, cvvEr = null,nameEr = null;
+                                JSONArray numberEr = null, dateEr = null,monthEr = null, cvvEr = null,nameEr = null;
 //                                JSONArray nameEr = cardFieldError.getJSONArray("name_on_card");
                                 if (cardFieldError.has("number")) {
                                     numberEr = cardFieldError.getJSONArray("number");
                                 } else if (cardFieldError.has("expiry_year")) {
                                     dateEr = cardFieldError.getJSONArray("expiry_year");
+                                }else if (cardFieldError.has("expiry_month")) {
+                                    monthEr = cardFieldError.getJSONArray("expiry_month");
                                 } else if (cardFieldError.has("cvv")) {
                                     cvvEr = cardFieldError.getJSONArray("cvv");
                                 }else if (cardFieldError.has("name_on_card")) {
@@ -260,6 +273,8 @@ public class PaymentActivity extends AppCompatActivity {
                                     Toast.makeText(PaymentActivity.this, "" + numberEr.get(0), Toast.LENGTH_SHORT).show();
                                 } else if (dateEr != null) {
                                     Toast.makeText(PaymentActivity.this, "" + dateEr.get(0), Toast.LENGTH_SHORT).show();
+                                }else if (monthEr != null) {
+                                    Toast.makeText(PaymentActivity.this, "" + monthEr.get(0), Toast.LENGTH_SHORT).show();
                                 } else if (cvvEr != null) {
                                     Toast.makeText(PaymentActivity.this, "" + cvvEr.get(0), Toast.LENGTH_SHORT).show();
                                 }
@@ -272,11 +287,15 @@ public class PaymentActivity extends AppCompatActivity {
                                 finishPayment(merchantId.getString(0));
                             } else if (payment_method != null) {
                                 Toast.makeText(PaymentActivity.this, payment_method.getString(0), Toast.LENGTH_SHORT).show();
+                            }else if (sessioinId != null) {
+                                finishPayment(sessioinId.getString(0));
+                            }else {
+                                finishPayment("Payment Fail");
                             }
 
                         } catch (JSONException | IOException e) {
-
                             Log.i("JSONException ", e.getMessage());
+                            finishPayment("Payment Failed");
                         }
                     }
 
@@ -469,7 +488,7 @@ public class PaymentActivity extends AppCompatActivity {
                         setMargins(binding.layoutPaybutton, 0, 30, 0, 200);
 
                         binding.keyboard.setInputConnection(ic);
-                        binding.keyboard.setVisibility(visible);
+                        binding.layoutKeyboard.setVisibility(visible);
                     }
                 });
 
@@ -496,7 +515,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public int getKeyboardvisibility() {
-        return binding.keyboard.getVisibility();
+        return binding.layoutKeyboard.getVisibility();
     }
 
     public void deleteCard(SendDeleteCard deleteCard, String token, int position, ArrayList<Card> listCards) {
@@ -620,8 +639,8 @@ public class PaymentActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (binding.keyboard.getVisibility() == View.VISIBLE) {
-            binding.keyboard.setVisibility(View.GONE);
+        if (binding.layoutKeyboard.getVisibility() == View.VISIBLE) {
+            binding.layoutKeyboard.setVisibility(View.GONE);
             setMargins(binding.layoutPaybutton, 0, 30, 0, 30);
             return;
         }

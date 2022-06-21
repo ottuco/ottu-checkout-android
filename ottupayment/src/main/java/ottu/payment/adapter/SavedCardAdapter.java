@@ -2,24 +2,21 @@ package ottu.payment.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import ottu.payment.R;
 import ottu.payment.databinding.DialogDeleteBinding;
@@ -81,14 +78,22 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                 itemBinding.layoutCardData.setBackground(activity.getResources().getDrawable(R.drawable.item_bg_selected));
                 itemBinding.checkIndicator.setImageResource(R.drawable.item_selected);
                 itemBinding.deleteImage.setVisibility(View.VISIBLE);
+                if (listCards.get(position).cvv_required){
+                    itemBinding.layoutCVV.setVisibility(View.VISIBLE);
+                    checkIfcardDetailfill(itemBinding, true);
+                }else {
+                    activity.setPayEnable(true);
+                }
+                bindingWithData = itemBinding;
             }else {
 //              itemBinding.layoutCardData.setBackgroundColor(activity.getResources().getColor(R.color.white));
                 itemBinding.layoutCardData.setBackground(activity.getResources().getDrawable(R.drawable.item_bg));
                 itemBinding.checkIndicator.setImageResource(R.drawable.item_unselected);
                 itemBinding.deleteImage.setVisibility(View.GONE);
+                itemBinding.layoutCVV.setVisibility(View.GONE);
             }
 
-            binding.cardImage.setImageResource(getcard(listCards.get(position).brand));
+            itemBinding.cardImage.setImageResource(getcard(listCards.get(position).brand));
             itemBinding.cardNumber.setText(listCards.get(position).brand+" "+listCards.get(position).number);
             itemBinding.expireDate.setText(listCards.get(position).expiry_month+"/"+listCards.get(position).expiry_year);
             itemBinding.deleteImage.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +129,6 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                 @Override
                 public void onClick(View view) {
                     savedCardSelected = true;
-                    activity.setPayEnable(true);
                     selectedCardPosision = position;
 //                    if (lastSelected == position){
 //                        selectedCardPosision = -1;
@@ -136,8 +140,14 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
 //                        bindingWithData = itemBinding;
 //                        lastSelected = position;
 //                    }
-                    bindingWithData = itemBinding;
+                    bindingWithData = null;
                     activity.setSavedCardFee(listCards.get(position).pg_code);
+//                    if (listCards.get(position).cvv_required){
+//                        itemBinding.layoutCVV.setVisibility(View.VISIBLE);
+//                    }else {
+//                    }
+//                    activity.setPayEnable(true);
+
 
                     notifyDataSetChanged();
                     activity.notifyPaymentMethodAdapter();
@@ -146,6 +156,52 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
             });
 
 
+            InputConnection ic1 = itemBinding.cvvTextView.onCreateInputConnection(new EditorInfo());
+            itemBinding.cvvTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    if (hasFocus) {
+                        itemBinding.cvvTextView.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                        itemBinding.cvvTextView.setTextIsSelectable(true);
+                        itemBinding.cvvTextView.setShowSoftInputOnFocus(false);
+                        activity.manageKeyboard(ic1, View.VISIBLE);
+                    }else {
+                        activity.manageKeyboard(ic1, View.GONE);
+                    }
+                }
+            });
+            itemBinding.cvvTextView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (activity.getKeyboardvisibility() == View.GONE) {
+                        activity.manageKeyboard(ic1, View.VISIBLE);
+                    }
+                    return false;
+                }
+            });
+
+            itemBinding.cvvTextView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    String s = editable.toString();
+                    if (s.length() > 2) {
+                        checkIfcardDetailfill(itemBinding, true);
+                    }else {
+                        checkIfcardDetailfill(itemBinding, false);
+                    }
+
+                }
+            });
 
         }
     }
@@ -182,8 +238,33 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
             return submitCHDToOttoPG;
         }
 
-        submitCHDToOttoPG = new SubmitCHDToOttoPG(MerchantId,SessionId,"token",listCards.get(selectedCardPosision).token);
+        String cvv = bindingWithData.cvvTextView.getText().toString().trim();
+        if (bindingWithData.layoutCVV.getVisibility() == View.VISIBLE) {
+            if (cvv.equals("") || cvv.length() < 3) {
+                bindingWithData.expiredateErrorTextView.setText(activity.getResources().getString(R.string.enter_valid_cvv));
+                return submitCHDToOttoPG;
+            }
+        }
+
+        submitCHDToOttoPG = new SubmitCHDToOttoPG(MerchantId,SessionId,"token",listCards.get(selectedCardPosision).token,cvv);
 
         return submitCHDToOttoPG;
     }
+
+    private void checkIfcardDetailfill(ItemSavedcardBinding itemBinding1, boolean b) {
+        boolean  cvvenable = false;
+
+        if (itemBinding1.cvvTextView.getText().toString().trim().length() >= 3) {
+            cvvenable = true;
+        } else {
+            cvvenable = false;
+        }
+
+        if ( cvvenable == true) {
+            activity.setPayEnable(true);
+        } else {
+            activity.setPayEnable(false);
+        }
+    }
+
 }

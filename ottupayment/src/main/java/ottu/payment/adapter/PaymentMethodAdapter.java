@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.text.Spannable;
 import android.text.TextWatcher;
 import android.text.style.ReplacementSpan;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -98,7 +99,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         return listPaymentMethod.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements TextWatcher{
 
         ItemPaymentMethodBinding itemBinding;
         public String SPACE_CHAR = " ";
@@ -107,6 +108,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             super(itemView.getRoot());
             itemBinding = itemView;
 
+            itemBinding.cardNumberTextView.addTextChangedListener(this);
         }
 
         public void bindData(PaymentMethod paymentMethod, int position) {
@@ -118,10 +120,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             }
             if (selectedCardPos == position) {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg_selected));
-                setArrow(itemBinding,true,listPaymentMethod.get(position).code);
+                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
             } else {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg));
-                setArrow(itemBinding,false,listPaymentMethod.get(position).code);
+                setArrow(itemBinding, false, listPaymentMethod.get(position).code);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
 
@@ -171,76 +173,84 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
             });
 
-            itemBinding.cardNumberTextView.addTextChangedListener(new TextWatcher() {
-                boolean considerChange = false;
 
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
+//            itemBinding.cardNumberTextView.addTextChangedListener(new TextWatcher() {
+//                boolean considerChange = false;
+//
+//                @Override
+//                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//
+//                    if (considerChange) {
+//                        int mDrawableResId = 0;
+//                        for (int n = 0; n < mCCPatterns.size(); n++) {
+//                            int key = mCCPatterns.keyAt(n);
+//
+//                            // get the object by the key.
+//                            Pattern p = mCCPatterns.get(key);
+//                            Matcher m = p.matcher(charSequence);
+//                            if (m.find()) {
+//                                mDrawableResId = key;
+//                                CardListPosition = n;
+//                                break;
+//                            }
+//                        }
+//                        if (mDrawableResId > 0 && mDrawableResId != 0) {
+////                            Drawable d = context.getResources().getDrawable(mDrawableResId);
+////                            binding.cardIndicatorImage.setImageDrawable(d);
+//                            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), mDrawableResId);
+//                            itemBinding.cardIndicatorImage.setImageBitmap(bitmap);
+//
+//                        }
+//                    }
+//                    considerChange = !considerChange;
+//
+//                    if (charSequence.length() > 13) {
+//                        checkIfcardDetailfill(itemBinding, true);
+//                    } else {
+//                        checkIfcardDetailfill(itemBinding, false);
+//                    }
+//
+//                }
+//
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                    if (s.length() > 0 && !CODE_PATTERN.matcher(s).matches()) {
+//
+//                        String input = s.toString();
+//                        String numbersOnly = keepNumbersOnly(input);
+//                        String code = formatNumbersAsCode(numbersOnly);
+//
+//                        itemBinding.cardNumberTextView.removeTextChangedListener(this);
+//                        itemBinding.cardNumberTextView.setText(code);
+//                        // You could also remember the previous position of the cursor
+//                        itemBinding.cardNumberTextView.setSelection(itemBinding.cardNumberTextView.getText().toString().length());
+//                        itemBinding.cardNumberTextView.addTextChangedListener(this);
+//
+//                        int cursorPos = itemBinding.cardNumberTextView.getSelectionStart();
+//                        String ts = String.valueOf(code.charAt(cursorPos - 1));
+//                        boolean isspace = ts == SPACE_CHAR;
+//                        if (cursorPos > 0 && ts.equals(SPACE_CHAR)) {
+//                            itemBinding.cardNumberTextView.setSelection(cursorPos - 1);
+//                        }
+//
+////                         String c = String.valueOf(code.charAt(code.length()));
+//                    }
+//                    if (s.length() > 14) {
+//                        itemBinding.cardNumberErrorTextView.setText("");
+//                    }
+//
+//                }
+//            });
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    if (considerChange) {
-                        int mDrawableResId = 0;
-                        for (int n = 0; n < mCCPatterns.size(); n++) {
-                            int key = mCCPatterns.keyAt(n);
-
-                            // get the object by the key.
-                            Pattern p = mCCPatterns.get(key);
-                            Matcher m = p.matcher(charSequence);
-                            if (m.find()) {
-                                mDrawableResId = key;
-                                CardListPosition = n;
-                                break;
-                            }
-                        }
-                        if (mDrawableResId > 0 && mDrawableResId != 0) {
-//                            Drawable d = context.getResources().getDrawable(mDrawableResId);
-//                            binding.cardIndicatorImage.setImageDrawable(d);
-                            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), mDrawableResId);
-                            itemBinding.cardIndicatorImage.setImageBitmap(bitmap);
-
-                        }
-                    }
-                    considerChange = !considerChange;
-
-                    if (charSequence.length() > 13) {
-                        checkIfcardDetailfill(itemBinding, true);
-                    } else {
-                        checkIfcardDetailfill(itemBinding, false);
-                    }
-                }
 
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (s.length() > 0 && !CODE_PATTERN.matcher(s).matches()) {
-                        String input = s.toString();
-                        String numbersOnly = keepNumbersOnly(input);
-                        String code = formatNumbersAsCode(numbersOnly);
-
-                        itemBinding.cardNumberTextView.removeTextChangedListener(this);
-                        itemBinding.cardNumberTextView.setText(code);
-                        // You could also remember the previous position of the cursor
-                        itemBinding.cardNumberTextView.setSelection(itemBinding.cardNumberTextView.getText().toString().length());
-                        itemBinding.cardNumberTextView.addTextChangedListener(this);
-
-                        int cursorPos = itemBinding.cardNumberTextView.getSelectionStart();
-                        String ts = String.valueOf(code.charAt(cursorPos - 1));
-                        boolean isspace = ts == SPACE_CHAR;
-                        if (cursorPos > 0 && ts.equals(SPACE_CHAR) ) {
-                            itemBinding.cardNumberTextView.setSelection(cursorPos - 1);
-                        }
-
-//                         String c = String.valueOf(code.charAt(code.length()));
-                    }
-                    if (s.length() > 14) {
-                        itemBinding.cardNumberErrorTextView.setText("");
-                    }
-
-                }
-            });
 //            itemBinding.datetextView.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -278,10 +288,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if (charSequence.length() > 4){
+                    if (charSequence.length() > 4) {
                         checkIfcardDetailfill(itemBinding1, true);
-                    }else {
-                        checkIfcardDetailfill(itemBinding1,false);
+                    } else {
+                        checkIfcardDetailfill(itemBinding1, false);
                     }
                 }
 
@@ -293,18 +303,17 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     internalStopFormatFlag = true;
                     formatExpiryDate(editable, 4);
                     internalStopFormatFlag = false;
-                    if (editable.length() > 4){
+                    if (editable.length() > 4) {
                         itemBinding1.expiredateErrorTextView.setText("");
                     }
 
-                    if (editable.length() > 1){
-                    if (Integer.parseInt(String.valueOf(editable.charAt(0))) > 1 || Integer.parseInt(String.valueOf(editable.subSequence(0,2))) > 12){
-                        itemBinding1.expiredateErrorTextView.setText("Month is wrong");
-                    }else {
-                        itemBinding1.expiredateErrorTextView.setText("");
+                    if (editable.length() > 1) {
+                        if (Integer.parseInt(String.valueOf(editable.charAt(0))) > 1 || Integer.parseInt(String.valueOf(editable.subSequence(0, 2))) > 12) {
+                            itemBinding1.expiredateErrorTextView.setText("Month is wrong");
+                        } else {
+                            itemBinding1.expiredateErrorTextView.setText("");
+                        }
                     }
-                    }
-
 
 
                 }
@@ -318,7 +327,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         itemBinding.datetextView.setTextIsSelectable(true);
                         itemBinding.datetextView.setShowSoftInputOnFocus(false);
                         context.manageKeyboard(ic3, View.VISIBLE);
-                    }else {
+                    } else {
                         context.manageKeyboard(ic3, View.GONE);
                     }
                 }
@@ -377,18 +386,18 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding1 = null;
                                 itemBinding1 = itemBinding;
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
-                                setArrow(itemBinding,true,listPaymentMethod.get(position).code);
-                                context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
-                                        ,listPaymentMethod.get(position).fee);
-                                checkIfcardDetailfill(itemBinding,true);
+                                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
+                                context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+                                        , listPaymentMethod.get(position).fee);
+                                checkIfcardDetailfill(itemBinding, true);
                             } else {
                                 selectedCardPos = -1;
                                 itemBinding1 = null;
                                 itemBinding.layoutCardDetail.setVisibility(View.GONE);
                                 context.setPayEnable(false);
 //                                setArrow(itemBinding.arrow,false);
-                                context.setFee(false,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
-                                        ,listPaymentMethod.get(position).fee);
+                                context.setFee(false, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+                                        , listPaymentMethod.get(position).fee);
                             }
                         } else if (listPaymentMethod.get(position).code.equals("knet-test")) {
                             if (itemBinding1 != null) {
@@ -397,8 +406,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             itemBinding1 = null;
                             selectedCardPos = position;
                             context.setPayEnable(true);
-                            context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
-                                    ,listPaymentMethod.get(position).fee);
+                            context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+                                    , listPaymentMethod.get(position).fee);
 
                         } else if (listPaymentMethod.get(position).code.equals("mpgs")) {
                             if (itemBinding1 != null) {
@@ -407,8 +416,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             itemBinding1 = null;
                             selectedCardPos = position;
                             context.setPayEnable(true);
-                            context.setFee(true,listPaymentMethod.get(position).amount,listPaymentMethod.get(position).currency_code
-                                    ,listPaymentMethod.get(position).fee);
+                            context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+                                    , listPaymentMethod.get(position).fee);
 //                            CreatePaymentTransaction paymentTransaction = new CreatePaymentTransaction(transactionDetail.type
 //                                    ,transactionDetail.pg_codes
 //                                    ,Amount
@@ -462,7 +471,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         itemBinding.cardNumberTextView.setTextIsSelectable(true);
                         itemBinding.cardNumberTextView.setShowSoftInputOnFocus(false);
                         context.manageKeyboard(ic, View.VISIBLE);
-                    }else {
+                    } else {
                         context.manageKeyboard(ic, View.GONE);
                     }
                 }
@@ -486,7 +495,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         itemBinding.cvvTextView.setTextIsSelectable(true);
                         itemBinding.cvvTextView.setShowSoftInputOnFocus(false);
                         context.manageKeyboard(ic1, View.VISIBLE);
-                    }else {
+                    } else {
                         context.manageKeyboard(ic1, View.GONE);
                     }
                 }
@@ -504,11 +513,11 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         }
 
         private void setArrow(ItemPaymentMethodBinding binding, boolean selected, String pgCode) {
-            if (selected){
-                if (pgCode.equals(listPaymentMethod.get(0).code)){
+            if (selected) {
+                if (pgCode.equals(listPaymentMethod.get(0).code)) {
                     binding.arrow.setImageResource(R.drawable.arrow_down);
                 }
-            }else {
+            } else {
                 if (LocalLan.equals("ar")) {
                     binding.arrow.setImageResource(R.drawable.arrow_left__24);
                 } else {
@@ -517,6 +526,74 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             }
         }
 
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+//            if (considerChange) {
+                int mDrawableResId = 0;
+                for (int n = 0; n < mCCPatterns.size(); n++) {
+                    int key = mCCPatterns.keyAt(n);
+
+                    // get the object by the key.
+                    Pattern p = mCCPatterns.get(key);
+                    Matcher m = p.matcher(s);
+                    if (m.find()) {
+                        mDrawableResId = key;
+                        CardListPosition = n;
+                        break;
+                    }
+                }
+                if (mDrawableResId > 0 && mDrawableResId != 0) {
+//                            Drawable d = context.getResources().getDrawable(mDrawableResId);
+//                            binding.cardIndicatorImage.setImageDrawable(d);
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), mDrawableResId);
+                    itemBinding.cardIndicatorImage.setImageBitmap(bitmap);
+
+                }
+//            }
+//            considerChange = !considerChange;
+
+            if (s.length() > 13) {
+                checkIfcardDetailfill(itemBinding, true);
+            } else {
+                checkIfcardDetailfill(itemBinding, false);
+            }
+
+            if (s.length() > 0 && !CODE_PATTERN.matcher(s).matches()) {
+
+                String input = s.toString();
+                String numbersOnly = keepNumbersOnly(input);
+                String code = formatNumbersAsCode(numbersOnly);
+
+                itemBinding.cardNumberTextView.removeTextChangedListener(this);
+                itemBinding.cardNumberTextView.setText(code);
+                // You could also remember the previous position of the cursor
+                itemBinding.cardNumberTextView.setSelection(itemBinding.cardNumberTextView.getText().toString().length());
+                itemBinding.cardNumberTextView.addTextChangedListener(this);
+
+                int cursorPos = itemBinding.cardNumberTextView.getSelectionStart();
+                String ts = String.valueOf(code.charAt(cursorPos - 1));
+                boolean isspace = ts == SPACE_CHAR;
+                if (cursorPos > 0 && ts.equals(SPACE_CHAR)) {
+                    itemBinding.cardNumberTextView.setSelection(cursorPos - 1);
+                }
+
+//                         String c = String.valueOf(code.charAt(code.length()));
+            }
+            if (s.length() > 14) {
+                itemBinding.cardNumberErrorTextView.setText("");
+            }
+
+        }
     }
 
     private Bitmap getImage(String icon) {
@@ -558,7 +635,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             String cvv = itemBinding1.cvvTextView.getText().toString().trim();
             boolean saveCard = itemBinding1.saveCard.isChecked();
 
-            if (name.equals("") || name.length() < 2){
+            if (name.equals("") || name.length() < 2) {
                 itemBinding1.cardNameErrorTextView.setText(context.getResources().getString(R.string.card_name_error));
             }
             if (cardNumber.equals("") || cardNumber.length() < 15) {
@@ -570,7 +647,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 return submitCHD;
             }
             String expiryMonth = date.substring(0, 2);
-            String expiryYear = date.substring(2,4);
+            String expiryYear = date.substring(2, 4);
             String innput = expiryMonth + "/" + expiryYear;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
             simpleDateFormat.setLenient(false);
@@ -583,7 +660,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             if (expired) {
                 itemBinding1.expiredateErrorTextView.setText(context.getText(R.string.expire_data_notbe_past));
                 return submitCHD;
-            } else if (Integer.parseInt(date.substring(0 , 2)) > 12) {
+            } else if (Integer.parseInt(date.substring(0, 2)) > 12) {
                 itemBinding1.expiredateErrorTextView.setText("Month is wrong");
             } else {
                 itemBinding1.expiredateErrorTextView.setText("");
@@ -665,6 +742,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         }
     }
 
+
+
     private class SingleTapConfirm extends GestureDetector.SimpleOnGestureListener {
 
         @Override
@@ -674,13 +753,13 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     }
 
     private void checkIfcardDetailfill(ItemPaymentMethodBinding itemBinding1, boolean b) {
-        boolean cardName,cardenable, dataenable, cvvenable = false;
-        if (itemBinding1.nameTextView.getText().toString().trim().length() < 2){
+        boolean cardName, cardenable, dataenable, cvvenable = false;
+        if (itemBinding1.nameTextView.getText().toString().trim().length() < 2) {
             cardName = false;
-        }else {
+        } else {
             cardName = true;
         }
-            if (itemBinding1.cardNumberTextView.getText().toString().trim().replace(" ", "").length() > 13) {
+        if (itemBinding1.cardNumberTextView.getText().toString().trim().replace(" ", "").length() > 13) {
             cardenable = true;
         } else {
             cardenable = false;
@@ -696,11 +775,12 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             cvvenable = false;
         }
 
-        if (cardName == true &&cardenable == true && dataenable == true && cvvenable == true) {
+        if (cardName == true && cardenable == true && dataenable == true && cvvenable == true) {
             context.setPayEnable(true);
         } else {
             context.setPayEnable(false);
         }
     }
+
 }
 

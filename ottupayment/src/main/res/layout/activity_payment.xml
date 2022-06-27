@@ -356,20 +356,12 @@
             android:background="@color/transparent1"
             android:visibility="gone">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/loader"
+            <ProgressBar
                 android:layout_centerInParent="true"
-                android:layout_width="150dp"
-                android:layout_height="150dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/loader"
-                android:textColor="@color/white"
-                android:text="@string/loading"/>
+                android:indeterminateTint="#F86B2A"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/progress"/>
 
         </RelativeLayout>
 
@@ -432,6 +424,7 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 </FrameLayout>
 
+
     </FrameLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -441,6 +434,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
         android:orientation="vertical">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -467,7 +461,6 @@
         android:orientation="vertical"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:visibility="visible"
         tools:ignore="MissingClass" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>

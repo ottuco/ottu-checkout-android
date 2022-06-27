@@ -294,9 +294,11 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutCanSaveCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:orientation="horizontal">
             <CheckBox
                 android:id="@+id/saveCard"

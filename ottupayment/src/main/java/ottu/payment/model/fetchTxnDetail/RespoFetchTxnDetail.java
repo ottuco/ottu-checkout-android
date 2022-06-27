@@ -22,5 +22,6 @@ public class RespoFetchTxnDetail{
     public String submit_url;
     public String type;
     public boolean apple_pay_available;
+    public boolean can_save_card = false;
 
 }

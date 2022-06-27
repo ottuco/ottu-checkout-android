@@ -553,19 +553,19 @@ public class PaymentActivity extends AppCompatActivity {
 
     public void showLoader(boolean visibility) {
 //        Glide.with(this).load(R.raw.loader).into(binding.loader);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            try {
-                Drawable drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(getResources(), R.drawable.loader));
-                binding.loader.setImageDrawable(drawable);
-
-                if (drawable instanceof AnimatedImageDrawable) {
-                    ((AnimatedImageDrawable) drawable).start();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//            try {
+//                Drawable drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(getResources(), R.drawable.loader));
+//                binding.loader.setImageDrawable(drawable);
+//
+//                if (drawable instanceof AnimatedImageDrawable) {
+//                    ((AnimatedImageDrawable) drawable).start();
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         if (visibility) {
             binding.progressLayout.setVisibility(View.VISIBLE);
         } else {

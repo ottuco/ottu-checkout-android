@@ -126,6 +126,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 setArrow(itemBinding, false, listPaymentMethod.get(position).code);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
+            if (transactionDetail.can_save_card) {
+                itemBinding.layoutCanSaveCard.setVisibility(View.VISIBLE);
+            }
 
 
             ExecutorService executor = Executors.newSingleThreadExecutor();

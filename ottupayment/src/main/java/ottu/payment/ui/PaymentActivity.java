@@ -114,8 +114,7 @@ public class PaymentActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gradiunt_blue));
 
         if (isDeviceRooted()) {
-            Toast.makeText(this, "Device is rooted", Toast.LENGTH_SHORT).show();
-            finish();
+            finishPayment("Device is rooted");
         }
 
         binding.rvSavedCards.setLayoutManager(new LinearLayoutManager(this));

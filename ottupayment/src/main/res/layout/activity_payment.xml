@@ -358,7 +358,7 @@
 
             <ProgressBar
                 android:layout_centerInParent="true"
-                android:indeterminateTint="#F86B2A"
+                android:indeterminateTint="@color/text_gray8"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:id="@+id/progress"/>

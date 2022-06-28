@@ -312,7 +312,7 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_baseline_error_24"
+                android:src="@drawable/ic_info_24"
                 android:tint="@color/black"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 

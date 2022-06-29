@@ -99,7 +99,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void view() {
 
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 
         binding.finalAmountTxt.setOnClickListener(new View.OnClickListener() {
             @Override

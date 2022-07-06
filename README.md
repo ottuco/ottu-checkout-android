@@ -46,7 +46,7 @@ allprojects {
 }
     
 dependencies {
-       implementation 'com.github.sdkpayment:OttuCheckoutAndroidV1:1.0.2'
+       implementation 'com.github.sdkpayment:OttuCheckoutAndroidV1:1.0.3'
 }
 ```
 
@@ -54,7 +54,7 @@ Below is the sample code of how you can use Ottu Payment SDK.
 
 ```java
 	
-  OttoPaymentSdk ottuPaymentSdk = new OttoPaymentSdk(MainActivity.this);
+  OttuPaymentSdk ottuPaymentSdk = new OttuPaymentSdk(MainActivity.this);
                         ottuPaymentSdk.setApiId("Api_Id");
                         ottuPaymentSdk.setMerchantId("Merchant_Id");
                         ottuPaymentSdk.setSessionId("Session_id"); // Retrive from public API

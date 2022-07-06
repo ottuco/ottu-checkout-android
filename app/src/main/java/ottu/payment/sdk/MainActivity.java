@@ -3,9 +3,7 @@ package ottu.payment.sdk;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -28,7 +26,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import ottu.payment.interfaces.OttuPaymentCallback;
 import ottu.payment.interfaces.SendPaymentCallback;
@@ -36,7 +33,7 @@ import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
 import ottu.payment.model.SocketData.SocketRespo;
 import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.sdk.network.GetDataService;
-import ottu.payment.ui.OttoPaymentSdk;
+import ottu.payment.ui.OttuPaymentSdk;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -139,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                     dialog.dismiss();
 
                     if (response.isSuccessful() && response.body() != null) {
-                        OttoPaymentSdk ottuPaymentSdk = new OttoPaymentSdk(MainActivity.this);
+                        OttuPaymentSdk ottuPaymentSdk = new OttuPaymentSdk(MainActivity.this);
                         ottuPaymentSdk.setApiId(response.body().session_id);
                         ottuPaymentSdk.setMerchantId("ksa.ottu.dev");
                         ottuPaymentSdk.setSessionId(response.body().session_id);

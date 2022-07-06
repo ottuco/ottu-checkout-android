@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import static ottu.payment.util.Constant.OttuPaymentResult;
 
-public class OttoPaymentSdk {
+public class OttuPaymentSdk {
 
     static {
         System.loadLibrary("native-lib");
@@ -13,7 +13,7 @@ public class OttoPaymentSdk {
 
     Intent intent;
     Activity activity;
-    public OttoPaymentSdk(Activity activity) {
+    public OttuPaymentSdk(Activity activity) {
 
         this.activity = activity;
         intent = new Intent(activity,PaymentActivity.class);

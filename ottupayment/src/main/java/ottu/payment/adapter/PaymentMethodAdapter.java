@@ -154,6 +154,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     }
                 }
             });
+            
 
             itemBinding.nameTextView.addTextChangedListener(new TextWatcher() {
                 @Override

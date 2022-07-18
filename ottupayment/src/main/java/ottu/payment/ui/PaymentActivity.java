@@ -312,14 +312,13 @@ public class PaymentActivity extends AppCompatActivity {
 
 
     private void getTrnDetail() {
-        String apiId = null;
-        String amount = null;
+
         if (getIntent().hasExtra("SessionId")) {
-            apiId = getIntent().getStringExtra("ApiId");
+            ApiId = getIntent().getStringExtra("ApiId");
+            SessionId = getIntent().getStringExtra("SessionId");
             MerchantId = getIntent().getStringExtra("MerchantId");
             LocalLan = getIntent().getStringExtra("LocalLan");
             setLocal(LocalLan);
-            ApiId = apiId;
 
         } else {
             Toast.makeText(this, "No sessionid", Toast.LENGTH_SHORT).show();
@@ -331,7 +330,7 @@ public class PaymentActivity extends AppCompatActivity {
         if (isNetworkAvailable(PaymentActivity.this)) {
 
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(apiId, true);
+            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(SessionId, true);
             register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {

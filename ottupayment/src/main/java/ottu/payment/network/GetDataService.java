@@ -27,8 +27,8 @@ public interface GetDataService {
 
 
 //    @GET("checkout/v1/pymt-txn/submit/{apiId}")
-    @GET("checkout/api/sdk/v1/pymt-txn/submit/{apiId}")
-    Call<RespoFetchTxnDetail> fetchTxnDetail(@Path ("apiId") String apiId,
+    @GET("checkout/api/sdk/v1/pymt-txn/submit/{sessionId}")
+    Call<RespoFetchTxnDetail> fetchTxnDetail(@Path ("sessionId") String apiId,
                                                 @Query("enableCHD") boolean value);
 
 //    @POST("route")

@@ -54,6 +54,7 @@ import static ottu.payment.util.Constant.AmountCurrencyCode;
 import static ottu.payment.util.Constant.ApiId;
 import static ottu.payment.util.Constant.MerchantId;
 import static ottu.payment.util.Constant.OttuPaymentResult;
+import static ottu.payment.util.Constant.SessionId;
 import static ottu.payment.util.Util.isNetworkAvailable;
 
 public class WebPaymentActivity extends AppCompatActivity {
@@ -155,7 +156,7 @@ public class WebPaymentActivity extends AppCompatActivity {
         if (isNetworkAvailable(WebPaymentActivity.this)) {
 //            showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(ApiId, false);
+            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(SessionId, false);
             register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {
@@ -343,7 +344,7 @@ public class WebPaymentActivity extends AppCompatActivity {
 
                         } else {
                             SocketRespo finalResponse = new SocketRespo();
-                            finalResponse.setStatus("fail");
+                            finalResponse.setStatus("failed");
                             finalResponse.setSession_id("");
                             finalResponse.setOrder_no("");
                             finalResponse.setOperation("");

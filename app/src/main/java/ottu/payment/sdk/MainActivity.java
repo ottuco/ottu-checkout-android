@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
 
                     if (response.isSuccessful() && response.body() != null) {
                         OttuPaymentSdk ottuPaymentSdk = new OttuPaymentSdk(MainActivity.this);
-                        ottuPaymentSdk.setApiId(response.body().session_id);
+                        ottuPaymentSdk.setApiId("Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR");
                         ottuPaymentSdk.setMerchantId("ksa.ottu.dev");
                         ottuPaymentSdk.setSessionId(response.body().session_id);
                         ottuPaymentSdk.setAmount(response.body().amount);

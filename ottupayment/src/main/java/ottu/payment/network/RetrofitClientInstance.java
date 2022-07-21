@@ -12,9 +12,11 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static ottu.payment.util.Constant.ApiId;
 
 public class RetrofitClientInstance {
 
@@ -39,7 +41,7 @@ public class RetrofitClientInstance {
                     public Response intercept(@NonNull Chain chain) throws IOException {
                         Request request = chain.request().newBuilder()
                                 .addHeader("Content-Type", "application/json")
-                                .addHeader("Authorization", "Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR")
+                                .addHeader("Authorization", ApiId)
                                 .build();
                         return chain.proceed(request);
                     }

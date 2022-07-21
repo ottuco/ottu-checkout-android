@@ -63,6 +63,16 @@ public class Util {
     public static boolean isDeviceRooted() {
         return checkRootMethod1() || checkRootMethod2() || checkRootMethod3();
     }
+    public static boolean isDeviceRooted1() {
+        return checkRootMethod1() ;
+    }
+    public static boolean isDeviceRooted2() {
+        return checkRootMethod2() ;
+    }
+    public static boolean isDeviceRooted3() {
+        return checkRootMethod3() ;
+    }
+
 
     public static boolean checkRootMethod1() {
         String buildTags = android.os.Build.TAGS;

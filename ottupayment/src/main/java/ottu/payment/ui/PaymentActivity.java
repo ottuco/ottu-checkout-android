@@ -73,6 +73,9 @@ import static ottu.payment.util.Constant.selectedCardPos;
 import static ottu.payment.util.Constant.selectedCardPosision;
 import static ottu.payment.util.Constant.sessionId;
 import static ottu.payment.util.Util.isDeviceRooted;
+import static ottu.payment.util.Util.isDeviceRooted1;
+import static ottu.payment.util.Util.isDeviceRooted2;
+import static ottu.payment.util.Util.isDeviceRooted3;
 import static ottu.payment.util.Util.isNetworkAvailable;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -116,6 +119,7 @@ public class PaymentActivity extends AppCompatActivity {
         if (isDeviceRooted()) {
             finishPayment("Device is rooted");
         }
+
 
         binding.rvSavedCards.setLayoutManager(new LinearLayoutManager(this));
         binding.rvPaymentMethod.setLayoutManager(new LinearLayoutManager(this));
@@ -326,6 +330,9 @@ public class PaymentActivity extends AppCompatActivity {
             return;
         }
 
+        if (ApiId.equals("")){
+            finishPayment("ApiId is wrong.");
+        }
 
         if (isNetworkAvailable(PaymentActivity.this)) {
 
@@ -647,7 +654,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void finishPayment(String message) {
         SocketRespo finalResponse = new SocketRespo();
-        finalResponse.setStatus("Cancel");
+        finalResponse.setStatus("failed");
         finalResponse.setSession_id(SessionId);
         finalResponse.setOrder_no(String.valueOf(""));
         finalResponse.setOperation("");

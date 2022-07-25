@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "936468001127",
+    "project_id": "test-ottu-ed954",
+    "storage_bucket": "test-ottu-ed954.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936468001127:android:3879bdd75401c901a13fc2",
+        "android_client_info": {
+          "package_name": "ottu.payment.sdk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936468001127-p9bamshjmj5juist2r03r2kd0ol4s4gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUjaNtjH9veXLDGNsSZo47PXxki_B5qI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936468001127-p9bamshjmj5juist2r03r2kd0ol4s4gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

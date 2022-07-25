@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+
     }
 }
 dependencyResolutionManagement {
@@ -12,6 +13,22 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+buildscript {
+    repositories {
+        google()  // Google's Maven repository
+        maven { url "https://jitpack.io" }
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        // Add this line
+        classpath 'com.google.gms:google-services:4.3.13'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+
+    }
+}
+
 rootProject.name = "Ottu Payment Sdk"
 include ':app'
 include ':ottupayment'

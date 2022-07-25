@@ -41,7 +41,7 @@ public class RetrofitClientInstance {
                     public Response intercept(@NonNull Chain chain) throws IOException {
                         Request request = chain.request().newBuilder()
                                 .addHeader("Content-Type", "application/json")
-                                .addHeader("Authorization", ApiId)
+                                .addHeader("Authorization", "Api-Key "+ApiId)
                                 .build();
                         return chain.proceed(request);
                     }

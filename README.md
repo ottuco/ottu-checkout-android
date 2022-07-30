@@ -83,7 +83,13 @@ Get payment result in onActivityResult menthod in Activity.
     }
 	
 ```
+## ProGuard
 
+ You may need to include the following lines in your progard-rules.pro file if enable progard or minifyEnble.
+```java
+-keep class ottu.payment** { *; }
+```
+	
 ## Licenses
 
 - [OttuCheckout License](LICENSE)

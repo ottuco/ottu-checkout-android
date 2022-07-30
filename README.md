@@ -55,7 +55,7 @@ Below is the sample code of how you can use Ottu Payment SDK.
 ```java
 	
   OttuPaymentSdk ottuPaymentSdk = new OttuPaymentSdk(MainActivity.this);
-                        ottuPaymentSdk.setApiId("Api_Id");
+                        ottuPaymentSdk.setApiId("Api_Key"); // set Api Key which is get from Ottu merchant account
                         ottuPaymentSdk.setMerchantId("Merchant_Id");
                         ottuPaymentSdk.setSessionId("Session_id"); // Retrive from public API
                         ottuPaymentSdk.setAmount("100.00"); // String Value
@@ -83,7 +83,13 @@ Get payment result in onActivityResult menthod in Activity.
     }
 	
 ```
+## ProGuard
 
+ You may need to include the following lines in your progard-rules.pro file if enable progard or minifyEnble.
+```java
+-keep class ottu.payment** { *; }
+```
+	
 ## Licenses
 
 - [OttuCheckout License](LICENSE)

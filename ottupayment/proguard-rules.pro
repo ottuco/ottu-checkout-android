@@ -68,4 +68,4 @@
 ## Retain declared checked exceptions for use by a Proxy instance.
 #-keepattributes Exceptions
 
--keep public class my.package.** { public *;}
+#-keep public class my.package.** { public *;}

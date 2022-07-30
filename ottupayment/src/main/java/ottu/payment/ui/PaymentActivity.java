@@ -324,15 +324,22 @@ public class PaymentActivity extends AppCompatActivity {
             LocalLan = getIntent().getStringExtra("LocalLan");
             setLocal(LocalLan);
 
+            if (ApiId == null || ApiId.equals("")){
+                finishPayment("ApiId is wrong.");
+            }
+            if (SessionId == null || SessionId.equals("")){
+                finishPayment("SessionId is wrong.");
+            }
+            if (MerchantId == null || MerchantId.equals("")){
+                finishPayment("MerchantId is wrong.");
+            }
+
+
         } else {
-            Toast.makeText(this, "No sessionid", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
+            finishPayment("SessionId is wrong.");
+
         }
 
-        if (ApiId.equals("")){
-            finishPayment("ApiId is wrong.");
-        }
 
         if (isNetworkAvailable(PaymentActivity.this)) {
 

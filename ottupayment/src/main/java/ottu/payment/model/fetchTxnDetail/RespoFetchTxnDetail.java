@@ -18,6 +18,7 @@ public class RespoFetchTxnDetail{
     public String redirect_url;
     public Response response;
     public String session_id;
+    public String public_key_url;
     public String state;
     public String submit_url;
     public String type;

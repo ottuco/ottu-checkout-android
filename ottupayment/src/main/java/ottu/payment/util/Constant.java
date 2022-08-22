@@ -10,6 +10,7 @@ public class Constant {
     public static String SessionId = "" ;
     public static String LocalLan = "en" ;
     public static String SubmitUrlCard = "" ;
+    public static String UrlPublicKey= "" ;
     public static String SubmitUrlRedirect = "" ;
     public static boolean savedCardSelected = false ;
     public static int selectedCardPos = -1;

@@ -9,8 +9,10 @@ import ottu.payment.model.DeleteCard.SendDeleteCard;
 import ottu.payment.model.GenerateToken.CreatePaymentTransaction;
 import ottu.payment.model.RedirectUrl.CreateRedirectUrl;
 import ottu.payment.model.RedirectUrl.RespoRedirectUrl;
+import ottu.payment.model.RespoPublicKey;
 import ottu.payment.model.fetchTxnDetail.RespoFetchTxnDetail;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
+import ottu.payment.model.submitCHD.SubmitCHDToOttoPGEncrypted;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -33,7 +35,7 @@ public interface GetDataService {
 
 //    @POST("route")
     @POST()
-    Call<ResponseBody> respoSubmitCHD(@Url String submitUrlCard,@Body SubmitCHDToOttoPG submitCHDToOttoPG);
+    Call<ResponseBody> respoSubmitCHD(@Url String submitUrlCard,@Body SubmitCHDToOttoPGEncrypted submitCHDToOttoPG);
 
 
     @POST("checkout/v1/pymt-txn/")
@@ -45,4 +47,7 @@ public interface GetDataService {
 
     @DELETE()
     Call<ResponseBody> deleteCard1(@Url String token);
+
+    @GET()
+    Call<RespoPublicKey> getPublicKey(@Url String urlPublicKey);
 }

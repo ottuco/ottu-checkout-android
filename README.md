@@ -97,7 +97,7 @@ PAYMENT_SUCCESS = "paymentSuccess" // add in your constant accordingly
               if(paymentResult.status.equals("success")){
 	      Intent  intent = Intent(PAYMENT_SUCCESS)
                sendBroadcast(intent)
-}
+              }
             }
         }
     }

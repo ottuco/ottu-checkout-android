@@ -46,7 +46,7 @@ allprojects {
 }
     
 dependencies {
-       implementation 'com.github.sdkpayment:OttuCheckoutAndroidV1:1.0.5'
+       implementation 'com.github.sdkpayment:OttuCheckoutAndroidV1:1.0.6'
 }
 ```
 

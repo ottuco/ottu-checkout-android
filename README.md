@@ -101,6 +101,13 @@ PAYMENT_SUCCESS = "paymentSuccess" // add in your constant accordingly
             }
         }
     }
+
+// register your broadcast
+activity.registerReceiver(
+                paymentReceiver,
+                IntentFilter(PAYMENT_SUCCESS)
+        )
+	
 // then you will receive it in your fragment with your action PAYMENT_SUCCESS
 BroadcastReceiver paymentReceiver = new BroadcastReceiver() {
            @Override
@@ -110,11 +117,6 @@ BroadcastReceiver paymentReceiver = new BroadcastReceiver() {
               }
             }
         };
-// register your broadcast
-activity.registerReceiver(
-                paymentReceiver,
-                IntentFilter(PAYMENT_SUCCESS)
-        )
 ```
 ## ProGuard
 

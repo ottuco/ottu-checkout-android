@@ -1,7 +1,8 @@
 package ottu.payment.model.submitCHD;
 
-public class Card_SubmitCHD
-{
+import java.io.Serializable;
+
+public class Card_SubmitCHD implements Serializable {
     private String name_on_card;
 
     private String number;

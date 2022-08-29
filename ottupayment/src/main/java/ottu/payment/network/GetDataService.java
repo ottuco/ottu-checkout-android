@@ -33,9 +33,10 @@ public interface GetDataService {
     Call<RespoFetchTxnDetail> fetchTxnDetail(@Path ("sessionId") String apiId,
                                              @Query("enableCHD") boolean value);
 
-//    @POST("route")
     @POST()
-    Call<ResponseBody> respoSubmitCHD(@Url String submitUrlCard,@Body SubmitCHDToOttoPGEncrypted submitCHDToOttoPG);
+    Call<ResponseBody> respoSubmitCHDEncrypted(@Url String submitUrlCard,@Body SubmitCHDToOttoPGEncrypted submitCHDToOttoPG);
+    @POST()
+    Call<ResponseBody> respoSubmitCHD(@Url String submitUrlCard,@Body SubmitCHDToOttoPG submitCHDToOttoPG);
 
 
     @POST("checkout/v1/pymt-txn/")
@@ -49,5 +50,5 @@ public interface GetDataService {
     Call<ResponseBody> deleteCard1(@Url String token);
 
     @GET()
-    Call<RespoPublicKey> getPublicKey(@Url String urlPublicKey);
+    Call<ResponseBody> getPublicKey(@Url String urlPublicKey);
 }

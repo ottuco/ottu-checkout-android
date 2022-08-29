@@ -2,21 +2,32 @@ package ottu.payment.util;
 
 import android.util.Base64;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.zip.GZIPOutputStream;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+
+import static ottu.payment.util.Util.bytesToHex;
 
 public class RSACipher {
 
@@ -47,6 +58,7 @@ public class RSACipher {
     }
 
 
+
     public String encrypt(String publicKey,String objectString)
             throws NoSuchAlgorithmException,
             NoSuchPaddingException,
@@ -57,66 +69,36 @@ public class RSACipher {
 //        String plain = (String) args[0];
         PublicKey rsaPublicKey;
 
-//        if (args.length == 1) {
-//            rsaPublicKey = this.publicKey;
-//        } else {
-//            rsaPublicKey = (PublicKey) publicKey;
+        rsaPublicKey = (PublicKey) stringToPublicKey(publicKey);
 //        }
 
-        cipher = Cipher.getInstance("RSA");
-//        cipher.init(Cipher.ENCRYPT_MODE, rsaPublicKey);
+//        cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+        cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
+        //            cipher = Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding", "BC");
+        cipher.init(Cipher.ENCRYPT_MODE, rsaPublicKey);
         encryptedBytes = cipher.doFinal(objectString.getBytes(StandardCharsets.UTF_8));
 
-        return Base64.encodeToString(encryptedBytes, Base64.DEFAULT);
+        return bytesToHex(encryptedBytes);
     }
 
-    public String decrypt(String result)
+    public String decrypt(String publicKey,String result)
             throws NoSuchAlgorithmException,
             NoSuchPaddingException,
             InvalidKeyException,
             IllegalBlockSizeException,
             BadPaddingException {
 
-        cipher1 = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
-        cipher1.init(Cipher.DECRYPT_MODE, privateKey);
-        decryptedBytes = cipher1.doFinal(Base64.decode(result, Base64.DEFAULT));
-        decrypted = new String(decryptedBytes);
+        PublicKey rsaPublicKey;
+
+        rsaPublicKey = (PublicKey) stringToPublicKey(publicKey);
+        cipher1 = Cipher.getInstance("RSA/ECB/OAEPPadding");
+        cipher1.init(Cipher.DECRYPT_MODE, rsaPublicKey);
+        decryptedBytes = cipher1.doFinal(result.getBytes(StandardCharsets.UTF_8));
+        decrypted = new String(decryptedBytes, StandardCharsets.UTF_8);
 
         return decrypted;
     }
 
-    public String getPublicKey(String option)
-            throws NoSuchAlgorithmException,
-            NoSuchPaddingException,
-            InvalidKeyException,
-            IllegalBlockSizeException,
-            BadPaddingException {
-
-        switch (option) {
-
-            case "pkcs1-pem":
-                String pkcs1pem = "-----BEGIN RSA PUBLIC KEY-----\n";
-                pkcs1pem += Base64.encodeToString(publicKey.getEncoded(), Base64.DEFAULT);
-                pkcs1pem += "-----END RSA PUBLIC KEY-----";
-
-                return pkcs1pem;
-
-            case "pkcs8-pem":
-                String pkcs8pem = "-----BEGIN PUBLIC KEY-----\n";
-                pkcs8pem += Base64.encodeToString(publicKey.getEncoded(), Base64.DEFAULT);
-                pkcs8pem += "-----END PUBLIC KEY-----";
-
-                return pkcs8pem;
-
-            case "base64":
-                return Base64.encodeToString(publicKey.getEncoded(), Base64.DEFAULT);
-
-            default:
-                return null;
-
-        }
-
-    }
 
     public static PublicKey stringToPublicKey(String publicKeyString)
             throws NoSuchAlgorithmException,
@@ -139,5 +121,24 @@ public class RSACipher {
 
             return null;
         }
+    }
+
+    public static String serializeObjectToString(Object object) throws IOException {
+        try (
+                ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(arrayOutputStream);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(gzipOutputStream);) {
+            objectOutputStream.writeObject(object);
+            objectOutputStream.flush();
+
+            return new String(Base64.encode(arrayOutputStream.toByteArray(),Base64.DEFAULT));
+        }
+    }
+
+    public static String convertObjToString(Object clsObj) {
+        //convert object  to string json
+        String jsonSender = new Gson().toJson(clsObj, new TypeToken<Object>() {
+        }.getType());
+        return jsonSender;
     }
 }

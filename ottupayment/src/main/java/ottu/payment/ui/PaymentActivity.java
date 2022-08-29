@@ -27,14 +27,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import okhttp3.ResponseBody;
 import ottu.payment.R;
@@ -54,6 +62,7 @@ import ottu.payment.model.submitCHD.SubmitCHDToOttoPG;
 import ottu.payment.model.submitCHD.SubmitCHDToOttoPGEncrypted;
 import ottu.payment.network.GetDataService;
 import ottu.payment.network.RetrofitClientInstance;
+import ottu.payment.util.RSACipher;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,6 +84,8 @@ import static ottu.payment.util.Constant.savedCardSelected;
 import static ottu.payment.util.Constant.selectedCardPos;
 import static ottu.payment.util.Constant.selectedCardPosision;
 import static ottu.payment.util.Constant.sessionId;
+import static ottu.payment.util.RSACipher.convertObjToString;
+import static ottu.payment.util.RSACipher.serializeObjectToString;
 import static ottu.payment.util.Util.isDeviceRooted;
 import static ottu.payment.util.Util.isDeviceRooted1;
 import static ottu.payment.util.Util.isDeviceRooted2;
@@ -190,30 +201,207 @@ public class PaymentActivity extends AppCompatActivity {
         if (isNetworkAvailable(PaymentActivity.this)) {
             showButtonLoader(true);
             GetDataService apiendPoint = getRetrofitInstancePg();
-            Call<RespoPublicKey> callPublicKey = apiendPoint.getPublicKey(UrlPublicKey);
-            callPublicKey.enqueue(new Callback<RespoPublicKey>() {
-                @Override
-                public void onResponse(Call<RespoPublicKey> call, Response<RespoPublicKey> response) {
-                    showButtonLoader(false);
-                    if (response.isSuccessful()){
-                        String publicKey = response.body().public_key;
-                        String encryptedCard = null;
-                        SubmitCHDToOttoPGEncrypted payNowEncrypted = new SubmitCHDToOttoPGEncrypted(submitCHDToPG.getMerchant_id(),
-                                submitCHDToPG.getSession_id(),submitCHDToPG.getPayment_method(),encryptedCard);
-                        Toast.makeText(getBaseContext(), "get pk"+publicKey, Toast.LENGTH_SHORT).show();
-//                        payNowEncrypted(payNowEncrypted);
-                    }else {
+            if (submitCHDToPG.getCard() != null){
+                // Selected Card
+                Call<ResponseBody> callPublicKey = apiendPoint.getPublicKey(UrlPublicKey);
+                callPublicKey.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        showButtonLoader(false);
+                        if (response.isSuccessful()){
+                            String publicKey = null;
+                            String secretId = null;
+                            String encryptedCard = null;
 
-                        Toast.makeText(getBaseContext(), "Couldn't send data. Please Try again.", Toast.LENGTH_SHORT).show();
+
+                            try {
+                                JSONObject errorBody = new JSONObject(response.body().string());
+                                if (errorBody.has("public_key")){
+                                    publicKey = errorBody.getString("public_key");
+                                    secretId = errorBody.getString("secret_id");
+                                }else {
+                                    Toast.makeText(PaymentActivity.this, "Something want wrong. Please Try again.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                encryptedCard = new RSACipher().encrypt(publicKey,convertObjToString(submitCHDToPG.getCard()));
+                                SubmitCHDToOttoPGEncrypted payNowEncrypted = new SubmitCHDToOttoPGEncrypted(submitCHDToPG.getMerchant_id(),
+                                        submitCHDToPG.getSession_id(),submitCHDToPG.getPayment_method(),secretId,encryptedCard);
+
+                                payNowEncrypted(payNowEncrypted);
+
+                            } catch (NoSuchAlgorithmException e) {
+                                Toast.makeText(getBaseContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            } catch (NoSuchPaddingException e) {
+                                Toast.makeText(getBaseContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            } catch (InvalidKeyException e) {
+                                Toast.makeText(getBaseContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            } catch (IllegalBlockSizeException e) {
+                                Toast.makeText(getBaseContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            } catch (BadPaddingException e) {
+                                Toast.makeText(getBaseContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else {
+
+                            try {
+                                JSONObject errorBody = new JSONObject(response.errorBody().string());
+                                if (errorBody.has("detail")){
+                                    String errorDetail = errorBody.getString("detail");
+                                    Toast.makeText(PaymentActivity.this, ""+errorDetail, Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(PaymentActivity.this, "Something want wrong. Please Try again.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Toast.makeText(getBaseContext(), "Couldn't send data. Please Try again.", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<RespoPublicKey> call, Throwable t) {
-                    showButtonLoader(false);
-                    Toast.makeText(getBaseContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        showButtonLoader(false);
+                        Toast.makeText(getBaseContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else {
+                // Selected SavedCard
+                Call<ResponseBody> register = apiendPoint.respoSubmitCHD(SubmitUrlCard, submitCHDToPG);
+                register.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        showButtonLoader(false);
+
+
+                        if (response.isSuccessful()) {
+
+                            try {
+                                String aa = response.body().string();
+                                JSONObject jsonObject = new JSONObject(aa);
+
+
+                                if (jsonObject.has("status")) {
+                                    // got success
+                                    String status = jsonObject.getString("status");
+                                    if (status.equals("success")) {
+                                        finishPayment(jsonObject);
+                                    } else if (status.equals("failed")) {
+                                        Toast.makeText(PaymentActivity.this, "Payment Failed", Toast.LENGTH_SHORT).show();
+                                    } else if (status.equals("error")) {
+                                        Toast.makeText(PaymentActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                    }else if (status.equals("canceled")) {
+                                        Toast.makeText(PaymentActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                    } else if (status.equals("3DS")) {
+                                        startActivityForResult(new Intent(PaymentActivity.this, WebPaymentActivity.class)
+                                                .putExtra("is3DS", true)
+                                                .putExtra("html", jsonObject.getString("html"))
+                                                .putExtra("reference_number", jsonObject.getString("reference_number"))
+                                                .putExtra("ws_url", jsonObject.getString("ws_url")), OttuPaymentResult);
+
+                                    }else {
+
+                                    }
+
+                                }
+
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+
+                            try {
+                                JSONObject errorBody = new JSONObject(response.errorBody().string());
+                                JSONObject cardFieldError = null;
+                                JSONArray cardGlobleError = null, nonFieldErrors = null, merchantId = null, payment_method = null, sessioinId = null;
+                                if (errorBody.has("card")) {
+
+                                    String st = String.valueOf(errorBody.toString().trim().charAt(8));
+                                    if (st.equals("[")) {
+                                        cardGlobleError = errorBody.getJSONArray("card");
+                                    } else {
+                                        cardFieldError = errorBody.getJSONObject("card");
+                                    }
+                                }
+
+                                if (errorBody.has("non_field_errors")) {
+                                    nonFieldErrors = errorBody.getJSONArray("non_field_errors");
+                                }
+                                if (errorBody.has("merchant_id")) {
+                                    merchantId = errorBody.getJSONArray("merchant_id");
+                                }
+                                if (errorBody.has("payment_method")) {
+                                    payment_method = errorBody.getJSONArray("payment_method");
+                                }
+                                if (errorBody.has("session_id")) {
+                                    sessioinId = errorBody.getJSONArray("session_id");
+                                }
+                                if (cardFieldError != null) {
+                                    JSONArray numberEr = null, dateEr = null,monthEr = null, cvvEr = null,nameEr = null;
+//                                JSONArray nameEr = cardFieldError.getJSONArray("name_on_card");
+                                    if (cardFieldError.has("number")) {
+                                        numberEr = cardFieldError.getJSONArray("number");
+                                    } else if (cardFieldError.has("expiry_year")) {
+                                        dateEr = cardFieldError.getJSONArray("expiry_year");
+                                    }else if (cardFieldError.has("expiry_month")) {
+                                        monthEr = cardFieldError.getJSONArray("expiry_month");
+                                    } else if (cardFieldError.has("cvv")) {
+                                        cvvEr = cardFieldError.getJSONArray("cvv");
+                                    }else if (cardFieldError.has("name_on_card")) {
+                                        nameEr = cardFieldError.getJSONArray("name_on_card");
+                                    }
+
+                                    if (nameEr != null) {
+                                        Toast.makeText(PaymentActivity.this, "" + nameEr.get(0), Toast.LENGTH_SHORT).show();
+                                    } else if (numberEr != null) {
+                                        Toast.makeText(PaymentActivity.this, "" + numberEr.get(0), Toast.LENGTH_SHORT).show();
+                                    } else if (dateEr != null) {
+                                        Toast.makeText(PaymentActivity.this, "" + dateEr.get(0), Toast.LENGTH_SHORT).show();
+                                    }else if (monthEr != null) {
+                                        Toast.makeText(PaymentActivity.this, "" + monthEr.get(0), Toast.LENGTH_SHORT).show();
+                                    } else if (cvvEr != null) {
+                                        Toast.makeText(PaymentActivity.this, "" + cvvEr.get(0), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                } else if (cardGlobleError != null) {
+                                    Toast.makeText(PaymentActivity.this, "" + cardGlobleError.get(0), Toast.LENGTH_SHORT).show();
+                                } else if (nonFieldErrors != null) {
+                                    finishPayment(nonFieldErrors.getString(0));
+                                } else if (merchantId != null) {
+                                    finishPayment(merchantId.getString(0));
+                                } else if (payment_method != null) {
+                                    Toast.makeText(PaymentActivity.this, payment_method.getString(0), Toast.LENGTH_SHORT).show();
+                                }else if (sessioinId != null) {
+                                    finishPayment(sessioinId.getString(0));
+                                }else {
+                                    finishPayment("Payment Fail");
+                                }
+
+                            } catch (JSONException | IOException e) {
+                                Log.i("JSONException ", e.getMessage());
+                                finishPayment("Payment Failed");
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        showButtonLoader(false);
+                        Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
 
         }
 
@@ -221,7 +409,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void payNowEncrypted(SubmitCHDToOttoPGEncrypted submitCHDToPG) {
         GetDataService apiendPoint = getRetrofitInstancePg();
-        Call<ResponseBody> register = apiendPoint.respoSubmitCHD(SubmitUrlCard, submitCHDToPG);
+        Call<ResponseBody> register = apiendPoint.respoSubmitCHDEncrypted(SubmitUrlCard, submitCHDToPG);
         register.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

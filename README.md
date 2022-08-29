@@ -46,7 +46,7 @@ allprojects {
 }
     
 dependencies {
-       implementation 'com.github.sdkpayment:OttuCheckoutAndroidV1:1.0.5'
+       implementation 'com.github.sdkpayment:OttuCheckoutAndroidV1:1.0.6'
 }
 ```
 
@@ -82,6 +82,41 @@ Get payment result in onActivityResult menthod in Activity.
         }
     }
 	
+```
+if you are using fragments you will need to add broadcastReseiver in OnActivityResult to add your success-failure logic in your fragment.
+
+```java
+PAYMENT_SUCCESS = "paymentSuccess" // add in your constant accordingly
+ @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK ){
+            if (requestCode == OttuPaymentResult ){
+                SocketRespo paymentResult = (SocketRespo) data.getSerializableExtra("paymentResult");
+                textView.setText(paymentResult.status);   // success || failed || cancel
+              if(paymentResult.status.equals("success")){
+	      Intent  intent = Intent(PAYMENT_SUCCESS)
+               sendBroadcast(intent)
+              }
+            }
+        }
+    }
+
+// register your broadcast
+activity.registerReceiver(
+                paymentReceiver,
+                IntentFilter(PAYMENT_SUCCESS)
+)
+	
+// then you will receive it in your fragment with your action PAYMENT_SUCCESS
+BroadcastReceiver paymentReceiver = new BroadcastReceiver() {
+           @Override
+            public void onReceive(Context context, Intent intent) {
+               if(intent.getAction().equals(PAYMENT_SUCCESS)){
+                  // add your code 
+              }
+            }
+};
 ```
 ## ProGuard
 

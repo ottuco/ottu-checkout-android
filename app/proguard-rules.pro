@@ -21,4 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 #-keep class ottu.payment.sdk** { *; }
--keep class ottu.payment** { *; }
+-keep class Ottu.payment** { *; }

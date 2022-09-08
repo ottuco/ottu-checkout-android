@@ -452,7 +452,7 @@
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/keyboard_hide_24"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    <ottu.payment.util.OttoKeyboard
+    <ottu.checkout.util.OttoKeyboard
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

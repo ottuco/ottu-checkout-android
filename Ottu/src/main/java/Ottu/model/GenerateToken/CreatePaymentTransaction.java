@@ -4,21 +4,21 @@ import java.util.List;
 
 public class CreatePaymentTransaction
 {
-    private String type;
+    public String type;
 
-    private List<String> pg_codes;
+    public List<String> pg_codes;
 
-    private String amount;
+    public String amount;
 
-    private String currency_code;
+    public String currency_code;
 
-    private String disclosure_url;
+    public String disclosure_url;
 
-    private String redirect_url;
+    public String redirect_url;
 
-    private String customer_id;
+    public String customer_id;
 
-    private String expiration_time;
+    public String expiration_time;
 
     public CreatePaymentTransaction(String type, List<String> pg_codes, String amount, String currency_code, String disclosure_url, String redirect_url, String customer_id, String expiration_time) {
         this.type = type;

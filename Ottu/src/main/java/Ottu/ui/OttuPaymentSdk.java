@@ -2,7 +2,6 @@ package Ottu.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import static Ottu.util.Constant.OttuPaymentResult;
 
 public class OttuPaymentSdk {

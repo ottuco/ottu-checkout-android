@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OttuPaymentSdk">
         <activity
-            android:name="Ottu.payment.sdk.MainActivity"
+            android:name="Ottu.checkout.sdk.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,5 +1,4 @@
 package Ottu.adapter;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.text.Editable;
@@ -17,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
 import Ottu.R;
 import Ottu.databinding.DialogDeleteBinding;
 import Ottu.databinding.ItemSavedcardBinding;

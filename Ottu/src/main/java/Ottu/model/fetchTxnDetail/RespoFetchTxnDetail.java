@@ -1,5 +1,4 @@
 package Ottu.model.fetchTxnDetail;
-
 import java.util.ArrayList;
 
 public class RespoFetchTxnDetail{

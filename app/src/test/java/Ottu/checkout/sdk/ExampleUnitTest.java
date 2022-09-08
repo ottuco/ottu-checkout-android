@@ -1,4 +1,4 @@
-package Ottu.payment.sdk;
+package ottu.checkout.sdk;
 
 import org.junit.Test;
 

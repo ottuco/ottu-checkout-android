@@ -1,4 +1,8 @@
+<<<<<<< HEAD:Ottu/src/test/java/Ottu/ExampleUnitTest.java
 package Ottu;
+=======
+package ottu.checkout;
+>>>>>>> 45e955ee8ca4f3ddeb4f4b36b3d6ff2021930a94:Ottu/src/test/java/ottu/checkout/ExampleUnitTest.java
 
 import org.junit.Test;
 

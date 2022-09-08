@@ -1,6 +1,6 @@
 package Ottu.model.RedirectUrl;
 
-public class    RespoRedirectUrl
+public class  RespoRedirectUrl
 {
     private String status;
 

@@ -28,10 +28,8 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.io.IOException;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-
 
 import Ottu.R;
 import Ottu.databinding.ActivityWebPaymentBinding;
@@ -39,8 +37,8 @@ import Ottu.databinding.DialogResultBinding;
 import Ottu.model.SocketData.SendToSocket;
 import Ottu.model.SocketData.SocketRespo;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
-import Ottu.adapter.network.GetDataService;
-import Ottu.adapter.network.RetrofitClientInstance;
+import Ottu.network.GetDataService;
+import Ottu.network.RetrofitClientInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

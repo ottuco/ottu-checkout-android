@@ -1,5 +1,4 @@
 package Ottu.util;
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -11,8 +10,8 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
-
 import Ottu.R;
+
 
 public class Util {
 

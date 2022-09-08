@@ -35,6 +35,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import okhttp3.ResponseBody;
+
 import Ottu.R;
 import Ottu.adapter.PaymentMethodAdapter;
 import Ottu.adapter.SavedCardAdapter;
@@ -49,15 +50,14 @@ import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 import Ottu.model.submitCHD.Card_SubmitCHD;
 import Ottu.model.submitCHD.SubmitCHDToOttoPG;
 import Ottu.model.submitCHD.SubmitCHDToOttoPGEncrypted;
-import Ottu.adapter.network.GetDataService;
-import Ottu.adapter.network.RetrofitClientInstance;
-import Ottu.util.RSACipher;
+import Ottu.network.GetDataService;
+import Ottu.network.RetrofitClientInstance;
+import Ottu.util.RSACipher;;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static Ottu.adapter.network.RetrofitClientInstance.getRetrofitInstance;
-import static Ottu.adapter.network.RetrofitClientInstance.getRetrofitInstancePg;
+import static Ottu.network.RetrofitClientInstance.getRetrofitInstance;
+import static Ottu.network.RetrofitClientInstance.getRetrofitInstancePg;
 import static Ottu.util.Constant.Amount;
 import static Ottu.util.Constant.AmountCurrencyCode;
 import static Ottu.util.Constant.ApiId;

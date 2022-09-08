@@ -24,7 +24,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
 import static Ottu.util.Util.bytesToHex;
 
 public class RSACipher {

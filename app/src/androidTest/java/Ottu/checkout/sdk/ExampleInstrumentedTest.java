@@ -1,4 +1,4 @@
-package Ottu;
+package ottu.checkout.sdk;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("ottu.payment.test", appContext.getPackageName());
+        assertEquals("ottu.payment.sdk", appContext.getPackageName());
     }
 }

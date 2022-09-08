@@ -1,4 +1,8 @@
-package Ottu.payment.sdk;
+<<<<<<< HEAD:Ottu/src/androidTest/java/Ottu/ExampleInstrumentedTest.java
+package Ottu;
+=======
+package ottu.checkout;
+>>>>>>> 45e955ee8ca4f3ddeb4f4b36b3d6ff2021930a94:Ottu/src/androidTest/java/ottu/checkout/ExampleInstrumentedTest.java
 
 import android.content.Context;
 
@@ -21,6 +25,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("ottu.payment.sdk", appContext.getPackageName());
+        assertEquals("ottu.payment.test", appContext.getPackageName());
     }
 }

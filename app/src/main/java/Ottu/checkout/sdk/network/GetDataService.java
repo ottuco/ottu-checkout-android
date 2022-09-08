@@ -1,4 +1,5 @@
-package Ottu.payment.sdk.network;
+package Ottu.checkout.sdk.network;
+
 import Ottu.model.GenerateToken.CreatePaymentTransaction;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 import retrofit2.Call;

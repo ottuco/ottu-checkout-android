@@ -10,7 +10,6 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import Ottu.R;
 
 public class OttoKeyboard extends LinearLayout implements View.OnClickListener {

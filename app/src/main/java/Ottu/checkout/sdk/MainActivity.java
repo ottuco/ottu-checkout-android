@@ -1,4 +1,4 @@
-package Ottu.payment.sdk;
+package Ottu.checkout.sdk;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,25 +27,24 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Ottu.interfaces.OttuPaymentCallback;
-import Ottu.interfaces.SendPaymentCallback;
 import Ottu.model.GenerateToken.CreatePaymentTransaction;
 import Ottu.model.SocketData.SocketRespo;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
-import Ottu.payment.sdk.network.GetDataService;
+import Ottu.network.GetDataService;
+import Ottu.payment.sdk.R;
 import Ottu.ui.OttuPaymentSdk;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static Ottu.payment.sdk.network.RetrofitClientInstance.getRetrofitInstance;
+import static Ottu.checkout.sdk.network.RetrofitClientInstance.getRetrofitInstance;
 import static Ottu.util.Constant.OttuPaymentResult;
 
 
-public class MainActivity extends AppCompatActivity implements OttuPaymentCallback {
+public class MainActivity extends AppCompatActivity  {
 
     private EditText etLocalLan;
-    ArrayList<String> listpg = new ArrayList<>();
+    public ArrayList<String> listpg = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                 String amount = text.getText().toString().trim();
                 String language = localLan.getText().toString().trim();
 
+                listpg.clear();
                 if (rbOttupg.isChecked()){
                     listpg.add("ottu_pg_kwd_tkn");
                 }
@@ -119,8 +119,9 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
                 ,"https://postapp.knpay.net/redirected/"
                 ,"mani"
                 ,"300");
-        SendPaymentCallback paymentCallback = new SendPaymentCallback();
-        paymentCallback.setSendPaymentCallback(this);
+
+        Log.e("==========",paymentTransaction.type+paymentTransaction.pg_codes+paymentTransaction.amount+paymentTransaction.currency_code+paymentTransaction.disclosure_url
+        +paymentTransaction.redirect_url+paymentTransaction.customer_id+paymentTransaction.expiration_time);
 
 
         if (isNetworkAvailable(MainActivity.this)) {
@@ -182,18 +183,6 @@ public class MainActivity extends AppCompatActivity implements OttuPaymentCallba
             isAvailable = true;
         }
         return isAvailable;
-    }
-
-
-    @Override
-    public void onSuccess(String callback) {
-
-        Toast.makeText(this, "Payment Success", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFail(String callback) {
-        Toast.makeText(this, "Payment Fail", Toast.LENGTH_SHORT).show();
     }
 
     @Override

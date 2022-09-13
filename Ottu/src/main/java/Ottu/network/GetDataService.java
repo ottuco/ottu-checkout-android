@@ -7,7 +7,6 @@ import Ottu.model.RedirectUrl.RespoRedirectUrl;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 import Ottu.model.submitCHD.SubmitCHDToOttoPG;
 import Ottu.model.submitCHD.SubmitCHDToOttoPGEncrypted;
-import okhttp3.ResponseBody;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

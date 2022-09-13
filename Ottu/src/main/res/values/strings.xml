@@ -26,7 +26,7 @@
     <string name="Status">"Status : "</string>
     <string name="save_card_info">With saved card you can skip entering card detail in your next transactions</string>
     <string name="total_bill">Total</string>
-    <string name="list_gatway">List of all gatways we support</string>
+    <string name="list_gatway">List of all gateways we support</string>
     <string name="list_card_saved">List of all cards saved</string>
     <string name="payment_fail">Payment Failed</string>
     <string name="thankyou">Thank You!</string>

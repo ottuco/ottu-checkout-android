@@ -32,8 +32,9 @@ import Ottu.model.SocketData.SocketRespo;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 
 import Ottu.checkout.sdk.network.GetDataService;
-import Ottu.payment.sdk.R;
+
 import Ottu.ui.Ottu;
+import Ottu.payment.sdk.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

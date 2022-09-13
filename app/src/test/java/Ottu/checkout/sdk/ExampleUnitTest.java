@@ -1,4 +1,4 @@
-package ottu.checkout.sdk;
+package Ottu.checkout.sdk;
 
 import org.junit.Test;
 

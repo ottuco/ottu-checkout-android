@@ -1,4 +1,4 @@
-package ottu.checkout.sdk;
+package Ottu.checkout.sdk;
 
 import android.content.Context;
 

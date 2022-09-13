@@ -46,7 +46,7 @@ allprojects {
 }
     
 dependencies {
-       implementation 'com.github.ottuco:ottu-android-private-sdk:1.0.8'
+       implementation 'com.github.ottuco:ottu-android-private-sdk:1.0.9'
 }
 ```
 
@@ -54,7 +54,7 @@ Below is the sample code of how you can use Ottu Payment SDK.
 
 ```java
 	
-  OttuPaymentSdk ottuPaymentSdk = new OttuPaymentSdk(MainActivity.this);
+  Ottu ottuPaymentSdk = new Ottu(MainActivity.this);
                         ottuPaymentSdk.setApiId("Api_Key"); // set Api Key which is get from Ottu merchant account
                         ottuPaymentSdk.setMerchantId("Merchant_Id");
                         ottuPaymentSdk.setSessionId("Session_id"); // Retrive from public API

@@ -30,9 +30,10 @@ import java.util.ArrayList;
 import Ottu.model.GenerateToken.CreatePaymentTransaction;
 import Ottu.model.SocketData.SocketRespo;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
-import Ottu.network.GetDataService;
+
+import Ottu.checkout.sdk.network.GetDataService;
 import Ottu.payment.sdk.R;
-import Ottu.ui.OttuPaymentSdk;
+import Ottu.ui.Ottu;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity  {
                     dialog.dismiss();
 
                     if (response.isSuccessful() && response.body() != null) {
-                        OttuPaymentSdk ottuPaymentSdk = new OttuPaymentSdk(MainActivity.this);
+                        Ottu ottuPaymentSdk = new Ottu(MainActivity.this);
                         ottuPaymentSdk.setApiId("L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR");
                         ottuPaymentSdk.setMerchantId("ksa.ottu.dev");
                         ottuPaymentSdk.setSessionId(response.body().session_id);

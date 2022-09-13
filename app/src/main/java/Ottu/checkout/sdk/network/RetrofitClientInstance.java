@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-import Ottu.network.GetDataService;
+import Ottu.checkout.sdk.network.GetDataService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

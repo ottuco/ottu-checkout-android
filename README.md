@@ -7,8 +7,6 @@ The OttuCheckout is iOS SDK makes it quick and easy to build an excellent paymen
 
 **Simplified security**: We make it simple for you to collect sensitive data such as credit card numbers and remain PCI compliant. This means the sensitive data is sent directly to Stripe instead of passing through your server.
 
-**SCA-ready**: The SDK automatically performs native 3D Secure authentication if needed to comply with Strong Customer Authentication regulation in Europe.
-
 **Native UI**: We provide native screens and elements to collect payment details.
 
 <p float="left">

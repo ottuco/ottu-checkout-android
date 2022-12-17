@@ -20,19 +20,14 @@ import retrofit2.http.Url;
 public interface GetDataService {
 
 
-//    @GET("checkout/v1/pymt-txn/submit/{apiId}")
-    @GET("checkout/api/sdk/v1/pymt-txn/submit/{sessionId}")
-    Call<RespoFetchTxnDetail> fetchTxnDetail(@Path ("sessionId") String apiId,
-                                             @Query("enableCHD") boolean value);
+    @GET()
+    Call<RespoFetchTxnDetail> fetchTxnDetail(@Url String url);
 
     @POST()
     Call<ResponseBody> respoSubmitCHDEncrypted(@Url String submitUrlCard,@Body SubmitCHDToOttoPGEncrypted submitCHDToOttoPG);
     @POST()
     Call<ResponseBody> respoSubmitCHD(@Url String submitUrlCard,@Body SubmitCHDToOttoPG submitCHDToOttoPG);
 
-
-    @POST("checkout/v1/pymt-txn/")
-    Call<RespoFetchTxnDetail> createPaymentTxn(@Body CreatePaymentTransaction transaction);
 
     @POST()
     Call<RespoRedirectUrl> createRedirectUrl(@Url String url,

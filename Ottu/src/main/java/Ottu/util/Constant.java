@@ -18,4 +18,5 @@ public class Constant {
     public static int lastSelected = -1 ;
     public static int OttuPaymentResult = 123 ;
     public static int CardListPosition = 0 ;
+
 }

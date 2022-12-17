@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 public interface GetDataService {
 
 
-    @Headers({"Content-Type: application/json", "Authorization: Api-Key L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR"})
+    @Headers({"Content-Type: application/json", "Authorization: Api-Key KaaWIoPG.AZGowZsIiXATe9QVYBiEdnfbheb3sGPj"})
     @POST("checkout/v1/pymt-txn/")
     Call<RespoFetchTxnDetail> createPaymentTxn(@Body CreatePaymentTransaction transaction);
 

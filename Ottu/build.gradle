@@ -22,10 +22,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "FetchTxnDetailUrlPart", "\"/b/checkout/api/sdk/v1/pymt-txn/submit/\""
         }
         debug{
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "FetchTxnDetailUrlPart", "\"/b/checkout/api/sdk/v1/pymt-txn/submit/\""
         }
     }
     compileOptions {

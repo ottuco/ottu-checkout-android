@@ -33,6 +33,7 @@ import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 
 import Ottu.checkout.sdk.network.GetDataService;
 
+import Ottu.payment.sdk.BuildConfig;
 import Ottu.ui.Ottu;
 import Ottu.payment.sdk.R;
 import retrofit2.Call;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void createTrx(float amount) {
+
 //        String[] listpg  = {"ottu_pg_kwd_tkn", "knet-test", "mpgs"};
         CreatePaymentTransaction paymentTransaction = new CreatePaymentTransaction("e_commerce"
                 , listpg
@@ -140,8 +142,8 @@ public class MainActivity extends AppCompatActivity  {
 
                     if (response.isSuccessful() && response.body() != null) {
                         Ottu ottuPaymentSdk = new Ottu(MainActivity.this);
-                        ottuPaymentSdk.setApiId("L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR");
-                        ottuPaymentSdk.setMerchantId("ksa.ottu.dev");
+                        ottuPaymentSdk.setApiId("KaaWIoPG.AZGowZsIiXATe9QVYBiEdnfbheb3sGPj");  // L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR
+                        ottuPaymentSdk.setMerchantId("hotfix4.ottu.dev"); //ksa.ottu.dev
                         ottuPaymentSdk.setSessionId(response.body().session_id);
                         ottuPaymentSdk.setAmount(response.body().amount);
                         ottuPaymentSdk.setLocal(etLocalLan.getText().toString().trim());
@@ -202,6 +204,8 @@ public class MainActivity extends AppCompatActivity  {
                 sb.append("Reference number : "+paymentResult.getReference_number()+"\n");
                 sb.append("Redirect url : "+paymentResult.getRedirect_url()+"\n");
                 sb.append("Merchant id : "+paymentResult.getMerchant_id());
+
+
 
                 new AlertDialog.Builder(this)
                         .setMessage(sb)

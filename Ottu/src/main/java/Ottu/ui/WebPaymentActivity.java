@@ -48,6 +48,7 @@ import static Ottu.util.Constant.AmountCurrencyCode;
 import static Ottu.util.Constant.MerchantId;
 import static Ottu.util.Constant.SessionId;
 import static Ottu.util.Util.isNetworkAvailable;
+import Ottu.BuildConfig;
 
 public class WebPaymentActivity extends AppCompatActivity {
 
@@ -148,7 +149,8 @@ public class WebPaymentActivity extends AppCompatActivity {
         if (isNetworkAvailable(WebPaymentActivity.this)) {
 //            showLoader(true);
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(SessionId, false);
+            String fetchTrxUrl = "https://"+ MerchantId+ BuildConfig.FetchTxnDetailUrlPart +SessionId+"?enableCHD=true";
+            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(fetchTrxUrl);
             register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {

@@ -76,6 +76,7 @@ import static Ottu.util.Constant.sessionId;
 import static Ottu.util.RSACipher.convertObjToString;
 import static Ottu.util.Util.isDeviceRooted;
 import static Ottu.util.Util.isNetworkAvailable;
+import Ottu.BuildConfig;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -135,7 +136,7 @@ public class PaymentActivity extends AppCompatActivity {
                         if (submitCHD == null) {
                             Toast.makeText(PaymentActivity.this, getResources().getString(R.string.enter_carddetail), Toast.LENGTH_SHORT).show();
                         } else {
-                            if (sessionId.equals("")) {
+                            if (SessionId.equals("")) {
                                 Toast.makeText(PaymentActivity.this, "Try again", Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -549,7 +550,9 @@ public class PaymentActivity extends AppCompatActivity {
         if (isNetworkAvailable(PaymentActivity.this)) {
 
             GetDataService apiendPoint = new RetrofitClientInstance().getRetrofitInstance();
-            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(SessionId, true);
+//            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(SessionId, true);
+            String fetchTrxUrl = "https://"+ MerchantId+ BuildConfig.FetchTxnDetailUrlPart +SessionId+"?enableCHD=true";
+            Call<RespoFetchTxnDetail> register = apiendPoint.fetchTxnDetail(fetchTrxUrl);
             register.enqueue(new Callback<RespoFetchTxnDetail>() {
                 @Override
                 public void onResponse(Call<RespoFetchTxnDetail> call, Response<RespoFetchTxnDetail> response) {
@@ -558,7 +561,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                     if (response.isSuccessful() && response.body() != null) {
                         showData(response.body());
-                        sessionId = response.body().session_id;
+                        SessionId = response.body().session_id;
                         pg_codes = response.body().pg_codes;
                         SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
                         SubmitUrlRedirect = response.body().submit_url;

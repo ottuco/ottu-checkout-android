@@ -109,6 +109,7 @@
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/text_gray1"
+                    android:textColorHint="@color/text_gray4"
                     android:hint="@string/name_card"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -162,6 +163,7 @@
                     android:paddingBottom="5dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/text_gray1"
+                    android:textColorHint="@color/text_gray4"
                     android:inputType="number"
                     android:hint="@string/card_number"/>
                 <ImageView
@@ -228,6 +230,7 @@
                         android:textSize="15sp"
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/text_gray1"
+                        android:textColorHint="@color/text_gray4"
                         android:inputType="number"
                         android:hint="@string/date_hint"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -263,6 +266,7 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/text_gray1"
                         android:inputType="number"
+                        android:textColorHint="@color/text_gray4"
                         android:hint="@string/cvv"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -305,6 +309,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
+                android:textColor="@color/black"
+                android:buttonTint="@color/text_gray3"
                 android:text="@string/click_save_card"/>
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/infoImage"

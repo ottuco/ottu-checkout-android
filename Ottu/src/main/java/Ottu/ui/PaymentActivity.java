@@ -85,7 +85,7 @@ public class PaymentActivity extends AppCompatActivity {
     private SavedCardAdapter adapterSavedCard;
     public ArrayList<PaymentMethod> listPaymentMethods;
     private List<String> pg_codes;
-
+    public  InputConnection currentIc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +193,7 @@ public class PaymentActivity extends AppCompatActivity {
                 callPublicKey.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        showButtonLoader(false);
+
                         if (response.isSuccessful()){
                             String publicKey = null;
                             String secretId = null;
@@ -235,7 +235,7 @@ public class PaymentActivity extends AppCompatActivity {
                             }
 
                         }else {
-
+                            showButtonLoader(false);
                             try {
                                 JSONObject errorBody = new JSONObject(response.errorBody().string());
                                 if (errorBody.has("detail")){
@@ -394,6 +394,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void payNowEncrypted(SubmitCHDToOttoPGEncrypted submitCHDToPG) {
+        showButtonLoader(true);
         GetDataService apiendPoint = getRetrofitInstancePg();
         Call<ResponseBody> register = apiendPoint.respoSubmitCHDEncrypted(SubmitUrlCard, submitCHDToPG);
         register.enqueue(new Callback<ResponseBody>() {
@@ -695,6 +696,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void manageKeyboard(InputConnection ic, int visible) {
+        currentIc = ic;
         Thread t = new Thread() {
             public void run() {
 
@@ -718,6 +720,14 @@ public class PaymentActivity extends AppCompatActivity {
         t.start();
 
     }
+    public void hideNumericKeyboard(){
+        binding.layoutKeyboard.setVisibility(View.GONE);
+    }
+    public void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+    }
+
 
     private void setMargins(View view, int left, int top, int right, int bottom) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {

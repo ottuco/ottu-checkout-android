@@ -153,7 +153,7 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                 }
             });
 
-
+            itemBinding.cvvTextView.setFocusable(false);
             InputConnection ic1 = itemBinding.cvvTextView.onCreateInputConnection(new EditorInfo());
             itemBinding.cvvTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -165,12 +165,14 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                         activity.manageKeyboard(ic1, View.VISIBLE);
                     }else {
                         activity.manageKeyboard(ic1, View.GONE);
+                        itemBinding.cvvTextView.clearFocus();
                     }
                 }
             });
             itemBinding.cvvTextView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
+                    itemBinding.cvvTextView.setFocusableInTouchMode(true);
                     if (activity.getKeyboardvisibility() == View.GONE) {
                         activity.manageKeyboard(ic1, View.VISIBLE);
                     }

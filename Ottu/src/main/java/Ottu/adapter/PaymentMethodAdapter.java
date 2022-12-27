@@ -153,8 +153,17 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     }
                 }
             });
-            
 
+            itemBinding.nameTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (b){
+                        context.hideNumericKeyboard();
+                    }else {
+                        context.hideKeyboard();
+                    }
+                }
+            });
             itemBinding.nameTextView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -176,112 +185,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
             });
 
-
-//            itemBinding.cardNumberTextView.addTextChangedListener(new TextWatcher() {
-//                boolean considerChange = false;
-//
-//                @Override
-//                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//
-//                    if (considerChange) {
-//                        int mDrawableResId = 0;
-//                        for (int n = 0; n < mCCPatterns.size(); n++) {
-//                            int key = mCCPatterns.keyAt(n);
-//
-//                            // get the object by the key.
-//                            Pattern p = mCCPatterns.get(key);
-//                            Matcher m = p.matcher(charSequence);
-//                            if (m.find()) {
-//                                mDrawableResId = key;
-//                                CardListPosition = n;
-//                                break;
-//                            }
-//                        }
-//                        if (mDrawableResId > 0 && mDrawableResId != 0) {
-////                            Drawable d = context.getResources().getDrawable(mDrawableResId);
-////                            binding.cardIndicatorImage.setImageDrawable(d);
-//                            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), mDrawableResId);
-//                            itemBinding.cardIndicatorImage.setImageBitmap(bitmap);
-//
-//                        }
-//                    }
-//                    considerChange = !considerChange;
-//
-//                    if (charSequence.length() > 13) {
-//                        checkIfcardDetailfill(itemBinding, true);
-//                    } else {
-//                        checkIfcardDetailfill(itemBinding, false);
-//                    }
-//
-//                }
-//
-//
-//                @Override
-//                public void afterTextChanged(Editable s) {
-//
-//                    if (s.length() > 0 && !CODE_PATTERN.matcher(s).matches()) {
-//
-//                        String input = s.toString();
-//                        String numbersOnly = keepNumbersOnly(input);
-//                        String code = formatNumbersAsCode(numbersOnly);
-//
-//                        itemBinding.cardNumberTextView.removeTextChangedListener(this);
-//                        itemBinding.cardNumberTextView.setText(code);
-//                        // You could also remember the previous position of the cursor
-//                        itemBinding.cardNumberTextView.setSelection(itemBinding.cardNumberTextView.getText().toString().length());
-//                        itemBinding.cardNumberTextView.addTextChangedListener(this);
-//
-//                        int cursorPos = itemBinding.cardNumberTextView.getSelectionStart();
-//                        String ts = String.valueOf(code.charAt(cursorPos - 1));
-//                        boolean isspace = ts == SPACE_CHAR;
-//                        if (cursorPos > 0 && ts.equals(SPACE_CHAR)) {
-//                            itemBinding.cardNumberTextView.setSelection(cursorPos - 1);
-//                        }
-//
-////                         String c = String.valueOf(code.charAt(code.length()));
-//                    }
-//                    if (s.length() > 14) {
-//                        itemBinding.cardNumberErrorTextView.setText("");
-//                    }
-//
-//                }
-//            });
-
-
-
-//            itemBinding.datetextView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    DatePickerDialog monthDatePickerDialog = new DatePickerDialog(context,
-//                            AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
-//                        @Override
-//                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//
-//                            String months = String.valueOf(month + 1);
-//                            if (months.length() <= 1) {
-//                                months = "0" + months;
-//                            }
-//                            itemBinding.datetextView.setText(months + "/" + String.valueOf(year).substring(2));
-//                            checkIfcardDetailfill(itemBinding,true);
-//                        }
-//                    }, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH) {
-//                        @Override
-//                        protected void onCreate(Bundle savedInstanceState) {
-//                            super.onCreate(savedInstanceState);
-//                            getDatePicker().findViewById(context.getResources().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
-//                        }
-//                    };
-//                    monthDatePickerDialog.setTitle("Select Expiry Date");
-//                    monthDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-//
-//                    monthDatePickerDialog.show();
-//                }
-//            });
             itemBinding.datetextView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int start, int removed, int added) {

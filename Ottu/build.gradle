@@ -11,11 +11,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-        externalNativeBuild {
-            cmake {
-                cppFlags "-std=c++11"
-            }
-        }
+
     }
 
     buildTypes {
@@ -35,12 +31,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 //    sourceSets { main { jni.srcDirs = ['src/main/jni/','src/main/jniLibs/'] } }
-    ndkVersion '24.0.8215888'
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
-        }
-    }
+
     viewBinding {
         enabled = true
     }

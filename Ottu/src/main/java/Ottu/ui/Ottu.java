@@ -6,9 +6,7 @@ import static Ottu.util.Constant.OttuPaymentResult;
 
 public class Ottu {
 
-    static {
-        System.loadLibrary("native-lib");
-    }
+
 
     Intent intent;
     Activity activity;

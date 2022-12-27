@@ -20,8 +20,8 @@ import static Ottu.util.Constant.ApiId;
 public class RetrofitClientInstance {
 
 
-    public static native String getLink();
-    public static native String getLinkPg();
+//    public static native String getLink();
+//    public static native String getLinkPg();
 
     private static Retrofit retrofit;
     private static Retrofit retrofit1;
@@ -51,7 +51,7 @@ public class RetrofitClientInstance {
                 .create();
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(getLink())
+                    .baseUrl("https://domain/") // getLink()
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(client)
                     .build();
@@ -85,7 +85,7 @@ public class RetrofitClientInstance {
                 .create();
         if (retrofit1 == null) {
             retrofit1 = new Retrofit.Builder()
-                    .baseUrl(getLinkPg())
+                    .baseUrl("https://domain/")//getLinkPg()
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(client)
                     .build();

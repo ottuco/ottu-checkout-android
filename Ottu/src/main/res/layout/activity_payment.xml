@@ -322,21 +322,20 @@
                     app:layout_constraintTop_toBottomOf="@id/layoutPaymentMethod">
 
 
-
                     <TextView
                         android:id="@+id/payNow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
-                        android:text="@string/paynow"
-                        android:gravity="center"
-                        android:textSize="20dp"
-                        android:padding="10dp"
-                        android:enabled="false"
-                        android:layout_centerInParent="true"
                         android:background="@drawable/paydisable"
-                        android:textColor="@color/text_gray2" />
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/paynow"
+                        android:textColor="@color/text_gray2"
+                        android:textSize="20dp" />
                     <ProgressBar
                         android:id="@+id/btnProgress"
                         android:visibility="gone"
@@ -346,6 +345,48 @@
                         android:layout_height="40dp"/>
                 </RelativeLayout>
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
+                    android:id="@+id/layoutFeeBelowPay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layoutPaybutton"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/feeBelowPay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="1"
+                        android:layout_marginTop="3dp"
+                        android:text="12"
+                        android:textColor="@color/green"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:id="@+id/currencyCodeBelowPay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="1"
+                        android:layout_marginTop="3dp"
+                        android:text="kwd"
+                        android:textColor="@color/green"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:id="@+id/txtApplied"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="1"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/will_applied"
+                        android:textColor="@color/text_gray1"
+                        android:textSize="12dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

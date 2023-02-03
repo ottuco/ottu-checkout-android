@@ -42,7 +42,7 @@
     <string name="expire_on">Expires on</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string name="will_applied"><font color='#FF000000'>will applied</font></string>
+    <string name="will_applied"><font color='#FF000000'>will be applied</font></string>
     <string name="sub_total">Sub-Total</string>
     <string name="fee">Fee</string>
     <string name="close">Close</string>

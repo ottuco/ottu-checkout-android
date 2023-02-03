@@ -286,7 +286,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 //                    }
                     if (gestureDetector.onTouchEvent(event)) {
 
-                        if (listPaymentMethod.get(position).code.equals("ottu_pg_kwd_tkn")) {
+                        if (listPaymentMethod.get(position).flow.equals("card")) {
                             selectedCardPos = position;
                             if (itemBinding.layoutCardDetail.getVisibility() == View.GONE) {
                                 itemBinding1 = null;
@@ -305,7 +305,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 context.setFee(false, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
                                         , listPaymentMethod.get(position).fee);
                             }
-                        } else if (listPaymentMethod.get(position).code.equals("knet-test")) {
+                        }else if (listPaymentMethod.get(position).flow.equals("redirect")) {
                             if (itemBinding1 != null) {
                                 itemBinding1.layoutCardDetail.setVisibility(View.GONE);
                             }
@@ -314,26 +314,56 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             context.setPayEnable(true);
                             context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
                                     , listPaymentMethod.get(position).fee);
-
-                        } else if (listPaymentMethod.get(position).code.equals("mpgs")) {
-                            if (itemBinding1 != null) {
-                                itemBinding1.layoutCardDetail.setVisibility(View.GONE);
-                            }
-                            itemBinding1 = null;
-                            selectedCardPos = position;
-                            context.setPayEnable(true);
-                            context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
-                                    , listPaymentMethod.get(position).fee);
-//                            CreatePaymentTransaction paymentTransaction = new CreatePaymentTransaction(transactionDetail.type
-//                                    ,transactionDetail.pg_codes
-//                                    ,Amount
-//                                    ,listPaymentMethod.get(position).currency_code
-//                                    ,transactionDetail.redirect_url.replace("redirected","disclose_ok")
-//                                    ,transactionDetail.redirect_url
-//                                    ,transactionDetail.customer_id
-//                                    ,"1");
-//                            context.createTrx(paymentTransaction,transactionDetail.pg_codes.get(position));
                         }
+
+//                        if (listPaymentMethod.get(position).code.equals("ottu_pg_kwd_tkn")) {
+//                            selectedCardPos = position;
+//                            if (itemBinding.layoutCardDetail.getVisibility() == View.GONE) {
+//                                itemBinding1 = null;
+//                                itemBinding1 = itemBinding;
+//                                itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
+//                                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
+//                                context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+//                                        , listPaymentMethod.get(position).fee);
+//                                checkIfcardDetailfill(itemBinding, true);
+//                            } else {
+//                                selectedCardPos = -1;
+//                                itemBinding1 = null;
+//                                itemBinding.layoutCardDetail.setVisibility(View.GONE);
+//                                context.setPayEnable(false);
+////                                setArrow(itemBinding.arrow,false);
+//                                context.setFee(false, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+//                                        , listPaymentMethod.get(position).fee);
+//                            }
+//                        } else if (listPaymentMethod.get(position).code.equals("knet")) {
+//                            if (itemBinding1 != null) {
+//                                itemBinding1.layoutCardDetail.setVisibility(View.GONE);
+//                            }
+//                            itemBinding1 = null;
+//                            selectedCardPos = position;
+//                            context.setPayEnable(true);
+//                            context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+//                                    , listPaymentMethod.get(position).fee);
+//
+//                        } else if (listPaymentMethod.get(position).code.equals("mpgs")) {
+//                            if (itemBinding1 != null) {
+//                                itemBinding1.layoutCardDetail.setVisibility(View.GONE);
+//                            }
+//                            itemBinding1 = null;
+//                            selectedCardPos = position;
+//                            context.setPayEnable(true);
+//                            context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+//                                    , listPaymentMethod.get(position).fee);
+////                            CreatePaymentTransaction paymentTransaction = new CreatePaymentTransaction(transactionDetail.type
+////                                    ,transactionDetail.pg_codes
+////                                    ,Amount
+////                                    ,listPaymentMethod.get(position).currency_code
+////                                    ,transactionDetail.redirect_url.replace("redirected","disclose_ok")
+////                                    ,transactionDetail.redirect_url
+////                                    ,transactionDetail.customer_id
+////                                    ,"1");
+////                            context.createTrx(paymentTransaction,transactionDetail.pg_codes.get(position));
+//                        }
                         notifyDataSetChanged();
                         savedCardSelected = false;
                         context.notifySavedCardAdapter();
@@ -420,7 +450,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
         private void setArrow(ItemPaymentMethodBinding binding, boolean selected, String pgCode) {
             if (selected) {
-                if (pgCode.equals(listPaymentMethod.get(0).code)) {
+                if (pgCode.equals("ottu_pg_kwd_tkn")) {
                     binding.arrow.setImageResource(R.drawable.arrow_down);
                 }
             } else {

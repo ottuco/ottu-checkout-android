@@ -43,7 +43,7 @@
     <string name="expire_on">تنتهي في</string>
     <string name="delete">حذف</string>
     <string name="cancel">الغاء</string>
-    <string name="will_applied">سوف تطبق</string>
+    <string name="will_applied">سيتم تطبيقه</string>
     <string name="sub_total">المجموع الفرعي</string>
     <string name="fee">مصاريف</string>
     <string name="close">قريب</string>

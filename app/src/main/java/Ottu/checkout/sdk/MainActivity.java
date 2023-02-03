@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity  {
                     listpg.add("ottu_pg_kwd_tkn");
                 }
                 if (rbKnet.isChecked()){
-                    listpg.add("knet-test");
+                    listpg.add("knet");
                 }
                 if (rbMpgs.isChecked()){
                     listpg.add("mpgs");

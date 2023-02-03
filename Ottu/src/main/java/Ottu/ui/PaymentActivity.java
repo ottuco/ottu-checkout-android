@@ -1,5 +1,6 @@
 package Ottu.ui;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -132,7 +134,12 @@ public class PaymentActivity extends AppCompatActivity {
                     SubmitCHDToOttoPG cardDetail = adapterSavedCard.getCardDetail();
                     payNow(cardDetail);
                 } else {
-                    if (selectedCardPos == 0) {
+                    if (selectedCardPos < 0){
+                        Toast.makeText(PaymentActivity.this, "Select Any Payment Method", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (listPaymentMethods.get(selectedCardPos).flow.equals("card")) {
                         Card_SubmitCHD submitCHD = adapterPaymentMethod.getCardData();
                         if (submitCHD == null) {
                             Toast.makeText(PaymentActivity.this, getResources().getString(R.string.enter_carddetail), Toast.LENGTH_SHORT).show();
@@ -147,18 +154,19 @@ public class PaymentActivity extends AppCompatActivity {
                             SubmitCHDToOttoPG submitCHDToPG = new SubmitCHDToOttoPG(MerchantId, SessionId, "card", submitCHD);
                             payNow(submitCHDToPG);
                         }
-                    } else if (selectedCardPos == 1) {
+                    } else if (listPaymentMethods.get(selectedCardPos).flow.equals("redirect")) {
 //                    CreatePaymentTransaction paymentTransaction = adapterPaymentMethod.getPaymentTrn(selectedCardPos);
 //                    createTrx(paymentTransaction,paymentTransaction.getPg_codes().get(selectedCardPos));
 
 
                         CreateRedirectUrl redirectUrl = new CreateRedirectUrl(pg_codes.get(selectedCardPos), "mobile_sdk");
                         createRedirectUrl(redirectUrl, SessionId);
-                    } else if (selectedCardPos == 2) {
-
-                        CreateRedirectUrl redirectUrl = new CreateRedirectUrl(pg_codes.get(selectedCardPos), "mobile_sdk");
-                        createRedirectUrl(redirectUrl, SessionId);
                     }
+//                    else if (pg_codes.get(selectedCardPos).equals("mpgs")) {
+//
+//                        CreateRedirectUrl redirectUrl = new CreateRedirectUrl(pg_codes.get(selectedCardPos), "mobile_sdk");
+//                        createRedirectUrl(redirectUrl, SessionId);
+//                    }
                 }
             }
         });
@@ -181,6 +189,7 @@ public class PaymentActivity extends AppCompatActivity {
         } else {
             binding.payNow.setBackground(getResources().getDrawable(R.drawable.paydisable));
             binding.payNow.setTextColor(getResources().getColor(R.color.text_gray2));
+            binding.layoutFeeBelowPay.setVisibility(View.GONE);
         }
     }
 
@@ -823,12 +832,20 @@ public class PaymentActivity extends AppCompatActivity {
         conf.setLayoutDirection(locale);
         createConfigurationContext(conf);
 
-        getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
 
+        this.getResources().updateConfiguration(conf, this.getResources().getDisplayMetrics());
 
+        onConfigurationChanged(conf);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        binding.txtApplied.setText(getResources().getString(R.string.will_applied));
     }
 
     public void setFee(boolean visibility, String amount, String amountCurrency, String feeAmount) {
+
         if (visibility) {
             binding.layoutFeeAmount.setVisibility(View.VISIBLE);
             binding.amountTxt.setText(Amount);
@@ -838,6 +855,11 @@ public class PaymentActivity extends AppCompatActivity {
             binding.finalAmountTxt.setText(amount);
             binding.finalAmountCurrencyCode.setText(amountCurrency);
 
+            // below pay button text
+            binding.layoutFeeBelowPay.setVisibility(View.VISIBLE);
+            binding.feeBelowPay.setText(feeAmount);
+            binding.currencyCodeBelowPay.setText(" "+amountCurrency+" ");
+
             Amount = amount;
             AmountCurrencyCode = amountCurrency;
 
@@ -845,6 +867,9 @@ public class PaymentActivity extends AppCompatActivity {
             binding.layoutFeeAmount.setVisibility(View.GONE);
             binding.finalAmountTxt.setText(NetAmount);
             binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
+
+            // below pay button text
+            binding.layoutFeeBelowPay.setVisibility(View.GONE);
         }
 
         if (!feeAmount.isEmpty()) {
@@ -853,9 +878,11 @@ public class PaymentActivity extends AppCompatActivity {
                 binding.layoutFeeAmount.setVisibility(View.GONE);
                 binding.finalAmountTxt.setText(NetAmount);
                 binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
+
+                // below pay button text
+                binding.layoutFeeBelowPay.setVisibility(View.GONE);
             }
         }
-
     }
 
     public void setSavedCardFee(String pg_code) {

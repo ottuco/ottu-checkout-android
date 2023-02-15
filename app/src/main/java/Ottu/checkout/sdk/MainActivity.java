@@ -33,7 +33,7 @@ import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 
 import Ottu.checkout.sdk.network.GetDataService;
 
-import Ottu.payment.sdk.BuildConfig;
+
 import Ottu.ui.Ottu;
 import Ottu.payment.sdk.R;
 import retrofit2.Call;

@@ -27,7 +27,7 @@
     <string name="Status">"Status : "</string>
     <string name="save_card_info">باستخدام البطاقة المحفوظة ، يمكنك تخطي إدخال تفاصيل البطاقة في معاملاتك التالية</string>
     <string name="total_bill">المجموع</string>
-    <string name="list_gatway">قائمة بجميع البوابات التي ندعمها</string>
+    <string name="list_gatway">قائمة بجميع بوابات الدفع التي ندعمها</string>
     <string name="list_card_saved">قائمة البطاقات المحفوظة</string>
     <string name="payment_fail">عملية الدفع فشلت</string>
     <string name="thankyou">شكرا!</string>

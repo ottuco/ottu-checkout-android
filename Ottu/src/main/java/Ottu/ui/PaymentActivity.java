@@ -151,6 +151,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 //                        CreatePaymentTransaction paymentTransaction = adapterPaymentMethod.getPaymentTrn(selectedCardPos);
 //                        createTrx(paymentTransaction,paymentTransaction.getPg_codes().get(selectedCardPos));
+
                             SubmitCHDToOttoPG submitCHDToPG = new SubmitCHDToOttoPG(MerchantId, SessionId, "card", submitCHD);
                             payNow(submitCHDToPG);
                         }
@@ -198,6 +199,10 @@ public class PaymentActivity extends AppCompatActivity {
             showButtonLoader(true);
             GetDataService apiendPoint = getRetrofitInstancePg();
             if (submitCHDToPG.getCard() != null){
+                if (UrlPublicKey == null || UrlPublicKey.equals("")){
+                    Toast.makeText(this, "Public key url error.\n Please try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // Selected Card
                 Call<ResponseBody> callPublicKey = apiendPoint.getPublicKey(UrlPublicKey);
                 callPublicKey.enqueue(new Callback<ResponseBody>() {
@@ -577,7 +582,7 @@ public class PaymentActivity extends AppCompatActivity {
                         SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
                         SubmitUrlRedirect = response.body().submit_url;
                         listPaymentMethods = response.body().payment_methods;
-                        UrlPublicKey = response.body().public_key_url;
+//                        UrlPublicKey = response.body().public_key_url;
                     } else {
 //                        Toast.makeText(PaymentActivity.this,, "Please try again!" , Toast.LENGTH_SHORT).show();
                         SocketRespo finalResponse = new SocketRespo();

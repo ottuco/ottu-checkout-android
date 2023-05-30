@@ -50,6 +50,7 @@ import Ottu.ui.PaymentActivity;
 
 import static Ottu.util.Constant.CardListPosition;
 import static Ottu.util.Constant.LocalLan;
+import static Ottu.util.Constant.UrlPublicKey;
 import static Ottu.util.Constant.savedCardSelected;
 import static Ottu.util.Constant.selectedCardPos;
 import static Ottu.util.Util.listCardName;
@@ -117,6 +118,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     itemBinding1.layoutCardDetail.setVisibility(View.GONE);
                 }
             }
+            if(listPaymentMethod.get(position).flow.equals("card") && UrlPublicKey == null || UrlPublicKey.equals("")){
+                UrlPublicKey = listPaymentMethod.get(position).public_key_url;
+
+            }
             if (selectedCardPos == position) {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg_selected));
                 setArrow(itemBinding, true, listPaymentMethod.get(position).code);
@@ -125,7 +130,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 setArrow(itemBinding, false, listPaymentMethod.get(position).code);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
-            if (transactionDetail.can_save_card) {
+            if (listPaymentMethod.get(position).can_save_card) {
                 itemBinding.layoutCanSaveCard.setVisibility(View.VISIBLE);
             }
 

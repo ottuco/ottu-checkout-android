@@ -12,4 +12,6 @@ public class PaymentMethod{
     public String flow;
     public String submit_url;
     public String cancel_url;
+    public boolean can_save_card = false;
+    public String public_key_url;
 }

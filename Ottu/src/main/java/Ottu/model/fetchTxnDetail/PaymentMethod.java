@@ -10,8 +10,9 @@ public class PaymentMethod{
     public String fee;
     public String icon;
     public String flow;
-    public String submit_url;
+    public String submit_url ="";
     public String cancel_url;
     public boolean can_save_card = false;
     public String public_key_url;
+    public String redirect_url;
 }

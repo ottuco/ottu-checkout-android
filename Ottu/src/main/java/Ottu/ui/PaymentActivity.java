@@ -87,7 +87,8 @@ public class PaymentActivity extends AppCompatActivity {
     private PaymentMethodAdapter adapterPaymentMethod;
     private SavedCardAdapter adapterSavedCard;
     public ArrayList<PaymentMethod> listPaymentMethods;
-    private List<String> pg_codes;
+    private ArrayList<String> pg_codes = new ArrayList<>();
+    private ArrayList<String> submit_url = new ArrayList<>();
     public  InputConnection currentIc;
 
     @Override
@@ -139,7 +140,7 @@ public class PaymentActivity extends AppCompatActivity {
                         return;
                     }
 
-                    if (listPaymentMethods.get(selectedCardPos).flow.equals("card")) {
+                    if (listPaymentMethods.get(selectedCardPos).flow.equals("card") || listPaymentMethods.get(selectedCardPos).flow.equals("ottu_pg")) {
                         Card_SubmitCHD submitCHD = adapterPaymentMethod.getCardData();
                         if (submitCHD == null) {
                             Toast.makeText(PaymentActivity.this, getResources().getString(R.string.enter_carddetail), Toast.LENGTH_SHORT).show();
@@ -161,6 +162,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
                         CreateRedirectUrl redirectUrl = new CreateRedirectUrl(pg_codes.get(selectedCardPos), "mobile_sdk");
+                        SubmitUrlRedirect = submit_url.get(selectedCardPos);
                         createRedirectUrl(redirectUrl, SessionId);
                     }
 //                    else if (pg_codes.get(selectedCardPos).equals("mpgs")) {
@@ -201,6 +203,7 @@ public class PaymentActivity extends AppCompatActivity {
             if (submitCHDToPG.getCard() != null){
                 if (UrlPublicKey == null || UrlPublicKey.equals("")){
                     Toast.makeText(this, "Public key url error.\n Please try again.", Toast.LENGTH_SHORT).show();
+                    showButtonLoader(false);
                     return;
                 }
                 // Selected Card
@@ -578,11 +581,18 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         showData(response.body());
                         SessionId = response.body().session_id;
-                        pg_codes = response.body().pg_codes;
                         SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
-                        SubmitUrlRedirect = response.body().submit_url;
+//                        SubmitUrlRedirect = response.body().submit_url;
                         listPaymentMethods = response.body().payment_methods;
 //                        UrlPublicKey = response.body().public_key_url;
+                        for (int i = 0; i < response.body().payment_methods.size(); i++) {
+                            pg_codes.add(response.body().payment_methods.get(i).code);
+                            if (response.body().payment_methods.get(i).submit_url != null || !response.body().payment_methods.get(i).submit_url.equals("")){
+                                submit_url.add(response.body().payment_methods.get(i).submit_url);
+                            }else {
+                                submit_url.add("");
+                            }
+                        }
                     } else {
 //                        Toast.makeText(PaymentActivity.this,, "Please try again!" , Toast.LENGTH_SHORT).show();
                         SocketRespo finalResponse = new SocketRespo();
@@ -634,7 +644,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             binding.payNow.setText(Html.fromHtml("<b>" + getResources().getString(R.string.paynow) + "</b>"));
             binding.finalAmountCurrencyCode.setText(body.currency_code);
-            if (body.cards != null) {
+            if (body.cards != null && body.cards.size() > 0) {
                 if (body.cards.size() < 1) {
                     binding.layoutSavedListTitle.setVisibility(View.GONE);
                 }

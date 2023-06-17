@@ -70,18 +70,23 @@ public class MainActivity extends AppCompatActivity  {
                 String language = localLan.getText().toString().trim();
 
                 listpg.clear();
-                if (rbOttupg.isChecked()){
-                    listpg.add("ottu_pg_kwd_tkn");
-                }
-                if (rbKnet.isChecked()){
-                    listpg.add("knet");
-                }
-                if (rbMpgs.isChecked()){
-                    listpg.add("mpgs");
-                }
-                if (listpg.size() < 1){
-                    listpg.add("ottu_pg_kwd_tkn");
-                }
+//                if (rbOttupg.isChecked()){
+//                    listpg.add("ottu_pg_kwd_tkn");
+//                }
+//                if (rbKnet.isChecked()){
+//                    listpg.add("knet");
+//                }
+//                if (rbMpgs.isChecked()){
+//                    listpg.add("mpgs");
+//                }
+//                if (listpg.size() < 1){
+//                    listpg.add("ottu_pg_kwd_tkn");
+//                }
+                listpg.add("ottu_pg_kwd_tkn");
+                listpg.add("knet-staging");
+                listpg.add("mpgs-testing");
+                listpg.add("benefit");
+                listpg.add("benefitpay");
 
 
 
@@ -142,8 +147,8 @@ public class MainActivity extends AppCompatActivity  {
 
                     if (response.isSuccessful() && response.body() != null) {
                         Ottu ottuPaymentSdk = new Ottu(MainActivity.this);
-                        ottuPaymentSdk.setApiId("KaaWIoPG.AZGowZsIiXATe9QVYBiEdnfbheb3sGPj");  // L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR
-                        ottuPaymentSdk.setMerchantId("hotfix4.ottu.dev"); //ksa.ottu.dev
+                        ottuPaymentSdk.setApiId("kZia0dfY.vEWS0cUV5gWV1JDzIvzDfSxKLUh4qAa3");  // L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR
+                        ottuPaymentSdk.setMerchantId("staging4.ottu.dev"); //ksa.ottu.dev
                         ottuPaymentSdk.setSessionId(response.body().session_id);
                         ottuPaymentSdk.setAmount(response.body().amount);
                         ottuPaymentSdk.setLocal(etLocalLan.getText().toString().trim());

@@ -118,8 +118,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                     itemBinding1.layoutCardDetail.setVisibility(View.GONE);
                 }
             }
-            if(listPaymentMethod.get(position).flow.equals("card") || listPaymentMethod.get(position).flow.equals("ottu_pg")
-                    && UrlPublicKey == null || UrlPublicKey.equals("")){
+            if(listPaymentMethod.get(position).flow.equals("card") && UrlPublicKey == null || UrlPublicKey.equals("")){
                 if (listPaymentMethod.get(position).public_key_url != null) {
                     UrlPublicKey = listPaymentMethod.get(position).public_key_url;
                 }
@@ -294,7 +293,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 //                    }
                     if (gestureDetector.onTouchEvent(event)) {
 
-                        if (listPaymentMethod.get(position).flow.equals("card") || listPaymentMethod.get(position).flow.equals("ottu_pg")) {
+                        if (listPaymentMethod.get(position).flow.equals("card") ) {
                             selectedCardPos = position;
                             if (itemBinding.layoutCardDetail.getVisibility() == View.GONE) {
                                 itemBinding1 = null;

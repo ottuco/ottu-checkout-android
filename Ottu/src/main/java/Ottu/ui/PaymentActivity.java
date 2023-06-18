@@ -140,7 +140,7 @@ public class PaymentActivity extends AppCompatActivity {
                         return;
                     }
 
-                    if (listPaymentMethods.get(selectedCardPos).flow.equals("card") || listPaymentMethods.get(selectedCardPos).flow.equals("ottu_pg")) {
+                    if (listPaymentMethods.get(selectedCardPos).flow.equals("card") ) {
                         Card_SubmitCHD submitCHD = adapterPaymentMethod.getCardData();
                         if (submitCHD == null) {
                             Toast.makeText(PaymentActivity.this, getResources().getString(R.string.enter_carddetail), Toast.LENGTH_SHORT).show();

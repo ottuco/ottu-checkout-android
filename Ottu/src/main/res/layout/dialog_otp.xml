@@ -66,7 +66,7 @@
                        android:id="@+id/back"
                        android:layout_width="25dp"
                        android:layout_height="25dp"
-                       android:src="@drawable/arrow_left__24"
+                       android:src="@drawable/arrow_back"
                        android:layout_centerVertical="true"
                        android:layout_alignParentLeft="true"/>
                </RelativeLayout>

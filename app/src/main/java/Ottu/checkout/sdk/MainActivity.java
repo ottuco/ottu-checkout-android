@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity  {
         AppCompatButton pay = findViewById(R.id.pay);
         etLocalLan = findViewById(R.id.localLan);
 
+        text.setText(10+"");
+        etLocalLan.setText("en");
+
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,11 +85,12 @@ public class MainActivity extends AppCompatActivity  {
 //                if (listpg.size() < 1){
 //                    listpg.add("ottu_pg_kwd_tkn");
 //                }
-                listpg.add("ottu_pg_kwd_tkn");
+//                listpg.add("ottu_pg_kwd_tkn");
                 listpg.add("knet-staging");
                 listpg.add("mpgs-testing");
                 listpg.add("benefit");
                 listpg.add("benefitpay");
+                listpg.add("stc_pay");
 
 
 
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity  {
                 ,"https://postapp.knpay.net/disclose_ok/"
                 ,"https://postapp.knpay.net/redirected/"
                 ,"mani"
+                ,"0548220713"
                 ,"300");
 
         Log.e("==========",paymentTransaction.type+paymentTransaction.pg_codes+paymentTransaction.amount+paymentTransaction.currency_code+paymentTransaction.disclosure_url

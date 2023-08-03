@@ -1,7 +1,7 @@
 package Ottu.util;
 
 public class Constant {
-    public static String sessionId = "" ;
+//    public static String sessionId = "" ;
     public static String Amount = "" ;
     public static String NetAmount = "0.00" ;
     public static String AmountCurrencyCode = "" ;
@@ -12,6 +12,7 @@ public class Constant {
     public static String SubmitUrlCard = "" ;
     public static String UrlPublicKey= "" ;
     public static String SubmitUrlRedirect = "" ;
+    public static String CustomerPhone = "" ;
     public static boolean savedCardSelected = false ;
     public static int selectedCardPos = -1;
     public static int selectedCardPosision = -1;

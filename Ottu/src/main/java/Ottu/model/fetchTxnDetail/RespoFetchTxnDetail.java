@@ -8,6 +8,7 @@ public class RespoFetchTxnDetail{
     public String checkout_url;
     public String currency_code;
     public String customer_id;
+    public String customer_phone;
     public String expiration_time;
     public String language;
     public String mode;

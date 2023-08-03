@@ -50,4 +50,14 @@
     <string name="confirm">Confirm</string>
     <string name="card_name_error">"Enter name of card holder "</string>
     <string name="enter_valid_cvv">Enter valid CVV</string>
+    <string name="confirm_phone_number">Confirm Phone Number</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="pay">Pay</string>
+    <string name="cant_send_otp">Couldn\'t send OTP</string>
+    <string name="phone_number_notcorrect">Phone number isn\'t correct</string>
+    <string name="incorrect_otp">Incorrect OTP</string>
+    <string name="couldnt_verify_otp">Couldn\'t verify OTP</string>
+    <string name="enter_mono">Enter Mobile Number</string>
+    <string name="couldnt_send_otp">Couldn\'t send OTP</string>
 </resources>

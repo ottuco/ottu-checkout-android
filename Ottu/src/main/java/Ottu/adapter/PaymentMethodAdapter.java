@@ -30,7 +30,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Permission;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -142,7 +144,16 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 @Override
                 public void run() {
                     try {
-                        InputStream stream = new URL(listPaymentMethod.get(position).icon).openStream();
+                        String iconurl  = listPaymentMethod.get(position).icon;
+                        final URL url = new URL(iconurl);
+                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                        int respoceCode = urlConnection.getResponseCode();
+                        Permission per = urlConnection.getPermission();
+                        InputStream stream = urlConnection.getInputStream();
+
+
+
+//                        InputStream stream = new URL(listPaymentMethod.get(position).icon).openStream();
 
                         Bitmap image = BitmapFactory.decodeStream(stream);
 
@@ -312,7 +323,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 context.setFee(false, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
                                         , listPaymentMethod.get(position).fee);
                             }
-                        }else if (listPaymentMethod.get(position).flow.equals("redirect")) {
+                        }else if (listPaymentMethod.get(position).flow.equals("redirect") || listPaymentMethod.get(position).flow.equals("stc_pay")
+                                || listPaymentMethod.get(position).flow.equals("ottu_pg")) {
                             if (itemBinding1 != null) {
                                 itemBinding1.layoutCardDetail.setVisibility(View.GONE);
                             }

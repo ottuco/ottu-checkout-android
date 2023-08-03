@@ -17,10 +17,11 @@ public class CreatePaymentTransaction
     public String redirect_url;
 
     public String customer_id;
+    public String customer_phone;
 
     public String expiration_time;
 
-    public CreatePaymentTransaction(String type, List<String> pg_codes, String amount, String currency_code, String disclosure_url, String redirect_url, String customer_id, String expiration_time) {
+    public CreatePaymentTransaction(String type, List<String> pg_codes, String amount, String currency_code, String disclosure_url, String redirect_url, String customer_id,String customer_phone, String expiration_time) {
         this.type = type;
         this.pg_codes = pg_codes;
         this.amount = amount;
@@ -28,6 +29,7 @@ public class CreatePaymentTransaction
         this.disclosure_url = disclosure_url;
         this.redirect_url = redirect_url;
         this.customer_id = customer_id;
+        this.customer_phone = customer_phone;
         this.expiration_time = expiration_time;
     }
 

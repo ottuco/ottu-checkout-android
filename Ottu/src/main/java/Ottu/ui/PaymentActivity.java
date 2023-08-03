@@ -3,14 +3,13 @@ package Ottu.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -20,7 +19,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,13 +32,18 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import Ottu.databinding.DialogOtpBinding;
+import Ottu.databinding.DialogStcMnumberBinding;
+import Ottu.model.StcPayMNumber.StcPayPayload;
+import Ottu.model.StcPayMNumber.StcPayResponce;
+import Ottu.model.StcPayOtp.StcOtpPayload;
+import Ottu.model.StcPayOtp.StcOtpResponce;
 import okhttp3.ResponseBody;
 
 import Ottu.R;
@@ -68,6 +75,7 @@ import static Ottu.util.Constant.LocalLan;
 import static Ottu.util.Constant.MerchantId;
 import static Ottu.util.Constant.NetAmount;
 import static Ottu.util.Constant.OttuPaymentResult;
+import static Ottu.util.Constant.CustomerPhone;
 import static Ottu.util.Constant.SessionId;
 import static Ottu.util.Constant.SubmitUrlCard;
 import static Ottu.util.Constant.SubmitUrlRedirect;
@@ -75,7 +83,6 @@ import static Ottu.util.Constant.UrlPublicKey;
 import static Ottu.util.Constant.savedCardSelected;
 import static Ottu.util.Constant.selectedCardPos;
 import static Ottu.util.Constant.selectedCardPosision;
-import static Ottu.util.Constant.sessionId;
 import static Ottu.util.RSACipher.convertObjToString;
 import static Ottu.util.Util.isDeviceRooted;
 import static Ottu.util.Util.isNetworkAvailable;
@@ -87,8 +94,6 @@ public class PaymentActivity extends AppCompatActivity {
     private PaymentMethodAdapter adapterPaymentMethod;
     private SavedCardAdapter adapterSavedCard;
     public ArrayList<PaymentMethod> listPaymentMethods;
-    private ArrayList<String> pg_codes = new ArrayList<>();
-    private ArrayList<String> submit_url = new ArrayList<>();
     public  InputConnection currentIc;
 
     @Override
@@ -161,9 +166,18 @@ public class PaymentActivity extends AppCompatActivity {
 //                    createTrx(paymentTransaction,paymentTransaction.getPg_codes().get(selectedCardPos));
 
 
-                        CreateRedirectUrl redirectUrl = new CreateRedirectUrl(pg_codes.get(selectedCardPos), "mobile_sdk");
-                        SubmitUrlRedirect = submit_url.get(selectedCardPos);
+                        CreateRedirectUrl redirectUrl = new CreateRedirectUrl(listPaymentMethods.get(selectedCardPos).code, "mobile_sdk");
+                        SubmitUrlRedirect = listPaymentMethods.get(selectedCardPos).submit_url;
                         createRedirectUrl(redirectUrl, SessionId);
+                    }else if (listPaymentMethods.get(selectedCardPos).flow.equals("stc_pay")){
+                        StcPayPayload stcPayLoad = new StcPayPayload(listPaymentMethods.get(selectedCardPos).code,SessionId, CustomerPhone,false);
+                        showSTCDialog(stcPayLoad,listPaymentMethods.get(selectedCardPos).submit_url);
+                    }else if (listPaymentMethods.get(selectedCardPos).flow.contains("ottu_pg")){
+                        if (listPaymentMethods.get(selectedCardPos).redirect_url != null && listPaymentMethods.get(selectedCardPos).redirect_url.length() > 0) {
+                            sendToWebView(listPaymentMethods.get(selectedCardPos).redirect_url);
+                        }else {
+                            Toast.makeText(PaymentActivity.this, "Submit url not present", Toast.LENGTH_SHORT).show();
+                        }
                     }
 //                    else if (pg_codes.get(selectedCardPos).equals("mpgs")) {
 //
@@ -182,6 +196,8 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     public void setPayEnable(boolean isenble) {
         binding.payNow.setBackground(getResources().getDrawable(R.drawable.payenable));
@@ -581,18 +597,12 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         showData(response.body());
                         SessionId = response.body().session_id;
+                        CustomerPhone = response.body().customer_phone;
                         SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
 //                        SubmitUrlRedirect = response.body().submit_url;
                         listPaymentMethods = response.body().payment_methods;
 //                        UrlPublicKey = response.body().public_key_url;
-                        for (int i = 0; i < response.body().payment_methods.size(); i++) {
-                            pg_codes.add(response.body().payment_methods.get(i).code);
-                            if (response.body().payment_methods.get(i).submit_url != null || !response.body().payment_methods.get(i).submit_url.equals("")){
-                                submit_url.add(response.body().payment_methods.get(i).submit_url);
-                            }else {
-                                submit_url.add("");
-                            }
-                        }
+
                     } else {
 //                        Toast.makeText(PaymentActivity.this,, "Please try again!" , Toast.LENGTH_SHORT).show();
                         SocketRespo finalResponse = new SocketRespo();
@@ -676,8 +686,7 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
 
                         if (response.body().getRedirect_url() != null) {
-                            startActivityForResult(new Intent(PaymentActivity.this, WebPaymentActivity.class)
-                                    .putExtra("RedirectUrl", response.body().getRedirect_url()), OttuPaymentResult);
+                            sendToWebView(response.body().getRedirect_url());
 
                         } else {
                             Toast.makeText(PaymentActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -702,6 +711,11 @@ public class PaymentActivity extends AppCompatActivity {
             Toast.makeText(this, "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void sendToWebView(String redirect_url) {
+        startActivityForResult(new Intent(PaymentActivity.this, WebPaymentActivity.class)
+                .putExtra("RedirectUrl", redirect_url), OttuPaymentResult);
     }
 
     public void notifySavedCardAdapter() {
@@ -910,6 +924,170 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
+    private void showSTCDialog(StcPayPayload stcPayLoad, String url) {
+        DialogStcMnumberBinding dialogBinding = DialogStcMnumberBinding.inflate(getLayoutInflater());
+        Dialog dialog = new Dialog(this, R.style.MyDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(dialogBinding.getRoot());
+
+        if (listPaymentMethods.get(selectedCardPos).can_save_card){
+            dialogBinding.saveCard.setVisibility(View.VISIBLE);
+        }
+        if (stcPayLoad.customer_phone != null && stcPayLoad.customer_phone.trim().length() > 0){
+            dialogBinding.moNumberEtxt.setText(stcPayLoad.customer_phone);
+        }
+        dialogBinding.saveCard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                stcPayLoad.setSave_card(isChecked);
+            }
+        });
+        dialogBinding.sendOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBinding.errorMsgText.setText("");
+                dialogBinding.errorMsgText.setVisibility(View.GONE);
+                String mNumber = dialogBinding.moNumberEtxt.getText().toString().trim();
+                if (mNumber.length() < 8 || mNumber == null ||mNumber.equals("") ){
+                    dialogBinding.errorMsgText.setText(getResources().getString(R.string.incorrect_otp));
+                    return;
+                }
+                stcPayLoad.setCustomer_phone(mNumber);
+                if (isNetworkAvailable(PaymentActivity.this)) {
+
+                    dialogBinding.progressLayout.setVisibility(View.VISIBLE);
+                    GetDataService apiendPoint = getRetrofitInstance();
+                    Call<StcPayResponce> register = apiendPoint.submitSTCPay(url,stcPayLoad);
+                    register.enqueue(new Callback<StcPayResponce>() {
+                        @Override
+                        public void onResponse(Call<StcPayResponce> call, Response<StcPayResponce> response) {
+                            dialogBinding.progressLayout.setVisibility(View.GONE);
+
+                            if (response.isSuccessful() && response.code() == 200) {
+                                showSTCOtpDialog( dialog);
+
+                            } else if (response.code() == 400){
+                                dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
+                                String jsonString = null;
+
+                                try {
+                                    jsonString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(jsonString);
+                                    dialogBinding.errorMsgText.setText(jsonObject.getString("detail"));
+                                } catch (JSONException | IOException e ) {
+                                    e.printStackTrace();
+                                    finishPayment(getResources().getString(R.string.couldnt_send_otp));
+                                }
+
+                            } else if (response.code() == 401){
+                                dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
+                                String jsonString = response.errorBody().toString();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(jsonString);
+                                    dialogBinding.errorMsgText.setText(jsonObject.getString("detail"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    finishPayment(getResources().getString(R.string.couldnt_send_otp));
+                                }
+                            }else {
+                                dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
+                                dialogBinding.errorMsgText.setText(getResources().getString(R.string.cant_send_otp));
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<StcPayResponce> call, Throwable t) {
+                            dialogBinding.progressLayout.setVisibility(View.GONE);
+                        }
+                    });
+                }else {
+                    Toast.makeText(PaymentActivity.this, "Check internet connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialogBinding.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+    private void showSTCOtpDialog(Dialog dialogStcMoNumber) {
+        DialogOtpBinding dialogBinding = DialogOtpBinding.inflate(getLayoutInflater());
+        Dialog dialog = new Dialog(this, R.style.MyDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(dialogBinding.getRoot());
+
+
+        dialogBinding.pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBinding.errorMsgText.setText("");
+                dialogBinding.errorMsgText.setVisibility(View.GONE);
+                String otp = dialogBinding.moNumberEtxt.getText().toString().trim();
+                if (otp.length() < 6 || otp == null ||otp.equals("") ){
+                    dialogBinding.errorMsgText.setText(getResources().getString(R.string.incorrect_otp));
+                    return;
+                }
+                if (isNetworkAvailable(PaymentActivity.this)) {
+                    dialogBinding.progressLayout.setVisibility(View.VISIBLE);
+                    GetDataService apiendPoint = getRetrofitInstance();
+                    Call<StcOtpResponce> register = apiendPoint.sendStcOtp(listPaymentMethods.get(selectedCardPos).payment_url,
+                            new StcOtpPayload(SessionId,otp));
+                    register.enqueue(new Callback<StcOtpResponce>() {
+                        @Override
+                        public void onResponse(Call<StcOtpResponce> call, Response<StcOtpResponce> response) {
+                            dialogBinding.progressLayout.setVisibility(View.GONE);
+
+                            if (response.isSuccessful() && response.code() == 200) {
+                                dialogBinding.errorMsgText.setText("");
+                                dialogBinding.errorMsgText.setVisibility(View.GONE);
+                                Gson gson = new Gson();
+                                String jsonString = gson.toJson(response.body());
+                                try {
+                                    JSONObject jsonObject = new JSONObject(jsonString);
+                                    finishPayment(jsonObject);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                dialog.dismiss();
+                                dialogStcMoNumber.dismiss();
+
+                            }else if (response.code() == 401){
+                                dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
+                                dialogBinding.errorMsgText.setText(response.body().getDetail());
+                            }else {
+                                dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
+                                dialogBinding.errorMsgText.setText(getResources().getString(R.string.couldnt_verify_otp));
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<StcOtpResponce> call, Throwable t) {
+                            dialogBinding.progressLayout.setVisibility(View.GONE);
+                            Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(PaymentActivity.this, "Check internet connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialogBinding.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
     @Override
     public void onBackPressed() {
 
@@ -942,11 +1120,21 @@ public class PaymentActivity extends AppCompatActivity {
         try {
             finalResponse.setStatus(jsonObject.getString("status"));
             finalResponse.setSession_id(jsonObject.getString("session_id"));
-            finalResponse.setOrder_no(jsonObject.getString("order_no"));
-            finalResponse.setOperation(jsonObject.getString("operation"));
-            finalResponse.setReference_number(jsonObject.getString("reference_number"));
-            finalResponse.setRedirect_url(jsonObject.getString("redirect_url"));
-            finalResponse.setMessage(jsonObject.getString("message"));
+            if (jsonObject.has("order_no")) {
+                finalResponse.setOrder_no(jsonObject.getString("order_no"));
+            }
+            if (jsonObject.has("operation")) {
+                finalResponse.setOperation(jsonObject.getString("operation"));
+            }
+            if (jsonObject.has("reference_number")) {
+                finalResponse.setReference_number(jsonObject.getString("reference_number"));
+            }
+            if (jsonObject.has("redirect_url")) {
+                finalResponse.setRedirect_url(jsonObject.getString("redirect_url"));
+            }
+            if (jsonObject.has("message")) {
+                finalResponse.setMessage(jsonObject.getString("message"));
+            }
             finalResponse.setMerchant_id(MerchantId);
             Intent intent = new Intent();
             intent.putExtra("paymentResult", finalResponse);
@@ -954,6 +1142,12 @@ public class PaymentActivity extends AppCompatActivity {
             finish();
         } catch (JSONException e) {
             e.printStackTrace();
+            finalResponse.setStatus("failed");
+            finalResponse.setMerchant_id(MerchantId);
+            Intent intent = new Intent();
+            intent.putExtra("paymentResult", finalResponse);
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 

@@ -1,24 +1,23 @@
-package Ottu.model.SocketData;
+package Ottu.model.StcPayOtp;
 
-import java.io.Serializable;
+public class StcOtpResponce {
+    public String form_of_payment;
+    public String status;
+    public String message;
+    public String session_id;
+    public String order_no;
+    public String reference_number;
+    public String redirect_url;
+    public PaymentGatewayInfo payment_gateway_info;
+    public String detail;
 
-public class SocketRespo implements Serializable {
-    private String status;
 
-    private String message;
-
-    private String session_id;
-
-    private String order_no;
-
-    private String operation;
-
-    private String reference_number;
-
-    private String redirect_url;
-
-    private String merchant_id;
-
+    public void setForm_of_payment(String form_of_payment){
+        this.form_of_payment = form_of_payment;
+    }
+    public String getForm_of_payment(){
+        return this.form_of_payment;
+    }
     public void setStatus(String status){
         this.status = status;
     }
@@ -38,17 +37,10 @@ public class SocketRespo implements Serializable {
         return this.session_id;
     }
     public void setOrder_no(String order_no){
-
         this.order_no = order_no;
     }
     public String getOrder_no(){
         return this.order_no;
-    }
-    public void setOperation(String operation){
-        this.operation = operation;
-    }
-    public String getOperation(){
-        return this.operation;
     }
     public void setReference_number(String reference_number){
         this.reference_number = reference_number;
@@ -62,10 +54,18 @@ public class SocketRespo implements Serializable {
     public String getRedirect_url(){
         return this.redirect_url;
     }
-    public void setMerchant_id(String merchant_id){
-        this.merchant_id = merchant_id;
+    public void setPayment_gateway_info(PaymentGatewayInfo payment_gateway_info){
+        this.payment_gateway_info = payment_gateway_info;
     }
-    public String getMerchant_id(){
-        return this.merchant_id;
+    public PaymentGatewayInfo getPayment_gateway_info(){
+        return this.payment_gateway_info;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

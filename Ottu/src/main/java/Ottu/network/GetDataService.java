@@ -1,7 +1,10 @@
 package Ottu.network;
 
+import Ottu.model.StcPayMNumber.StcPayPayload;
+import Ottu.model.StcPayMNumber.StcPayResponce;
+import Ottu.model.StcPayOtp.StcOtpPayload;
+import Ottu.model.StcPayOtp.StcOtpResponce;
 import okhttp3.ResponseBody;
-import Ottu.model.GenerateToken.CreatePaymentTransaction;
 import Ottu.model.RedirectUrl.CreateRedirectUrl;
 import Ottu.model.RedirectUrl.RespoRedirectUrl;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
@@ -13,8 +16,6 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface GetDataService {
@@ -38,4 +39,9 @@ public interface GetDataService {
 
     @GET()
     Call<ResponseBody> getPublicKey(@Url String urlPublicKey);
+
+    @POST()
+    Call<StcPayResponce> submitSTCPay(@Url String urlPublicKey,@Body StcPayPayload stcPayLoad);
+    @POST()
+    Call<StcOtpResponce> sendStcOtp(@Url String urlPublicKey, @Body StcOtpPayload stcPayLoad);
 }

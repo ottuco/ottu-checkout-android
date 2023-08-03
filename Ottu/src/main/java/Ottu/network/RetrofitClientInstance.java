@@ -28,13 +28,11 @@ public class RetrofitClientInstance {
 
     public static GetDataService getRetrofitInstance() {
 
-//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .writeTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(3, TimeUnit.MINUTES)
-                .addInterceptor(new Interceptor() {
+                .addNetworkInterceptor(new Interceptor() {
                     @NonNull
                     @Override
                     public Response intercept(@NonNull Chain chain) throws IOException {

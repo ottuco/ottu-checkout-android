@@ -41,6 +41,7 @@ import Ottu.model.SocketData.SocketRespo;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 import Ottu.network.GetDataService;
 import Ottu.network.RetrofitClientInstance;
+import Ottu.util.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -124,7 +125,6 @@ public class WebPaymentActivity extends AppCompatActivity {
             proceedUrl(view, request.getUrl());
             if (request.getUrl().toString().contains("mobile-sdk-redirect")) {
 
-
                 getTrnDetail();
             }
             return true;
@@ -132,6 +132,7 @@ public class WebPaymentActivity extends AppCompatActivity {
 
         private void proceedUrl(WebView view, Uri uri) {
             try {
+
                 view.loadUrl(uri.toString());
             } catch (Exception e) {
                 e.printStackTrace();

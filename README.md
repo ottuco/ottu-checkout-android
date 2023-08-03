@@ -44,7 +44,7 @@ allprojects {
 }
     
 dependencies {
-       implementation 'com.github.ottuco:ottu-android-private-sdk:1.0.14'
+       implementation 'com.github.ottuco:ottu-android-private-sdk:1.0.17'
 }
 ```
 

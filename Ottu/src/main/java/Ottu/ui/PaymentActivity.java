@@ -174,7 +174,7 @@ public class PaymentActivity extends AppCompatActivity {
                         showSTCDialog(stcPayLoad,listPaymentMethods.get(selectedCardPos).submit_url);
                     }else if (listPaymentMethods.get(selectedCardPos).flow.contains("ottu_pg")){
                         if (listPaymentMethods.get(selectedCardPos).redirect_url != null && listPaymentMethods.get(selectedCardPos).redirect_url.length() > 0) {
-                            sendToWebView(listPaymentMethods.get(selectedCardPos).redirect_url);
+                            sendToWebView(listPaymentMethods.get(selectedCardPos).redirect_url+"?channel=mobile_sdk");
                         }else {
                             Toast.makeText(PaymentActivity.this, "Submit url not present", Toast.LENGTH_SHORT).show();
                         }

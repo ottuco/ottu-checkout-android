@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -82,7 +83,7 @@ import static Ottu.util.Constant.SubmitUrlRedirect;
 import static Ottu.util.Constant.UrlPublicKey;
 import static Ottu.util.Constant.savedCardSelected;
 import static Ottu.util.Constant.selectedCardPos;
-import static Ottu.util.Constant.selectedCardPosision;
+import static Ottu.util.Constant.selectedSavedCardPos;
 import static Ottu.util.RSACipher.convertObjToString;
 import static Ottu.util.Util.isDeviceRooted;
 import static Ottu.util.Util.isNetworkAvailable;
@@ -95,6 +96,7 @@ public class PaymentActivity extends AppCompatActivity {
     private SavedCardAdapter adapterSavedCard;
     public ArrayList<PaymentMethod> listPaymentMethods;
     public  InputConnection currentIc;
+    private ArrayList<Card> listSavedCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +140,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 if (savedCardSelected) {
                     SubmitCHDToOttoPG cardDetail = adapterSavedCard.getCardDetail();
+                    SubmitUrlCard = listSavedCards.get(selectedSavedCardPos).submit_url;
                     payNow(cardDetail);
                 } else {
                     if (selectedCardPos < 0){
@@ -159,6 +162,7 @@ public class PaymentActivity extends AppCompatActivity {
 //                        createTrx(paymentTransaction,paymentTransaction.getPg_codes().get(selectedCardPos));
 
                             SubmitCHDToOttoPG submitCHDToPG = new SubmitCHDToOttoPG(MerchantId, SessionId, "card", submitCHD);
+                            SubmitUrlCard = listPaymentMethods.get(selectedCardPos).submit_url;
                             payNow(submitCHDToPG);
                         }
                     } else if (listPaymentMethods.get(selectedCardPos).flow.equals("redirect")) {
@@ -598,8 +602,9 @@ public class PaymentActivity extends AppCompatActivity {
                         showData(response.body());
                         SessionId = response.body().session_id;
                         CustomerPhone = response.body().customer_phone;
-                        SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
+//                        SubmitUrlCard = response.body().payment_methods.get(0).submit_url;
 //                        SubmitUrlRedirect = response.body().submit_url;
+                        listSavedCards = response.body().cards;
                         listPaymentMethods = response.body().payment_methods;
 //                        UrlPublicKey = response.body().public_key_url;
 
@@ -720,7 +725,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     public void notifySavedCardAdapter() {
         if (adapterSavedCard != null) {
-            selectedCardPosision = -1;
+            selectedSavedCardPos = -1;
             adapterSavedCard.notifyDataSetChanged();
         }
     }
@@ -931,6 +936,12 @@ public class PaymentActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setContentView(dialogBinding.getRoot());
 
+        if (!LocalLan.equals("en")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                dialog.getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            }
+        }
+
         if (listPaymentMethods.get(selectedCardPos).can_save_card){
             dialogBinding.saveCard.setVisibility(View.VISIBLE);
         }
@@ -977,7 +988,7 @@ public class PaymentActivity extends AppCompatActivity {
                                     dialogBinding.errorMsgText.setText(jsonObject.getString("detail"));
                                 } catch (JSONException | IOException e ) {
                                     e.printStackTrace();
-                                    finishPayment(getResources().getString(R.string.couldnt_send_otp));
+                                    finishPayment(getResources().getString(R.string.cant_send_otp));
                                 }
 
                             } else if (response.code() == 401){
@@ -988,7 +999,7 @@ public class PaymentActivity extends AppCompatActivity {
                                     dialogBinding.errorMsgText.setText(jsonObject.getString("detail"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    finishPayment(getResources().getString(R.string.couldnt_send_otp));
+                                    finishPayment(getResources().getString(R.string.cant_send_otp));
                                 }
                             }else {
                                 dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
@@ -1155,7 +1166,7 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         selectedCardPos = -1;
-        selectedCardPosision = -1;
+        selectedSavedCardPos = -1;
         notifySavedCardAdapter();
         notifyPaymentMethodAdapter();
         setPayEnable(false);

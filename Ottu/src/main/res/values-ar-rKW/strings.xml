@@ -49,15 +49,17 @@
     <string name="close">قريب</string>
     <string name="is_paid">مدفوع</string>
     <string name="confirm">يتأكد</string>
+    <string name="save_stc_acc">stc حفظ حساب</string>
     <string name="card_name_error">"أدخل اسم صاحب البطاقة"</string>
     <string name="enter_valid_cvv">أدخل رمز CVV صالحًا</string>
-    <string name="confirm_phone_number">Confirm Phone Number</string>
-    <string name="send_otp">Send OTP</string>
-    <string name="enter_otp">Enter OTP</string>
-    <string name="pay">Pay</string>
-    <string name="cant_send_otp">Couldn\'t send OTP</string>
-    <string name="phone_number_notcorrect">Phone number isn\'t correct</string>
-    <string name="incorrect_otp">Incorrect OTP</string>
-    <string name="couldnt_verify_otp">Couldn\'t verify OTP</string>
-    <string name="enter_mono">Enter Mobile Number</string>
+    <string name="confirm_phone_number">رقم الهاتف المحمول</string>
+    <string name="otp">كلمة المرور لمرة واحدة</string>
+    <string name="send_otp">إرسال كلمة المرور لمرة واحدة</string>
+    <string name="enter_otp">الرجاء إدخال كلمة مرور لمرة واحدة</string>
+    <string name="pay">يدفع</string>
+    <string name="cant_send_otp">تعذر إرسال كلمة مرور لمرة واحدة</string>
+    <string name="phone_number_notcorrect">رقم الهاتف غير صحيح</string>
+    <string name="incorrect_otp">كلمة مرور غير صحيحة لمرة واحدة</string>
+    <string name="couldnt_verify_otp">تعذر التحقق من كلمة المرور لمرة واحدة</string>
+    <string name="enter_mono">الرجاء إدخال رقم الهاتف المحمول</string>
 </resources>

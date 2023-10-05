@@ -49,6 +49,7 @@ import Ottu.model.fetchTxnDetail.PaymentMethod;
 import Ottu.model.fetchTxnDetail.RespoFetchTxnDetail;
 import Ottu.model.submitCHD.Card_SubmitCHD;
 import Ottu.ui.PaymentActivity;
+import Ottu.util.BitmapCache;
 
 import static Ottu.util.Constant.CardListPosition;
 import static Ottu.util.Constant.LocalLan;
@@ -60,6 +61,7 @@ import static Ottu.util.Util.listCardPatter;
 
 public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdapter.ViewHolder> {
 
+    private final BitmapCache imgCache;
     ArrayList<PaymentMethod> listPaymentMethod;
     RespoFetchTxnDetail transactionDetail;
     private ItemPaymentMethodBinding binding;
@@ -80,6 +82,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         listPaymentMethod = cards.payment_methods;
 
         transactionDetail = cards;
+        imgCache = new BitmapCache(BitmapCache.getCacheSize());
+
     }
 
     @NonNull
@@ -128,50 +132,52 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             }
             if (selectedCardPos == position) {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg_selected));
-                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
+//                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
             } else {
                 itemBinding.layoutCardInfo.setBackground(context.getResources().getDrawable(R.drawable.item_bg));
-                setArrow(itemBinding, false, listPaymentMethod.get(position).code);
+//                setArrow(itemBinding, false, listPaymentMethod.get(position).code);
             }
             itemBinding.cardNumber.setText(listPaymentMethod.get(position).name);
             if (listPaymentMethod.get(position).can_save_card) {
                 itemBinding.layoutCanSaveCard.setVisibility(View.VISIBLE);
             }
 
-
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String iconurl  = listPaymentMethod.get(position).icon;
-                        final URL url = new URL(iconurl);
-                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                        int respoceCode = urlConnection.getResponseCode();
-                        Permission per = urlConnection.getPermission();
-                        InputStream stream = urlConnection.getInputStream();
-
+            if (imgCache.hasBitmap(listPaymentMethod.get(position).icon)){
+                itemBinding.cardImage.setImageBitmap(imgCache.getBitmap(listPaymentMethod.get(position).icon));
+            }else {
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String iconurl = listPaymentMethod.get(position).icon;
+                            final URL url = new URL(iconurl);
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            int respoceCode = urlConnection.getResponseCode();
+                            Permission per = urlConnection.getPermission();
+                            InputStream stream = urlConnection.getInputStream();
 
 
 //                        InputStream stream = new URL(listPaymentMethod.get(position).icon).openStream();
 
-                        Bitmap image = BitmapFactory.decodeStream(stream);
+                            Bitmap image = BitmapFactory.decodeStream(stream);
 
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                itemBinding.cardImage.setImageBitmap(image);
-                            }
-                        });
+                                    itemBinding.cardImage.setImageBitmap(image);
+                                    imgCache.setBitmap(listPaymentMethod.get(position).icon,image);
+                                }
+                            });
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
-
+                });
+            }
             itemBinding.nameTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
@@ -310,7 +316,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding1 = null;
                                 itemBinding1 = itemBinding;
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
-                                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
+//                                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
                                 context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
                                         , listPaymentMethod.get(position).fee);
                                 checkIfcardDetailfill(itemBinding, true);
@@ -351,7 +357,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 //                                itemBinding.layoutCardDetail.setVisibility(View.GONE);
 //                                context.setPayEnable(false);
 ////                                setArrow(itemBinding.arrow,false);
-//                                context.setFee(false, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
+//                                 context.setFee(false, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
 //                                        , listPaymentMethod.get(position).fee);
 //                            }
 //                        } else if (listPaymentMethod.get(position).code.equals("knet")) {
@@ -467,19 +473,19 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             });
         }
 
-        private void setArrow(ItemPaymentMethodBinding binding, boolean selected, String pgCode) {
-            if (selected) {
-                if (pgCode.equals("ottu_pg_kwd_tkn")) {
-                    binding.arrow.setImageResource(R.drawable.arrow_down);
-                }
-            } else {
-                if (LocalLan.equals("ar")) {
-                    binding.arrow.setImageResource(R.drawable.arrow_left__24);
-                } else {
-                    binding.arrow.setImageResource(R.drawable.arrow_right_24);
-                }
-            }
-        }
+//        private void setArrow(ItemPaymentMethodBinding binding, boolean selected, String pgCode) {
+//            if (selected) {
+//                if (pgCode.equals("ottu_pg_kwd_tkn")) {
+//                    binding.arrow.setImageResource(R.drawable.arrow_down);
+//                }
+//            } else {
+//                if (LocalLan.equals("ar")) {
+//                    binding.arrow.setImageResource(R.drawable.arrow_left__24);
+//                } else {
+//                    binding.arrow.setImageResource(R.drawable.arrow_right_24);
+//                }
+//            }
+//        }
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -26,6 +26,12 @@ public class SubmitCHDToOttoPG
         this.token = token;
         this.cvv = cvv;
     }
+    public SubmitCHDToOttoPG(String merchantId, String  session_id , String payment_method, String token) {
+        this.merchant_id = merchantId;
+        this.session_id = session_id;
+        this.payment_method = payment_method;
+        this.token = token;
+    }
 
     public void setMerchant_id(String merchant_id){
         this.merchant_id = merchant_id;

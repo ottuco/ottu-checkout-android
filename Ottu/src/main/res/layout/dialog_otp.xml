@@ -60,7 +60,7 @@
                        android:textColor="@color/black"
                        android:textStyle="bold"
                        android:fontFamily="@font/sfpro_regular"
-                       android:text="@string/confirm_phone_number"
+                       android:text="@string/otp"
                        android:gravity="center"/>
                    <ImageView
                        android:id="@+id/back"

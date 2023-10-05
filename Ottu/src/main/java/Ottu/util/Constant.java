@@ -15,7 +15,7 @@ public class Constant {
     public static String CustomerPhone = "" ;
     public static boolean savedCardSelected = false ;
     public static int selectedCardPos = -1;
-    public static int selectedCardPosision = -1;
+    public static int selectedSavedCardPos = -1;
     public static int lastSelected = -1 ;
     public static int OttuPaymentResult = 123 ;
     public static int CardListPosition = 0 ;

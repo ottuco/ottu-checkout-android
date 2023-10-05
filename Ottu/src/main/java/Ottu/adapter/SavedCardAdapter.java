@@ -27,7 +27,7 @@ import Ottu.ui.PaymentActivity;
 import static Ottu.util.Constant.MerchantId;
 import static Ottu.util.Constant.SessionId;
 import static Ottu.util.Constant.savedCardSelected;
-import static Ottu.util.Constant.selectedCardPosision;
+import static Ottu.util.Constant.selectedSavedCardPos;
 
 
 public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.ViewHolder>{
@@ -72,7 +72,7 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
         }
 
         public void bindData(Card card, int position) {
-            if (selectedCardPosision == position){
+            if (selectedSavedCardPos == position){
                 itemBinding.layoutCardData.setBackground(activity.getResources().getDrawable(R.drawable.item_bg_selected));
                 itemBinding.checkIndicator.setImageResource(R.drawable.item_selected);
                 itemBinding.deleteImage.setVisibility(View.VISIBLE);
@@ -91,7 +91,12 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                 itemBinding.layoutCVV.setVisibility(View.GONE);
             }
 
-            itemBinding.cardImage.setImageResource(getcard(listCards.get(position).brand));
+            if (listCards.get(position).brand.contains("stc")){
+
+                itemBinding.cardImage.setImageDrawable(activity.getResources().getDrawable(R.drawable.stcpay) );
+            }else {
+                itemBinding.cardImage.setImageResource(getcard(listCards.get(position).brand));
+            }
             itemBinding.cardNumber.setText(listCards.get(position).brand+" "+listCards.get(position).number);
             itemBinding.expireDate.setText(listCards.get(position).expiry_month+"/"+listCards.get(position).expiry_year);
             itemBinding.deleteImage.setOnClickListener(new View.OnClickListener() {
@@ -127,9 +132,9 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                 @Override
                 public void onClick(View view) {
                     savedCardSelected = true;
-                    selectedCardPosision = position;
+                    selectedSavedCardPos = position;
 //                    if (lastSelected == position){
-//                        selectedCardPosision = -1;
+//                        selectedSavedCardPos = -1;
 //                        lastSelected = -1;
 //                        bindingWithData = null;
 //                        activity.setPayEnable(false);
@@ -234,7 +239,7 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
     public SubmitCHDToOttoPG getCardDetail(){
         SubmitCHDToOttoPG submitCHDToOttoPG = null;
 
-        if (bindingWithData == null || selectedCardPosision == -1){
+        if (bindingWithData == null || selectedSavedCardPos == -1){
             return submitCHDToOttoPG;
         }
 
@@ -246,8 +251,12 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
             }
         }
 
-        submitCHDToOttoPG = new SubmitCHDToOttoPG(MerchantId,SessionId,"token",listCards.get(selectedCardPosision).token,cvv);
+        if (listCards.get(selectedSavedCardPos).cvv_required) {
+            submitCHDToOttoPG = new SubmitCHDToOttoPG(MerchantId, SessionId, "token", listCards.get(selectedSavedCardPos).token, cvv);
+        }else {
+            submitCHDToOttoPG = new SubmitCHDToOttoPG(MerchantId, SessionId, "token", listCards.get(selectedSavedCardPos).token);
 
+        }
         return submitCHDToOttoPG;
     }
 

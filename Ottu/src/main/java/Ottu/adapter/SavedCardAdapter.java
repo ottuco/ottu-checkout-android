@@ -23,6 +23,7 @@ import Ottu.model.DeleteCard.SendDeleteCard;
 import Ottu.model.fetchTxnDetail.Card;
 import Ottu.model.submitCHD.SubmitCHDToOttoPG;
 import Ottu.ui.PaymentActivity;
+import Ottu.util.BitmapCache;
 
 import static Ottu.util.Constant.MerchantId;
 import static Ottu.util.Constant.SessionId;
@@ -32,6 +33,7 @@ import static Ottu.util.Constant.selectedSavedCardPos;
 
 public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.ViewHolder>{
 
+    private final BitmapCache imgCache;
     ArrayList<Card> listCards;
     private ItemSavedcardBinding binding;
     private ItemSavedcardBinding bindingWithData;
@@ -41,6 +43,7 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
     public SavedCardAdapter(PaymentActivity paymentActivity, ArrayList<Card> cards) {
         listCards = cards;
         activity = paymentActivity;
+        imgCache = new BitmapCache(BitmapCache.getCacheSize());
     }
 
     @NonNull
@@ -91,12 +94,9 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                 itemBinding.layoutCVV.setVisibility(View.GONE);
             }
 
-            if (listCards.get(position).brand.contains("stc")){
 
-                itemBinding.cardImage.setImageDrawable(activity.getResources().getDrawable(R.drawable.stcpay) );
-            }else {
-                itemBinding.cardImage.setImageResource(getcard(listCards.get(position).brand));
-            }
+            itemBinding.cardImage.setImageResource(getcard(listCards.get(position).brand));
+
             itemBinding.cardNumber.setText(listCards.get(position).brand+" "+listCards.get(position).number);
             itemBinding.expireDate.setText(listCards.get(position).expiry_month+"/"+listCards.get(position).expiry_year);
             itemBinding.deleteImage.setOnClickListener(new View.OnClickListener() {
@@ -231,6 +231,8 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
             return R.drawable.icon_rupay;
         } else if (brand.toLowerCase().equals("unionpay")){
             return R.drawable.icon_unionpay;
+        } else if (brand.toLowerCase().contains("stc")){
+            return R.drawable.stcpay;
         }
 
         return 0;

@@ -3,6 +3,9 @@ package Ottu.util;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class BitmapCache extends LruCache<String, Bitmap> {
     public BitmapCache(int maxSize) {
         super(maxSize);
@@ -33,4 +36,20 @@ public class BitmapCache extends LruCache<String, Bitmap> {
     public boolean hasBitmap(String key) {
         return getBitmap(key) != null;
     }
+
+    HashMap<String,Bitmap> savedImg = new HashMap<>();
+
+    public void saveImage(String key, Bitmap btm){
+        if (!hasImageisHashmap(key)){
+            savedImg.put(key,btm);
+        }
+    }
+
+    public boolean hasImageisHashmap(String key){
+        return  savedImg.get(key) != null;
+    }
+    public Bitmap getsavedBitmap(String key) {
+        return savedImg.get(key);
+    }
+
 }

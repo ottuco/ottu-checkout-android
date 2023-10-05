@@ -142,8 +142,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 itemBinding.layoutCanSaveCard.setVisibility(View.VISIBLE);
             }
 
-            if (imgCache.hasBitmap(listPaymentMethod.get(position).icon)){
-                itemBinding.cardImage.setImageBitmap(imgCache.getBitmap(listPaymentMethod.get(position).icon));
+            if (imgCache.hasImageisHashmap(listPaymentMethod.get(position).icon)){
+                itemBinding.cardImage.setImageBitmap(imgCache.getsavedBitmap(listPaymentMethod.get(position).icon));
             }else {
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 executor.execute(new Runnable() {
@@ -168,7 +168,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 public void run() {
 
                                     itemBinding.cardImage.setImageBitmap(image);
-                                    imgCache.setBitmap(listPaymentMethod.get(position).icon,image);
+                                    imgCache.saveImage(listPaymentMethod.get(position).icon,image);
                                 }
                             });
 

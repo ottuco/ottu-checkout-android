@@ -1,6 +1,7 @@
 package Ottu.adapter;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.os.Build;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -25,6 +26,7 @@ import Ottu.model.submitCHD.SubmitCHDToOttoPG;
 import Ottu.ui.PaymentActivity;
 import Ottu.util.BitmapCache;
 
+import static Ottu.util.Constant.LocalLan;
 import static Ottu.util.Constant.MerchantId;
 import static Ottu.util.Constant.SessionId;
 import static Ottu.util.Constant.savedCardSelected;
@@ -108,8 +110,13 @@ public class SavedCardAdapter extends RecyclerView.Adapter<SavedCardAdapter.View
                     dialog.setCancelable(true);
                     dialog.setContentView(deleteBinding.getRoot());
 
+                    if (!LocalLan.equals("en")) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            dialog.getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                        }
+                    }
 
-                    deleteBinding.deleteTitle.setText("Remove : "+listCards.get(position).number);
+                    deleteBinding.deleteTitle.setText(activity.getResources().getString(R.string.delete)+listCards.get(position).number);
                     deleteBinding.no.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -879,11 +880,15 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void setFee(boolean visibility, String amount, String amountCurrency, String feeAmount) {
-
+        float fee = 0;
+        if (!TextUtils.isEmpty(feeAmount) && feeAmount != null && !feeAmount.equals("")) {
+            fee = Float.parseFloat(feeAmount);
+        }
         if (visibility) {
+            float amt = Float.parseFloat(amount) - Float.parseFloat(feeAmount);
             binding.layoutFeeAmount.setVisibility(View.VISIBLE);
-            binding.amountTxt.setText(Amount);
-            binding.amountCurrencyCode.setText(AmountCurrencyCode);
+            binding.amountTxt.setText(String.valueOf(amt));
+            binding.amountCurrencyCode.setText(amountCurrency);
             binding.feeTxt.setText(feeAmount);
             binding.feecurrencyCode.setText(amountCurrency);
             binding.finalAmountTxt.setText(amount);
@@ -894,12 +899,12 @@ public class PaymentActivity extends AppCompatActivity {
             binding.feeBelowPay.setText(feeAmount);
             binding.currencyCodeBelowPay.setText(" "+amountCurrency+" ");
 
-            Amount = amount;
-            AmountCurrencyCode = amountCurrency;
+//            Amount = amount;
+//            AmountCurrencyCode = amountCurrency;
 
         } else {
             binding.layoutFeeAmount.setVisibility(View.GONE);
-            binding.finalAmountTxt.setText(NetAmount);
+            binding.finalAmountTxt.setText(Amount);
             binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
 
             // below pay button text
@@ -907,11 +912,11 @@ public class PaymentActivity extends AppCompatActivity {
         }
 
         if (!feeAmount.isEmpty()) {
-            float fee = Float.parseFloat(feeAmount);
+
             if (fee <= 0) {
                 binding.layoutFeeAmount.setVisibility(View.GONE);
-                binding.finalAmountTxt.setText(NetAmount);
-                binding.finalAmountCurrencyCode.setText(AmountCurrencyCode);
+                binding.finalAmountTxt.setText(amount);
+                binding.finalAmountCurrencyCode.setText(amountCurrency);
 
                 // below pay button text
                 binding.layoutFeeBelowPay.setVisibility(View.GONE);
@@ -1033,7 +1038,11 @@ public class PaymentActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(dialogBinding.getRoot());
-
+        if (!LocalLan.equals("en")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                dialog.getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            }
+        }
 
         dialogBinding.pay.setOnClickListener(new View.OnClickListener() {
             @Override

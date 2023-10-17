@@ -17,7 +17,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="confirm_delete">إذا كنت لا تريد عرض طريقة الدفع هذه في خيارات الدفع</string>
+    <string name="confirm_delete">يرجى تأكيد ما إذا كنت لا تريد عرض طريقة الدفع هذه في خيارات الدفع الخاصة بك</string>
     <string name="payment_detail">تفاصيل الدفع</string>
     <string name="reference_number">Reference Number : </string>
     <string name="Amount">"Amount : "</string>
@@ -48,7 +48,7 @@
     <string name="fee">مصاريف</string>
     <string name="close">قريب</string>
     <string name="is_paid">مدفوع</string>
-    <string name="confirm">يتأكد</string>
+    <string name="confirm">تأكيد</string>
     <string name="save_stc_acc">stc حفظ حساب</string>
     <string name="card_name_error">"أدخل اسم صاحب البطاقة"</string>
     <string name="enter_valid_cvv">أدخل رمز CVV صالحًا</string>
@@ -56,7 +56,7 @@
     <string name="otp">كلمة المرور لمرة واحدة</string>
     <string name="send_otp">إرسال كلمة المرور لمرة واحدة</string>
     <string name="enter_otp">الرجاء إدخال كلمة مرور لمرة واحدة</string>
-    <string name="pay">يدفع</string>
+    <string name="pay">ادفع</string>
     <string name="cant_send_otp">تعذر إرسال كلمة مرور لمرة واحدة</string>
     <string name="phone_number_notcorrect">رقم الهاتف غير صحيح</string>
     <string name="incorrect_otp">كلمة مرور غير صحيحة لمرة واحدة</string>

@@ -16,7 +16,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="confirm_delete">Click Confirm if you don\'t want this payment method to be displayed in your payment options</string>
+    <string name="confirm_delete">Please confirm if you don\'t want this payment method to be displayed in your payment options</string>
     <string name="payment_detail">Payment Details</string>
     <string name="reference_number">Reference Number : </string>
     <string name="Amount">"Amount : "</string>
@@ -60,6 +60,6 @@
     <string name="phone_number_notcorrect">Phone number isn\'t correct</string>
     <string name="incorrect_otp">Incorrect OTP</string>
     <string name="couldnt_verify_otp">Couldn\'t verify OTP</string>
-    <string name="enter_mono">Enter Mobile Number</string>
+    <string name="enter_mono">Please enter mobile number</string>
 
 </resources>

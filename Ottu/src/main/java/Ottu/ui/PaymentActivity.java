@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -808,9 +809,13 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Toast.makeText(PaymentActivity.this, "Card Deleted", Toast.LENGTH_SHORT).show();
                         listCards.remove(position);
+                        if (listCards.size() < 1) {
+                            binding.layoutSavedListTitle.setVisibility(View.GONE);
+                        }
+
                         adapterSavedCard = new SavedCardAdapter(PaymentActivity.this, listCards);
                         binding.rvSavedCards.setAdapter(adapterSavedCard);
-                        setFee(false, "", "", "");
+                        setFee(false, "", "", "","");
                         setPayEnable(false);
                     } else {
                         Toast.makeText(PaymentActivity.this, "Card not deleted", Toast.LENGTH_SHORT).show();
@@ -879,15 +884,26 @@ public class PaymentActivity extends AppCompatActivity {
         binding.txtApplied.setText(getResources().getString(R.string.will_applied));
     }
 
-    public void setFee(boolean visibility, String amount, String amountCurrency, String feeAmount) {
+    public void setFee(boolean visibility, String amount, String amountCurrency, String feeAmount, String feeDisc) {
         float fee = 0;
+        NumberFormat formatter = NumberFormat.getNumberInstance();
+        if (amount == null || TextUtils.isEmpty(amount)){
+            if (Amount != null && !TextUtils.isEmpty(amount)) {
+                formatter.setMinimumFractionDigits(Amount.split("\\.")[1].length());
+            }else {
+                formatter.setMinimumFractionDigits(2);
+            }
+        }else {
+            String[] nmr = amount.split("\\.");
+            formatter.setMinimumFractionDigits(amount.split("\\.")[1].length());
+        }
         if (!TextUtils.isEmpty(feeAmount) && feeAmount != null && !feeAmount.equals("")) {
             fee = Float.parseFloat(feeAmount);
         }
         if (visibility) {
             float amt = Float.parseFloat(amount) - Float.parseFloat(feeAmount);
             binding.layoutFeeAmount.setVisibility(View.VISIBLE);
-            binding.amountTxt.setText(String.valueOf(amt));
+            binding.amountTxt.setText(String.valueOf(formatter.format(amt)));
             binding.amountCurrencyCode.setText(amountCurrency);
             binding.feeTxt.setText(feeAmount);
             binding.feecurrencyCode.setText(amountCurrency);
@@ -896,6 +912,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             // below pay button text
             binding.layoutFeeBelowPay.setVisibility(View.VISIBLE);
+            binding.txtApplied.setText(feeDisc);
             binding.feeBelowPay.setText(feeAmount);
             binding.currencyCodeBelowPay.setText(" "+amountCurrency+" ");
 
@@ -928,7 +945,8 @@ public class PaymentActivity extends AppCompatActivity {
 
         for (int i = 0; i < listPaymentMethods.size(); i++) {
             if (listPaymentMethods.get(i).code.equals(pg_code)) {
-                setFee(true, listPaymentMethods.get(i).amount, listPaymentMethods.get(i).currency_code, listPaymentMethods.get(i).fee);
+                setFee(true, listPaymentMethods.get(i).amount, listPaymentMethods.get(i).currency_code, listPaymentMethods.get(i).fee
+                ,listPaymentMethods.get(i).fee_description);
             }
         }
 
@@ -1179,7 +1197,7 @@ public class PaymentActivity extends AppCompatActivity {
         notifySavedCardAdapter();
         notifyPaymentMethodAdapter();
         setPayEnable(false);
-        setFee(false, "", "", "");
+        setFee(false, "", "", "","");
         binding.shimmerViewContainer.startShimmerAnimation();
     }
 

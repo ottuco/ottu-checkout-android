@@ -318,7 +318,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 itemBinding.layoutCardDetail.setVisibility(View.VISIBLE);
 //                                setArrow(itemBinding, true, listPaymentMethod.get(position).code);
                                 context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
-                                        , listPaymentMethod.get(position).fee);
+                                        , listPaymentMethod.get(position).fee,listPaymentMethod.get(position).fee_description);
                                 checkIfcardDetailfill(itemBinding, true);
                             } else {
                                 selectedCardPos = -1;
@@ -327,7 +327,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                                 context.setPayEnable(false);
 //                                setArrow(itemBinding.arrow,false);
                                 context.setFee(false, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
-                                        , listPaymentMethod.get(position).fee);
+                                        , listPaymentMethod.get(position).fee,listPaymentMethod.get(position).fee_description);
                             }
                         }else if (listPaymentMethod.get(position).flow.equals("redirect") || listPaymentMethod.get(position).flow.equals("stc_pay")
                                 || listPaymentMethod.get(position).flow.equals("ottu_pg")) {
@@ -338,7 +338,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                             selectedCardPos = position;
                             context.setPayEnable(true);
                             context.setFee(true, listPaymentMethod.get(position).amount, listPaymentMethod.get(position).currency_code
-                                    , listPaymentMethod.get(position).fee);
+                                    , listPaymentMethod.get(position).fee,listPaymentMethod.get(position).fee_description);
                         }
 
 //                        if (listPaymentMethod.get(position).code.equals("ottu_pg_kwd_tkn")) {

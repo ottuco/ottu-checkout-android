@@ -8,6 +8,7 @@ public class PaymentMethod{
     public String amount;
     public String currency_code;
     public String fee;
+    public String fee_description;
     public String icon;
     public String flow;
     public String payment_url ="";

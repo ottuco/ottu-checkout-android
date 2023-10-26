@@ -886,7 +886,8 @@ public class PaymentActivity extends AppCompatActivity {
 
     public void setFee(boolean visibility, String amount, String amountCurrency, String feeAmount, String feeDisc) {
         float fee = 0;
-        NumberFormat formatter = NumberFormat.getNumberInstance();
+        Locale locale = new Locale("en", "US");
+        NumberFormat formatter = NumberFormat.getNumberInstance(locale);
         if (amount == null || TextUtils.isEmpty(amount)){
             if (Amount != null && !TextUtils.isEmpty(amount)) {
                 formatter.setMinimumFractionDigits(Amount.split("\\.")[1].length());

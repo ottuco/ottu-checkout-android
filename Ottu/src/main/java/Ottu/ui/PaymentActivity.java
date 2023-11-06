@@ -583,7 +583,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
         } else {
-            finishPayment("SessionId is wrong.");
+            finishPayment("Session Id is wrong.");
 
         }
 
@@ -631,7 +631,7 @@ public class PaymentActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<RespoFetchTxnDetail> call, Throwable t) {
                     Toast.makeText(PaymentActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    finishPayment("Doen't connect to server.");
+                    finishPayment("Can't connect to server.");
                 }
 
             });
@@ -985,7 +985,8 @@ public class PaymentActivity extends AppCompatActivity {
                 dialogBinding.errorMsgText.setVisibility(View.GONE);
                 String mNumber = dialogBinding.moNumberEtxt.getText().toString().trim();
                 if (mNumber.length() < 8 || mNumber == null ||mNumber.equals("") ){
-                    dialogBinding.errorMsgText.setText(getResources().getString(R.string.incorrect_otp));
+                    dialogBinding.errorMsgText.setText(getResources().getString(R.string.phone_number_notcorrect));
+                    dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
                     return;
                 }
                 stcPayLoad.setCustomer_phone(mNumber);
@@ -1035,6 +1036,8 @@ public class PaymentActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<StcPayResponce> call, Throwable t) {
                             dialogBinding.progressLayout.setVisibility(View.GONE);
+                            dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
+                            dialogBinding.errorMsgText.setText(getResources().getString(R.string.couldnt_verify_otp));
                         }
                     });
                 }else {
@@ -1071,6 +1074,8 @@ public class PaymentActivity extends AppCompatActivity {
                 String otp = dialogBinding.moNumberEtxt.getText().toString().trim();
                 if (otp.length() < 6 || otp == null ||otp.equals("") ){
                     dialogBinding.errorMsgText.setText(getResources().getString(R.string.incorrect_otp));
+                    dialogBinding.errorMsgText.setVisibility(View.GONE);
+                    dialogBinding.errorMsgText.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (isNetworkAvailable(PaymentActivity.this)) {

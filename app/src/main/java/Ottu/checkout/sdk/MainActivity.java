@@ -36,6 +36,8 @@ import Ottu.checkout.sdk.network.GetDataService;
 
 import Ottu.ui.Ottu;
 import Ottu.payment.sdk.R;
+import Ottu.ui.StcPayActivity;
+import Ottu.util.StcPayButton;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,6 +107,50 @@ public class MainActivity extends AppCompatActivity  {
 
             }
         });
+        pay.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ArrayList<String> listPg = new ArrayList<>();
+                listPg.add("stc_pay");
+                CreatePaymentTransaction paymentTransactionStc = new CreatePaymentTransaction("e_commerce"
+                        , listPg
+                        ,text.getText().toString().trim()
+                        ,"KWD"
+                        ,"https://postapp.knpay.net/disclose_ok/"
+                        ,"https://postapp.knpay.net/redirected/"
+                        ,"mani"
+                        ,"0548220713"
+                        ,"300");
+                Intent intent = new Intent(getBaseContext(), StcPayActivity.class);
+                intent.putExtra("MerchantId","staging4.ottu.dev");
+                intent.putExtra("ApiId","kZia0dfY.vEWS0cUV5gWV1JDzIvzDfSxKLUh4qAa3");
+                intent.putExtra("Local","en");
+                intent.putExtra("CreateTrasactionBaseUrl","https://"+"staging4.ottu.dev"+"/b/");
+                intent.putExtra("CreateTrasactionData",paymentTransactionStc);
+
+                startActivityForResult(intent, OttuPaymentResult);
+                return false;
+            }
+        });
+
+
+        String amount = text.getText().toString().trim();
+
+        StcPayButton stcPayButton = findViewById(R.id.stcbtn);
+        CreatePaymentTransaction paymentTransactionStc = new CreatePaymentTransaction("e_commerce"
+                ,text.getText().toString().trim()
+                ,"KWD"
+                ,"https://postapp.knpay.net/disclose_ok/"
+                ,"https://postapp.knpay.net/redirected/"
+                ,"mani"
+                ,"0548220713"
+                ,"300");
+
+        stcPayButton.setApiId("kZia0dfY.vEWS0cUV5gWV1JDzIvzDfSxKLUh4qAa3");
+        stcPayButton.setMerchantId("staging4.ottu.dev");
+        stcPayButton.setCreateTrasaction(paymentTransactionStc);
+
+
     }
 
     public  boolean isStoragePermissionGranted() {

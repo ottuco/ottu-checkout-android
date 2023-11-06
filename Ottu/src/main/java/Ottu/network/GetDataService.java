@@ -1,5 +1,6 @@
 package Ottu.network;
 
+import Ottu.model.GenerateToken.CreatePaymentTransaction;
 import Ottu.model.StcPayMNumber.StcPayPayload;
 import Ottu.model.StcPayMNumber.StcPayResponce;
 import Ottu.model.StcPayOtp.StcOtpPayload;
@@ -20,6 +21,9 @@ import retrofit2.http.Url;
 
 public interface GetDataService {
 
+
+    @POST("checkout/v1/pymt-txn/")
+    Call<RespoFetchTxnDetail> createPaymentTxn(@Body CreatePaymentTransaction transaction);
 
     @GET()
     Call<RespoFetchTxnDetail> fetchTxnDetail(@Url String url);

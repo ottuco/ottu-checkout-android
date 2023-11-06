@@ -1,6 +1,7 @@
 package Ottu.util;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.SparseArray;
@@ -9,13 +10,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import Ottu.R;
 
 
 public class Util {
 
-    public static boolean isNetworkAvailable(Activity activity) {
+    public static boolean isNetworkAvailable(Context activity) {
         ConnectivityManager manager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         boolean isAvailable = false;
@@ -111,5 +113,6 @@ public class Util {
         }
         return new String(hexChars);
     }
+
 
 }

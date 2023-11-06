@@ -84,6 +84,11 @@
             android:textColor="@color/white"
             android:background="@color/gradiunt_blue"/>
 
+        <Ottu.util.StcPayButton
+            android:id="@+id/stcbtn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>
 </androidx.appcompat.widget.LinearLayoutCompat>

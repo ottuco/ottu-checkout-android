@@ -13,6 +13,7 @@ public class Constant {
     public static String UrlPublicKey= "" ;
     public static String SubmitUrlRedirect = "" ;
     public static String CustomerPhone = "" ;
+    public static String CustomerId = "" ;
     public static boolean savedCardSelected = false ;
     public static int selectedCardPos = -1;
     public static int selectedSavedCardPos = -1;

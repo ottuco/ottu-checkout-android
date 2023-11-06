@@ -1,9 +1,9 @@
 package Ottu.model.GenerateToken;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CreatePaymentTransaction
-{
+public class CreatePaymentTransaction implements Serializable {
     public String type;
 
     public List<String> pg_codes;
@@ -22,6 +22,17 @@ public class CreatePaymentTransaction
     public String expiration_time;
 
     public CreatePaymentTransaction(String type, List<String> pg_codes, String amount, String currency_code, String disclosure_url, String redirect_url, String customer_id,String customer_phone, String expiration_time) {
+        this.type = type;
+        this.pg_codes = pg_codes;
+        this.amount = amount;
+        this.currency_code = currency_code;
+        this.disclosure_url = disclosure_url;
+        this.redirect_url = redirect_url;
+        this.customer_id = customer_id;
+        this.customer_phone = customer_phone;
+        this.expiration_time = expiration_time;
+    }
+    public CreatePaymentTransaction(String type,  String amount, String currency_code, String disclosure_url, String redirect_url, String customer_id,String customer_phone, String expiration_time) {
         this.type = type;
         this.pg_codes = pg_codes;
         this.amount = amount;
@@ -75,6 +86,15 @@ public class CreatePaymentTransaction
     public String getCustomer_id(){
         return this.customer_id;
     }
+
+    public String getCustomer_phone() {
+        return customer_phone;
+    }
+
+    public void setCustomer_phone(String customer_phone) {
+        this.customer_phone = customer_phone;
+    }
+
     public void setExpiration_time(String expiration_time){
         this.expiration_time = expiration_time;
     }

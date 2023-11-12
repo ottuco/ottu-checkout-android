@@ -34,7 +34,6 @@ public class CreatePaymentTransaction implements Serializable {
     }
     public CreatePaymentTransaction(String type,  String amount, String currency_code, String disclosure_url, String redirect_url, String customer_id,String customer_phone, String expiration_time) {
         this.type = type;
-        this.pg_codes = pg_codes;
         this.amount = amount;
         this.currency_code = currency_code;
         this.disclosure_url = disclosure_url;

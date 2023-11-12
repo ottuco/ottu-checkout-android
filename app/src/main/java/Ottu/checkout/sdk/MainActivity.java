@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity  {
 
         StcPayButton stcPayButton = findViewById(R.id.stcbtn);
         CreatePaymentTransaction paymentTransactionStc = new CreatePaymentTransaction("e_commerce"
-                ,text.getText().toString().trim()
+                ,text.getText().toString().trim() // Amount
                 ,"KWD"
                 ,"https://postapp.knpay.net/disclose_ok/"
                 ,"https://postapp.knpay.net/redirected/"

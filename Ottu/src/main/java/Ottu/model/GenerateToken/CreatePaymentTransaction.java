@@ -41,6 +41,7 @@ public class CreatePaymentTransaction implements Serializable {
         this.customer_id = customer_id;
         this.customer_phone = customer_phone;
         this.expiration_time = expiration_time;
+
     }
 
     public void setType(String type){

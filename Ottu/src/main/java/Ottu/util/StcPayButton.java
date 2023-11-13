@@ -165,9 +165,7 @@ public class StcPayButton extends androidx.appcompat.widget.AppCompatImageButton
         lanCode = local;
     }
 
-    public void setCreateTrasaction(CreatePaymentTransaction createTrasaction) {
-        this.createTrasaction = createTrasaction;
-    }
+
     public void setCreateTransaction(String type,
                                      String amount,
                                      String currency_code,

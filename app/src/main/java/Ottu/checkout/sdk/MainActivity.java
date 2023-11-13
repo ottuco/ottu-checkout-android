@@ -137,20 +137,11 @@ public class MainActivity extends AppCompatActivity  {
         String amount = text.getText().toString().trim();
 
         StcPayButton stcPayButton = findViewById(R.id.stcbtn);
-        CreatePaymentTransaction paymentTransactionStc = new CreatePaymentTransaction("e_commerce"
-                ,text.getText().toString().trim() // Amount
-                ,"KWD"
-                ,"https://postapp.knpay.net/disclose_ok/"
-                ,"https://postapp.knpay.net/redirected/"
-                ,"mani"
-                ,"0548220713"
-                ,"300");
 
         stcPayButton.setApiId("kZia0dfY.vEWS0cUV5gWV1JDzIvzDfSxKLUh4qAa3");
         stcPayButton.setMerchantId("staging4.ottu.dev");
-//        stcPayButton.setCreateTrasaction(paymentTransactionStc);
         stcPayButton.setCreateTransaction("e_commerce"
-                ,text.getText().toString().trim() // Amount
+                ,amount
                 ,"KWD"
                 ,"https://postapp.knpay.net/disclose_ok/"
                 ,"https://postapp.knpay.net/redirected/"

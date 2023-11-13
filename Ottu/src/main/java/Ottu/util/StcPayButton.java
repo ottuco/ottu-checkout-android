@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import Ottu.BuildConfig;
@@ -64,6 +65,7 @@ public class StcPayButton extends androidx.appcompat.widget.AppCompatImageButton
     String merchantId ;
     String lanCode ;
     CreatePaymentTransaction createTrasaction;
+    public String type = "e_commerce";
 
     public StcPayButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -81,6 +83,7 @@ public class StcPayButton extends androidx.appcompat.widget.AppCompatImageButton
                     Toast.makeText(context, "API Id id is missing", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 if (createTrasaction == null ){
                     Toast.makeText(context, "Transaction data is not provided", Toast.LENGTH_SHORT).show();
                     return;
@@ -88,6 +91,7 @@ public class StcPayButton extends androidx.appcompat.widget.AppCompatImageButton
                     String amount = createTrasaction.getAmount();
                     String customerid = createTrasaction.getCustomer_id();
                     String mobileNumber = createTrasaction.getCustomer_phone();
+                    String currencycode = createTrasaction.getCustomer_phone();
 
                     if (amount == null || TextUtils.isEmpty(amount) || Float.parseFloat(amount) <= 0.001){
                         Toast.makeText(context, "Amount is missing in transaction detail", Toast.LENGTH_SHORT).show();
@@ -105,6 +109,10 @@ public class StcPayButton extends androidx.appcompat.widget.AppCompatImageButton
                         Toast.makeText(context, "Mobile number is missing in transaction detail", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if (currencycode == null || TextUtils.isEmpty(currencycode)){
+                        Toast.makeText(context, "Currency code is missing in transaction detail", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 if (lanCode == null || TextUtils.isEmpty(lanCode) || lanCode.equals("en") || lanCode.equals("ar")){
                     lanCode = "en";
@@ -112,6 +120,7 @@ public class StcPayButton extends androidx.appcompat.widget.AppCompatImageButton
                 ArrayList<String> listpg = new ArrayList<>();
                 listpg.add("stc_pay");
                 createTrasaction.setPg_codes(listpg);
+
 
                 intent = new Intent(context, StcPayActivity.class);
                 intent.putExtra("MerchantId",merchantId);
@@ -158,5 +167,16 @@ public class StcPayButton extends androidx.appcompat.widget.AppCompatImageButton
 
     public void setCreateTrasaction(CreatePaymentTransaction createTrasaction) {
         this.createTrasaction = createTrasaction;
+    }
+    public void setCreateTransaction(String type,
+                                     String amount,
+                                     String currency_code,
+                                     String disclosure_url,
+                                     String redirect_url,
+                                     String customer_id,
+                                     String customer_phone,
+                                     String expiration_time){
+
+        createTrasaction = new CreatePaymentTransaction(type,amount,currency_code,disclosure_url,redirect_url,customer_id,customer_phone,expiration_time);
     }
 }

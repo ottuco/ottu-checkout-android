@@ -134,7 +134,7 @@ BroadcastReceiver paymentReceiver = new BroadcastReceiver() {
    android:layout_height="40dp"/>
 
 ```
-Set creadincial and transaction detail for make payment before user click on stc pay button
+Set creadential and transaction detail for make payment before user click on stc pay button
 ```java
   stcPayButton.setApiId("API_key");
         stcPayButton.setMerchantId("Mercent_id");
@@ -166,7 +166,8 @@ Set creadincial and transaction detail for make payment before user click on stc
 
 
 ```
-
+#### Note
+- Avoid to set click listener for stc pay button because it's managed by StcPayButton class.
 
 ## Licenses
 

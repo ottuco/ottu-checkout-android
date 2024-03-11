@@ -64,5 +64,9 @@
 
     <string name="title_payment_method">Payment Method</string>
     <string name="title_selected_payment_method">Select Payment Method</string>
+    <string name="title_payment_details">Payment Details</string>
+    <string name="title_amount">Amount</string>
+    <string name="title_applied_fees">Applied Fees</string>
+    <string name="title_total">Total</string>
 
 </resources>

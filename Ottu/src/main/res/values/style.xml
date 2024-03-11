@@ -4,18 +4,38 @@
     <style name="Ottu.TextAppearance.TitleLarge" parent="Theme.TextAppearance.TitleLarge">
         <item name="android:textStyle">bold</item>
         <item name="android:lineSpacingExtra">24dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">24dp</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Ottu.TextAppearance.TitleMedium" parent="Theme.TextAppearance.TitleMedium">
         <item name="android:fontFamily">@font/poppins_regular</item>
         <item name="android:lineSpacingExtra">27dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">27dp</item>
         <item name="fontWeight">500</item>
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="Ottu.TextAppearance.TitleSmall" parent="Theme.TextAppearance.TitleSmall">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:lineSpacingExtra">24dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="Ottu.TextAppearance.BodyLarge1" parent="Theme.TextAppearance.BodyLarge1">
         <item name="android:lineSpacingExtra">21dp</item>
+        <item name="android:layout_height">21dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textStyle">bold</item>
         <item name="fontWeight">600</item>
         <item name="android:letterSpacing">0.04</item>
@@ -25,6 +45,9 @@
     <style name="Ottu.TextAppearance.BodyLarge2" parent="Theme.TextAppearance.BodyLarge2">
         <item name="android:fontFamily">@font/sfpro_bold</item>
         <item name="android:lineSpacingExtra">22dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">22dp</item>
         <item name="fontWeight">600</item>
         <item name="android:letterSpacing">-0.04</item>
         <item name="android:textSize">17sp</item>
@@ -33,6 +56,9 @@
     <style name="Ottu.TextAppearance.BodyMedium1" parent="Theme.TextAppearance.BodyMedium1">
         <item name="android:fontFamily">@font/poppins_regular</item>
         <item name="android:lineSpacingExtra">21dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">21dp</item>
         <item name="fontWeight">600</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -40,15 +66,31 @@
     <style name="Ottu.TextAppearance.BodyMedium2" parent="Theme.TextAppearance.BodyMedium2">
         <item name="android:fontFamily">@font/inter_regular</item>
         <item name="android:lineSpacingExtra">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="fontWeight">500</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Ottu.TextAppearance.LabelMedium" parent="Theme.TextAppearance.LabelMedium">
         <item name="android:fontFamily">@font/sfpro_display_regular</item>
         <item name="android:lineSpacingExtra">17dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">17dp</item>
         <item name="fontWeight">500</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Ottu.TextAppearance.LabelSmall" parent="Theme.TextAppearance.LabelSmall">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:lineSpacingExtra">18dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

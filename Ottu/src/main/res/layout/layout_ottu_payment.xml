@@ -5,11 +5,11 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvPaymentsTitle"
+        android:id="@+id/tvPaymentTitle"
         style="@style/Ottu.TextAppearance.TitleLarge"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:text="@string/title_payment_method"
+        app:layout_constraintBottom_toTopOf="@id/btnSelectedPayment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,113 @@
         android:background="@drawable/button_select_payment_rounded"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintTop_toBottomOf="@id/tvPaymentsTitle"/>
+        app:layout_constraintBottom_toTopOf="@id/tvPaymentDetailsTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvPaymentTitle" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentDetailsTitle"
+        style="@style/Ottu.TextAppearance.TitleMedium"
+        android:layout_width="0dp"
+        android:layout_marginVertical="20dp"
+        android:text="@string/title_payment_details"
+        app:layout_constraintBottom_toTopOf="@id/tvPaymentAmountTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSelectedPayment" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalCenter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:guidelineUseRtl="true"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentAmountTitle"
+        style="@style/Ottu.TextAppearance.TitleMedium"
+        android:layout_width="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:layout_marginStart="28dp"
+        android:text="@string/title_amount"
+        app:layout_constraintBottom_toTopOf="@id/tvPaymentFeesTitle"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPaymentDetailsTitle"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentAmountValue"
+        style="@style/Ottu.TextAppearance.TitleSmall"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="12.000"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/tvPaymentAmountTitle"
+        app:layout_constraintEnd_toStartOf="@id/tvPaymentAmountCurrencyValue"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/guidelineVerticalCenter"
+        app:layout_constraintTop_toTopOf="@id/tvPaymentAmountTitle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentAmountCurrencyValue"
+        style="@style/Ottu.TextAppearance.LabelSmall"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:text="KWD"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvPaymentAmountValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvPaymentAmountValue" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentFeesTitle"
+        style="@style/Ottu.TextAppearance.TitleMedium"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="28dp"
+        android:text="@string/title_applied_fees"
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPaymentAmountTitle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentFeesValue"
+        style="@style/Ottu.TextAppearance.TitleSmall"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="-"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/tvPaymentFeesTitle"
+        app:layout_constraintEnd_toStartOf="@id/tvPaymentFeesCurrencyValue"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/tvPaymentAmountValue"
+        app:layout_constraintTop_toTopOf="@id/tvPaymentFeesTitle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentFeesCurrencyValue"
+        style="@style/Ottu.TextAppearance.LabelSmall"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:text="KWD"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvPaymentFeesValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvPaymentFeesValue" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="17dp"
+        android:layout_marginVertical="20dp"
+        android:alpha="0.1"
+        android:background="@color/grayScale1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPaymentFeesTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

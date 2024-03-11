@@ -27,6 +27,9 @@
     <color name="red">#F44336</color>
 
 
+    <color name="colorOnPrimary">@color/grayScale1</color>
+    <color name="colorOnPrimaryContainer">@color/grayScale3</color>
+
     <color name="grayScale1">#302F37</color>
     <color name="grayScale2">#494949</color>
     <color name="grayScale3">#707070</color>

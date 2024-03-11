@@ -35,7 +35,7 @@
     <string name="loading">loading...</string>
     <string name="No">No</string>
     <string name="yes">Yes</string>
-        <string name="name_card">الاسم على البطاقة</string>
+    <string name="name_card">الاسم على البطاقة</string>
     <string name="card_number">رقم البطاقة</string>
     <string name="date_hint">شهر/سنة</string>
     <string name="cvv">رمز التحقق من البطاقة</string>
@@ -65,5 +65,9 @@
 
     <string name="title_payment_method">Payment Method</string>
     <string name="title_selected_payment_method">Select Payment Method</string>
+    <string name="title_payment_details">Payment Details</string>
+    <string name="title_amount">Amount</string>
+    <string name="title_applied_fees">Applied Fees</string>
+    <string name="title_total">Total</string>
 
 </resources>

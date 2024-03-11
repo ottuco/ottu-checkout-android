@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorOnPrimary">@color/white</color>
+    <color name="colorOnPrimaryContainer">@color/grayScale6</color>
+
+</resources>

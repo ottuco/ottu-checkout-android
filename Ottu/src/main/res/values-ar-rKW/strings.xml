@@ -62,4 +62,8 @@
     <string name="incorrect_otp">كلمة مرور غير صحيحة لمرة واحدة</string>
     <string name="couldnt_verify_otp">تعذر التحقق من كلمة المرور لمرة واحدة</string>
     <string name="enter_mono">الرجاء إدخال رقم الهاتف المحمول</string>
+
+    <string name="title_payment_method">Payment Method</string>
+    <string name="title_selected_payment_method">Select Payment Method</string>
+
 </resources>

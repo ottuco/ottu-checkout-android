@@ -1,8 +1,4 @@
-<<<<<<< HEAD:Ottu/src/androidTest/java/Ottu/ExampleInstrumentedTest.java
-package Ottu;
-=======
-package ottu.checkout;
->>>>>>> 45e955ee8ca4f3ddeb4f4b36b3d6ff2021930a94:Ottu/src/androidTest/java/ottu/checkout/ExampleInstrumentedTest.java
+package Ottu.checkout;
 
 import android.content.Context;
 

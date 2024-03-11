@@ -14,7 +14,7 @@ public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
     private static Retrofit retrofit1;
-    private static final String BASE_URL = "https://staging4.ottu.dev/b/";
+    private static final String BASE_URL = "https://alpha.ottu.net/b/";
     private static final String BASE_URLPg = "https://pg.ottu.dev/pg/";
 
     public static GetDataService getRetrofitInstance() {

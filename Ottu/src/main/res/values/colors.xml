@@ -25,4 +25,14 @@
     <color name="text_gray7">#DADADA</color>
     <color name="text_gray8">#E4E4E4</color>
     <color name="red">#F44336</color>
+
+
+    <color name="grayScale1">#302F37</color>
+    <color name="grayScale2">#494949</color>
+    <color name="grayScale3">#707070</color>
+    <color name="grayScale4">#F2F2F2</color>
+    <color name="grayScale5">#F7F9FB</color>
+    <color name="grayScale6">#9FA7AA</color>
+
+
 </resources>

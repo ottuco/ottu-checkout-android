@@ -118,14 +118,14 @@ public class MainActivity extends AppCompatActivity  {
                         ,"KWD"
                         ,"https://postapp.knpay.net/disclose_ok/"
                         ,"https://postapp.knpay.net/redirected/"
-                        ,"mani"
+                        ,"john1"
                         ,"0548220713"
                         ,"300");
                 Intent intent = new Intent(getBaseContext(), StcPayActivity.class);
-                intent.putExtra("MerchantId","staging4.ottu.dev");
-                intent.putExtra("ApiId","kZia0dfY.vEWS0cUV5gWV1JDzIvzDfSxKLUh4qAa3");
+                intent.putExtra("MerchantId","alpha.ottu.net");
+                intent.putExtra("ApiId","cHSLW0bE.56PLGcUYEhRvzhHVVO9CbF68hmDiXcPI");
                 intent.putExtra("Local","en");
-                intent.putExtra("CreateTrasactionBaseUrl","https://"+"staging4.ottu.dev"+"/b/");
+                intent.putExtra("CreateTrasactionBaseUrl","https://"+"alpha.ottu.net"+"/b/");
                 intent.putExtra("CreateTrasactionData",paymentTransactionStc);
 
                 startActivityForResult(intent, OttuPaymentResult);
@@ -138,18 +138,22 @@ public class MainActivity extends AppCompatActivity  {
 
         StcPayButton stcPayButton = findViewById(R.id.stcbtn);
 
-        stcPayButton.setApiId("kZia0dfY.vEWS0cUV5gWV1JDzIvzDfSxKLUh4qAa3");
-        stcPayButton.setMerchantId("staging4.ottu.dev");
+        stcPayButton.setApiId("cHSLW0bE.56PLGcUYEhRvzhHVVO9CbF68hmDiXcPI");
+        stcPayButton.setMerchantId("alpha.ottu.net");
         stcPayButton.setCreateTransaction("e_commerce"
                 ,amount
                 ,"KWD"
                 ,"https://postapp.knpay.net/disclose_ok/"
                 ,"https://postapp.knpay.net/redirected/"
-                ,"mani"
+                ,"john1"
                 ,"0548220713"
                 ,"300");
 
 
+        AppCompatButton btnCustomersApp = findViewById(R.id.btnCustomersApp);
+        btnCustomersApp.setOnClickListener(view -> {
+            startActivity(new Intent(this, CustomersAppActivity.class));
+        });
     }
 
     public  boolean isStoragePermissionGranted() {
@@ -175,7 +179,7 @@ public class MainActivity extends AppCompatActivity  {
                 ,"KWD"
                 ,"https://postapp.knpay.net/disclose_ok/"
                 ,"https://postapp.knpay.net/redirected/"
-                ,"mani"
+                ,"john1"
                 ,"0548220713"
                 ,"300");
 
@@ -197,8 +201,8 @@ public class MainActivity extends AppCompatActivity  {
 
                     if (response.isSuccessful() && response.body() != null) {
                         Ottu ottuPaymentSdk = new Ottu(MainActivity.this);
-                        ottuPaymentSdk.setApiId("kZia0dfY.vEWS0cUV5gWV1JDzIvzDfSxKLUh4qAa3");  // L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR
-                        ottuPaymentSdk.setMerchantId("staging4.ottu.dev"); //ksa.ottu.dev
+                        ottuPaymentSdk.setApiId("cHSLW0bE.56PLGcUYEhRvzhHVVO9CbF68hmDiXcPI");  // L0Fc5f81.dLqByodGesaD9pJdzoKpo6rP1FQBkVzR
+                        ottuPaymentSdk.setMerchantId("alpha.ottu.net"); //ksa.ottu.dev
                         ottuPaymentSdk.setSessionId(response.body().session_id);
                         ottuPaymentSdk.setAmount(response.body().amount);
                         ottuPaymentSdk.setLocal(etLocalLan.getText().toString().trim());

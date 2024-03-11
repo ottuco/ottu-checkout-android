@@ -62,4 +62,7 @@
     <string name="couldnt_verify_otp">Couldn\'t verify OTP</string>
     <string name="enter_mono">Please enter mobile number</string>
 
+    <string name="title_payment_method">Payment Method</string>
+    <string name="title_selected_payment_method">Select Payment Method</string>
+
 </resources>

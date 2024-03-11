@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutSelectedPayment"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_selected_payment_height"
+    android:background="@drawable/button_select_payment_rounded"
+    android:clickable="true"
+    android:focusable="true">
+
+    <include layout="@layout/view_unselected_payment"/>
+
+</FrameLayout>

@@ -14,6 +14,7 @@ public class RespoFetchTxnDetail{
     public String mode;
     public String operation;
     public ArrayList<PaymentMethod> payment_methods;
+    public ArrayList<PaymentService> payment_services;
     public ArrayList<String> pg_codes;
     public String redirect_url;
     public Response response;

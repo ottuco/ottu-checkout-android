@@ -609,9 +609,9 @@ public class PaymentActivity extends AppCompatActivity {
 //                        SubmitUrlRedirect = response.body().submit_url;
                         listSavedCards = response.body().cards;
                         listPaymentMethods = response.body().payment_methods;
-                        ArrayList<PaymentService> listPaymentServices = response.body().payment_services;
 
-                        // new response handling
+                        // new response format handling (backward compatibility included)
+                        ArrayList<PaymentService> listPaymentServices = response.body().payment_services;
                         mergePaymentMethodsAndServices(listPaymentServices);
 //                        UrlPublicKey = response.body().public_key_url;
 

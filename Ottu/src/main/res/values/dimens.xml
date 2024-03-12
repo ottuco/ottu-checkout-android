@@ -2,5 +2,6 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="view_selected_payment_height">57dp</dimen>
+    <dimen name="view_payment_button_height">53dp</dimen>
     <dimen name="view_payment_selection_horizontal_padding">18dp</dimen>
 </resources>

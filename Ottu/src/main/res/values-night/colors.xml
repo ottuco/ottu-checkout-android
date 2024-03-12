@@ -3,4 +3,7 @@
     <color name="colorOnPrimary">@color/white</color>
     <color name="colorOnPrimaryContainer">@color/grayScale6</color>
 
+    <color name="colorTextPaymentButtonEnabled">@color/black</color>
+    <color name="colorTextPaymentButtonDisabled">#767678</color>
+
 </resources>

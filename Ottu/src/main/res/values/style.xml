@@ -93,4 +93,21 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="Ottu.TextAppearance.Button" parent="Theme.TextAppearance.Button">
+        <item name="fontFamily">@font/font_montserrat</item>
+        <item name="android:fontFamily">@font/font_montserrat</item>
+        <item name="android:lineSpacingExtra">21dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">21dp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Ottu.Button" parent="Theme.Button">
+        <item name="android:background">@drawable/selector_button_payment</item>
+    </style>
+
 </resources>

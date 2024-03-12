@@ -69,4 +69,11 @@
         <item name="android:textColor">@color/grayScale2</item>
     </style>
 
+    <style name="Theme.TextAppearance.Button" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">@color/selector_text_button_payment</item>
+    </style>
+
+    <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button">
+    </style>
+
 </resources>

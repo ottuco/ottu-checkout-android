@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    style="@style/Theme.Container.Primary"
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -170,6 +171,15 @@
         app:layout_constraintBaseline_toBaselineOf="@id/tvPaymentTotalValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvPaymentTotalValue" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupViewType"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="tvPaymentTitle, btnSelectedPayment, tvPaymentDetailsTitle,
+        tvPaymentAmountTitle, tvPaymentFeesTitle, tvPaymentTotalTitle, tvPaymentAmountValue,
+        tvPaymentAmountCurrencyValue, tvPaymentFeesValue, tvPaymentFeesCurrencyValue,
+        tvPaymentTotalValue, tvPaymentTotalCurrencyValue, divider" />
 
     <Ottu.ui.payment.OttuPaymentButton
         android:id="@+id/btnPayment"

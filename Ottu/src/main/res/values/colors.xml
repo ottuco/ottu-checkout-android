@@ -40,6 +40,8 @@
     <color name="grayScale5">#F7F9FB</color>
     <color name="grayScale6">#9FA7AA</color>
     <color name="grayScale7">#E0E0E0</color>
+    <color name="grayScale8">#29292B</color>
+    <color name="grayScale9">#1D1B20</color>
 
 
 </resources>

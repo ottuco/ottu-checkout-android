@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layoutSelectedPayment"
     android:layout_width="match_parent"
+    style="@style/Theme.Container.Secondary"
     android:layout_height="@dimen/view_selected_payment_height"
     android:background="@drawable/button_select_payment_rounded"
     android:clickable="true"

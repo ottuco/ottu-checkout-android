@@ -8,6 +8,6 @@
     android:clickable="true"
     android:focusable="true">
 
-    <include layout="@layout/view_unselected_payment"/>
+    <include layout="@layout/view_branded_selected_payment"/>
 
 </FrameLayout>

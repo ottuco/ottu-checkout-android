@@ -69,6 +69,10 @@
         <item name="android:textColor">@color/grayScale2</item>
     </style>
 
+    <style name="Theme.TextAppearance.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/grayScale10</item>
+    </style>
+
     <style name="Theme.TextAppearance.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textColor">@color/grayScale3</item>
     </style>

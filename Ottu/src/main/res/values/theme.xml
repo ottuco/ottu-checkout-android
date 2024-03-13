@@ -45,6 +45,10 @@
         <item name="android:backgroundTint">@color/grayScale4</item>
     </style>
 
+    <style name="Theme.Container.Tertiary" parent="Theme.OttuPaymentSdk">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
     <style name="Theme.TextAppearance.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textColor">@color/grayScale1</item>
     </style>
@@ -57,8 +61,16 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="Theme.TextAppearance.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+    <style name="Theme.TextAppearance.TitleMedium3" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/grayScale9</item>
+    </style>
+
+    <style name="Theme.TextAppearance.TitleSmall1" parent="TextAppearance.Material3.TitleSmall">
         <item name="android:textColor">@color/grayScale2</item>
+    </style>
+
+    <style name="Theme.TextAppearance.TitleSmall2" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textColor">@color/grayScale15</item>
     </style>
 
     <style name="Theme.TextAppearance.BodyLarge1" parent="TextAppearance.Material3.BodyLarge">
@@ -85,8 +97,12 @@
         <item name="android:textColor">@color/grayScale3</item>
     </style>
 
-    <style name="Theme.TextAppearance.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+    <style name="Theme.TextAppearance.LabelSmall1" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textColor">@color/grayScale2</item>
+    </style>
+
+    <style name="Theme.TextAppearance.LabelSmall2" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">@color/grayScale15</item>
     </style>
 
     <style name="Theme.TextAppearance.Button" parent="TextAppearance.Material3.LabelMedium">
@@ -99,6 +115,11 @@
     <style name="Theme.BottomSheet.DragHandle" parent="">
         <item name="android:background">@drawable/bottom_sheet_drag_handle</item>
         <item name="android:backgroundTint">@color/grayScale12</item>
+    </style>
+
+    <style name="Theme.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/Ottu.BottomSheetDialog.ShapeAppearance</item>
+        <item name="backgroundTint">@color/grayScale5</item>
     </style>
 
 </resources>

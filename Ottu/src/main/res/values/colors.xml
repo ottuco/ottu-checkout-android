@@ -48,6 +48,8 @@
     <color name="grayScale11">#D0D0D0</color>
     <color name="grayScale12">#79747E</color>
     <color name="grayScale13">#938F99</color>
+    <color name="grayScale14">#2A2A2C</color>
+    <color name="grayScale15">#49454F</color>
 
 
 </resources>

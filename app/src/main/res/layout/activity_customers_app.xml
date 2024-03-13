@@ -57,7 +57,7 @@
         app:layout_constraintTop_toTopOf="@id/tvSwitchContent" />
 
     <Ottu.ui.payment.OttuPaymentView
-        android:id="@+id/viewOttuPayment"
+        android:id="@+id/ottuPaymentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -77,6 +77,6 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewOttuPayment" />
+        app:layout_constraintTop_toBottomOf="@id/ottuPaymentView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

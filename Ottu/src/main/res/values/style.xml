@@ -10,12 +10,21 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="Ottu.TextAppearance.TitleMedium" parent="Theme.TextAppearance.TitleMedium">
+    <style name="Ottu.TextAppearance.TitleMedium1" parent="Theme.TextAppearance.TitleMedium1">
         <item name="fontFamily">@font/font_poppins</item>
         <item name="android:lineSpacingExtra">27dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:layout_height">27dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Ottu.TextAppearance.TitleMedium2" parent="Theme.TextAppearance.TitleMedium2">
+        <item name="android:lineSpacingExtra">22dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_height">22dp</item>
+        <item name="android:letterSpacing">-0.041</item>
         <item name="android:textSize">18sp</item>
     </style>
 
@@ -117,6 +126,22 @@
 
     <style name="Ottu.Button" parent="Theme.Button">
         <item name="android:background">@drawable/selector_button_payment</item>
+    </style>
+
+    <style name="Ottu.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Ottu.BottomSheet</item>
+    </style>
+
+    <style name="Ottu.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/Ottu.BottomSheetDialog.ShapeAppearance</item>
+    </style>
+
+    <style name="Ottu.BottomSheetDialog.ShapeAppearance" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">28dp</item>
+        <item name="cornerSizeTopLeft">28dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
 </resources>

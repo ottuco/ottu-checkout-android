@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="@dimen/view_payment_selection_horizontal_padding"
-    android:paddingEnd="@dimen/view_payment_selection_padding_large">
+    android:layout_height="@dimen/item_payment_method_full_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivPaymentMethod"
@@ -13,6 +11,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tvSelectedPaymentDescription"
         app:layout_constraintEnd_toStartOf="@id/tvSelectedPayment"
         app:layout_constraintHorizontal_bias="0"
+        android:layout_marginStart="@dimen/default_padding_medium"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvSelectedPayment"
@@ -23,13 +22,13 @@
         style="@style/Ottu.TextAppearance.BodyLarge1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="@dimen/default_padding_medium"
         app:layout_constrainedWidth="true"
         android:ellipsize="end"
         android:lines="1"
         app:layout_constraintVertical_chainStyle="packed"
         android:text="STC Pay"
-        app:layout_constraintEnd_toStartOf="@id/tvChangeLabel"
+        app:layout_constraintEnd_toStartOf="@id/tvPaymentValue"
         app:layout_constraintBottom_toTopOf="@id/tvSelectedPaymentDescription"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/ivPaymentMethod"
@@ -50,16 +49,16 @@
         app:layout_constraintTop_toBottomOf="@id/tvSelectedPayment" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvChangeLabel"
+        android:id="@+id/tvPaymentValue"
         style="@style/Ottu.TextAppearance.LabelMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_padding_large"
         android:ellipsize="end"
         android:lines="1"
-        android:text="@string/text_change"
+        android:text="+1.000 KWD"
         app:layout_constraintBottom_toBottomOf="@id/tvSelectedPaymentDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvSelectedPayment" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

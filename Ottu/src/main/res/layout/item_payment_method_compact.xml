@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_payment_method_compact_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivPaymentMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tvPaymentTitle"
+        app:layout_constraintEnd_toStartOf="@id/tvPaymentTitle"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginStart="@dimen/default_padding_medium"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvPaymentTitle"
+        app:srcCompat="@drawable/ic_payment_method" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentTitle"
+        style="@style/Ottu.TextAppearance.BodyLarge1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_padding_medium"
+        app:layout_constrainedWidth="true"
+        android:ellipsize="end"
+        android:lines="1"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:text="STC Pay"
+        app:layout_constraintEnd_toStartOf="@id/tvPaymentValue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivPaymentMethod"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentValue"
+        style="@style/Ottu.TextAppearance.LabelMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_padding_large"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="+1.000 KWD"
+        app:layout_constraintBottom_toBottomOf="@id/tvPaymentTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvPaymentTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

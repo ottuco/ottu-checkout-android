@@ -9,11 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import Ottu.databinding.LayoutOttuPaymentSelectionBinding;
+import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
 
 
 public class OttuPaymentSelectionView extends FrameLayout {
 
     private LayoutOttuPaymentSelectionBinding binding;
+    private OttuPaymentSelectionListener listener;
 
     public OttuPaymentSelectionView(@NonNull Context context) {
         super(context);
@@ -32,6 +34,17 @@ public class OttuPaymentSelectionView extends FrameLayout {
 
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentSelectionBinding.inflate(LayoutInflater.from(context), this, true);
+
+        binding.layoutSelectedPayment.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onSelectedPaymentClick();
+            }
+        });
+
+    }
+
+    public void setListener(OttuPaymentSelectionListener listener) {
+        this.listener = listener;
     }
 
     public enum Type {

@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <View
         android:id="@+id/viewDragHandle"
+        style="@style/Theme.BottomSheet.DragHandle"
         android:layout_width="32dp"
         android:layout_height="4dp"
         android:layout_marginTop="20dp"
-        style="@style/Theme.BottomSheet.DragHandle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPaymentMethodTitle"
-        android:layout_width="wrap_content"
         style="@style/Ottu.TextAppearance.TitleMedium2"
-        android:text="@string/title_selected_payment_method"
+        android:layout_width="wrap_content"
         android:layout_marginTop="24dp"
+        android:text="@string/title_selected_payment_method"
         app:layout_constraintBottom_toTopOf="@id/rvPaymentMethods"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,9 +29,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPaymentMethods"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
         android:layout_marginTop="18dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethodTitle"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethodTitle"
+        tools:itemCount="15"
+        tools:listitem="@layout/item_payment_method_full" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

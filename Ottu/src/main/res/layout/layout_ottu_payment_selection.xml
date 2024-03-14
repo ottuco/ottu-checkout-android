@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/view_branded_selected_payment"/>
+    <include
+        android:id="@+id/btnSelectedPayment"
+        layout="@layout/view_branded_selected_payment"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilCvvCode"

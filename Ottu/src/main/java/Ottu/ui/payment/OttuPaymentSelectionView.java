@@ -36,7 +36,7 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentSelectionBinding.inflate(LayoutInflater.from(context), this, true);
 
-        binding.layoutSelectedPayment.setOnClickListener(view -> {
+        binding.btnSelectedPayment.getRoot().setOnClickListener(view -> {
             if (listener != null) {
                 listener.onSelectedPaymentClick();
             }

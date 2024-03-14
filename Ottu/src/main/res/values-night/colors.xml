@@ -6,4 +6,7 @@
     <color name="colorTextPaymentButtonEnabled">@color/black</color>
     <color name="colorTextPaymentButtonDisabled">#767678</color>
 
+    <color name="colorStcPayIcon">@color/white</color>
+    <color name="colorVisaIcon">@color/white</color>
+
 </resources>

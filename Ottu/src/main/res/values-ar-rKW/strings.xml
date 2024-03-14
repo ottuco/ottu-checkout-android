@@ -69,6 +69,8 @@
     <string name="title_amount">Amount</string>
     <string name="title_applied_fees">Applied Fees</string>
     <string name="title_total">Total</string>
+
     <string name="text_change">Change</string>
+    <string name="text_cvv">CVV</string>
 
 </resources>

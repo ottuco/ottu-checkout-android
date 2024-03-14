@@ -13,8 +13,10 @@ import Ottu.R;
 import Ottu.databinding.ItemPaymentMethodCompactBinding;
 import Ottu.databinding.ItemPaymentMethodFullBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
+import Ottu.util.SwipableAdapter;
 
-public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAdapter.ViewHolder> {
+public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAdapter.ViewHolder>
+        implements SwipableAdapter {
 
     private static final int COMPACT_VIEW_TYPE = 0;
     private static final int FULL_VIEW_TYPE = 1;
@@ -59,6 +61,12 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    @Override
+    public void onSwipe(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
     }
 
     public abstract class ViewHolder extends RecyclerView.ViewHolder {

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import Ottu.R;
 import Ottu.databinding.DialogPaymentMethodsBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
+import Ottu.util.SwipeToDeleteCallback;
 
 public class OttuPaymentMethodsBottomSheet extends BottomSheetDialogFragment {
 
@@ -48,7 +50,9 @@ public class OttuPaymentMethodsBottomSheet extends BottomSheetDialogFragment {
 
     private void setupViews() {
         PaymentMethodsAdapter adapter = new PaymentMethodsAdapter(createPaymentMethods());
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(requireContext(), adapter));
 
+        itemTouchHelper.attachToRecyclerView(binding.rvPaymentMethods);
         binding.rvPaymentMethods.setAdapter(adapter);
     }
 

@@ -9,6 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -52,6 +56,14 @@ public class OttuPaymentMethodsBottomSheet extends BottomSheetDialogFragment {
         PaymentMethodsAdapter adapter = new PaymentMethodsAdapter(createPaymentMethods());
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(requireContext(), adapter));
 
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                beginDelayedTransition();
+            }
+        });
+
         itemTouchHelper.attachToRecyclerView(binding.rvPaymentMethods);
         binding.rvPaymentMethods.setAdapter(adapter);
     }
@@ -73,6 +85,15 @@ public class OttuPaymentMethodsBottomSheet extends BottomSheetDialogFragment {
         paymentMethod.name = name;
         paymentMethod.type = type;
         return paymentMethod;
+    }
+
+    private void beginDelayedTransition() {
+        ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
+
+        final Transition transition = new ChangeBounds();
+        transition.setDuration(300);
+
+        TransitionManager.beginDelayedTransition(parent, transition);
     }
 
 }

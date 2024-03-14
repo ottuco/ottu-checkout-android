@@ -7,12 +7,13 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import Ottu.databinding.LayoutOttuPaymentSelectionBinding;
 import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
 
 
-public class OttuPaymentSelectionView extends FrameLayout {
+public class OttuPaymentSelectionView extends LinearLayoutCompat {
 
     private LayoutOttuPaymentSelectionBinding binding;
     private OttuPaymentSelectionListener listener;

@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layoutSelectedPayment"
     android:layout_width="match_parent"
-    style="@style/Theme.Container.Secondary"
-    android:layout_height="@dimen/view_selected_payment_height"
-    android:background="@drawable/button_select_payment_rounded"
+    android:background="@android:color/transparent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:clickable="true"
     android:focusable="true">
 
     <include layout="@layout/view_branded_selected_payment"/>
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilCvvCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Ottu.TextInputLayout"
+        android:layout_marginTop="20dp"
+        android:hint="CVV">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCvvCode"
+            android:layout_width="match_parent"
+            android:maxLength="@integer/max_length_cvv_code"
+            android:inputType="numberPassword"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

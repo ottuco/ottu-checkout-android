@@ -19,11 +19,8 @@
     <Ottu.ui.payment.OttuPaymentSelectionView
         android:id="@+id/btnSelectedPayment"
         android:layout_width="match_parent"
-        android:layout_height="57dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/button_select_payment_rounded"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintBottom_toTopOf="@id/tvPaymentDetailsTitle"
         app:layout_constraintTop_toBottomOf="@id/tvPaymentTitle" />
 

@@ -54,5 +54,8 @@
     <color name="grayScale14">#2A2A2C</color>
     <color name="grayScale15">#49454F</color>
 
+    <color name="purpleScale1">#6750A4</color>
+
+    <color name="redScale1">#F0252B</color>
 
 </resources>

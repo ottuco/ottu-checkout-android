@@ -33,6 +33,10 @@
     <color name="colorTextPaymentButtonEnabled">@color/white</color>
     <color name="colorTextPaymentButtonDisabled">#98989A</color>
 
+    <color name="colorPaymentButtonEnabled">@color/grayScale3</color>
+    <color name="colorPaymentButtonIconEnabled">@color/grayScale5</color>
+    <color name="colorPaymentButtonDisabled">@color/grayScale16</color>
+
     <color name="colorStcPayIcon">#4F008C</color>
     <color name="colorVisaIcon">#0E4595</color>
 
@@ -53,6 +57,8 @@
     <color name="grayScale13">#938F99</color>
     <color name="grayScale14">#2A2A2C</color>
     <color name="grayScale15">#49454F</color>
+    <color name="grayScale16">#E3E3E3</color>
+    <color name="grayScale17">#353338</color>
 
     <color name="purpleScale1">#6750A4</color>
 

@@ -2,15 +2,12 @@ package Ottu.util;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,7 +52,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
         if (Math.abs(dX) > iconMargin + icon.getIntrinsicWidth()) {
             alpha = 255;
-        } else  {
+        } else {
             alpha = 0;
         }
 
@@ -79,4 +76,5 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         background.draw(c);
         icon.draw(c);
     }
+
 }

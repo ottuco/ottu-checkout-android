@@ -32,6 +32,8 @@ public class OttuPaymentButton extends ConstraintLayout {
 
     private void init(@NonNull Context context) {
         binding = ViewOttuPaymentButtonBinding.inflate(LayoutInflater.from(context), this, true);
+
+        binding.container.setEnabled(false);
     }
 
     public enum Type {

@@ -116,7 +116,7 @@
         <item name="android:textColor">@color/selector_text_button_payment</item>
     </style>
 
-    <style name="ThemeOverlay.App.TextInputLayout" parent="">
+    <style name="ThemeOverlay.Ottu.TextInputLayout" parent="">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="colorError">@color/white</item>
@@ -124,7 +124,11 @@
         <item name="hintTextAppearance">@style/Ottu.TextAppearance.BodySmall2</item>
         <item name="textAppearanceTitleMedium">@style/Ottu.TextAppearance.TitleMedium3</item>
         <item name="textAppearanceBodySmall">@style/Ottu.TextAppearance.BodySmall2</item>
-        <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox</item>
+        <item name="editTextStyle">@style/Theme.Ottu.TextInputEditText</item>
+    </style>
+
+    <style name="Theme.Ottu.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Theme.BottomSheet.DragHandle" parent="">

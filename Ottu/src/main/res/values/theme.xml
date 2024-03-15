@@ -119,12 +119,12 @@
     </style>
 
     <style name="Widget.Ottu.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Ottu.TextInputLayout</item>
         <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
         <item name="boxStrokeWidthFocused">3dp</item>
     </style>
 
-    <style name="ThemeOverlay.App.TextInputLayout" parent="">
+    <style name="ThemeOverlay.Ottu.TextInputLayout" parent="">
         <item name="colorPrimary">@color/purpleScale1</item>
         <item name="colorOnSurface">@color/grayScale9</item>
         <item name="colorError">@color/redScale1</item>
@@ -132,7 +132,11 @@
         <item name="hintTextAppearance">@style/Ottu.TextAppearance.BodySmall2</item>
         <item name="textAppearanceTitleMedium">@style/Ottu.TextAppearance.TitleMedium3</item>
         <item name="textAppearanceBodySmall">@style/Ottu.TextAppearance.BodySmall2</item>
-        <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox</item>
+        <item name="editTextStyle">@style/Theme.Ottu.TextInputEditText</item>
+    </style>
+
+    <style name="Theme.Ottu.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/grayScale9</item>
     </style>
 
     <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button">

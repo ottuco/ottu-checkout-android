@@ -27,12 +27,13 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
     <style name="Theme.Transparent" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-<!--        <item name="android:windowIsFloating">true</item>-->
+        <!--        <item name="android:windowIsFloating">true</item>-->
         <item name="android:backgroundDimEnabled">false</item>
 
     </style>
@@ -70,6 +71,10 @@
     </style>
 
     <style name="Theme.TextAppearance.TitleSmall2" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textColor">@color/grayScale15</item>
+    </style>
+
+    <style name="Theme.TextAppearance.TitleSmall3" parent="TextAppearance.Material3.TitleSmall">
         <item name="android:textColor">@color/grayScale15</item>
     </style>
 
@@ -139,8 +144,7 @@
         <item name="android:textColor">@color/grayScale9</item>
     </style>
 
-    <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button">
-    </style>
+    <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button"/>
 
     <style name="Theme.BottomSheet.DragHandle" parent="">
         <item name="android:background">@drawable/bottom_sheet_drag_handle</item>
@@ -150,6 +154,20 @@
     <style name="Theme.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
         <item name="shapeAppearanceOverlay">@style/Ottu.BottomSheetDialog.ShapeAppearance</item>
         <item name="backgroundTint">@color/grayScale5</item>
+    </style>
+
+    <style name="Widget.Ottu.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Ottu.Switch</item>
+    </style>
+
+    <style name="ThemeOverlay.Ottu.Switch" parent="">
+        <item name="colorSurfaceContainerHighest">@color/grayScale18</item>
+        <item name="colorSurfaceVariant">@color/grayScale12</item>
+        <item name="colorOutline">@color/grayScale12</item>
+        <item name="colorPrimary">@color/blueScale2</item>
+        <item name="colorOnPrimary">@color/blueScale1</item>
+        <item name="colorOnSurfaceVariant">@color/grayScale12</item>
+        <item name="colorPrimaryContainer">@color/blueScale1</item>
     </style>
 
 </resources>

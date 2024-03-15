@@ -85,7 +85,7 @@
             app:layout_constraintStart_toEndOf="@id/tvSwitchContentType"
             app:layout_constraintTop_toTopOf="@id/tvSwitchContentType" />
 
-        <Ottu.ui.payment.OttuPaymentView
+        <Ottu.ui.payment.OttuPaymentMethodView
             android:id="@+id/ottuPaymentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

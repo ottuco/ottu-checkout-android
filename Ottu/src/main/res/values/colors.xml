@@ -59,10 +59,14 @@
     <color name="grayScale15">#49454F</color>
     <color name="grayScale16">#E3E3E3</color>
     <color name="grayScale17">#353338</color>
+    <color name="grayScale18">#E9E9E9</color>
 
     <color name="purpleScale1">#6750A4</color>
 
     <color name="redScale1">#F0252B</color>
     <color name="redScale2">#FF3B30</color>
+
+    <color name="blueScale1">#0A84FF</color>
+    <color name="blueScale2">#660A84FF</color>
 
 </resources>

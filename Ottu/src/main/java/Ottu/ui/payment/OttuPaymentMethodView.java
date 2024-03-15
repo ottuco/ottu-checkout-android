@@ -11,35 +11,35 @@ import androidx.transition.ChangeBounds;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
-import Ottu.databinding.LayoutOttuPaymentBinding;
+import Ottu.databinding.LayoutOttuPaymentMethodBinding;
 import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
 
 
-public class OttuPaymentView extends FrameLayout {
+public class OttuPaymentMethodView extends FrameLayout {
 
-    private LayoutOttuPaymentBinding binding;
+    private LayoutOttuPaymentMethodBinding binding;
 
     private @Nullable OttuPaymentViewProvider viewProvider;
 
     private Type type;
 
-    public OttuPaymentView(@NonNull Context context) {
+    public OttuPaymentMethodView(@NonNull Context context) {
         super(context);
         init(context);
     }
 
-    public OttuPaymentView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public OttuPaymentMethodView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public OttuPaymentView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public OttuPaymentMethodView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     private void init(@NonNull Context context) {
-        binding = LayoutOttuPaymentBinding.inflate(LayoutInflater.from(context), this, true);
+        binding = LayoutOttuPaymentMethodBinding.inflate(LayoutInflater.from(context), this, true);
 
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {

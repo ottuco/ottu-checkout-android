@@ -6,8 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import Ottu.payment.sdk.databinding.ActivityCustomersAppBinding;
-import Ottu.ui.payment.OttuPaymentButton;
-import Ottu.ui.payment.OttuPaymentView;
+import Ottu.ui.payment.OttuPaymentMethodView;
 
 public class CustomersAppActivity extends AppCompatActivity {
 
@@ -30,7 +29,7 @@ public class CustomersAppActivity extends AppCompatActivity {
         });
 
         binding.switchContentType.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            binding.ottuPaymentView.setType(isChecked ? OttuPaymentView.Type.COLLAPSED : OttuPaymentView.Type.EXPANDED);
+            binding.ottuPaymentView.setType(isChecked ? OttuPaymentMethodView.Type.COLLAPSED : OttuPaymentMethodView.Type.EXPANDED);
         });
     }
 }

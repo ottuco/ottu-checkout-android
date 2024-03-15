@@ -11,6 +11,9 @@ import androidx.transition.ChangeBounds;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import Ottu.databinding.DialogProcessingPaymentBinding;
 import Ottu.databinding.LayoutOttuPaymentMethodBinding;
 import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
 
@@ -43,7 +46,20 @@ public class OttuPaymentMethodView extends FrameLayout {
 
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {
-                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
+//                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+
+                DialogProcessingPaymentBinding processingPaymentBinding = DialogProcessingPaymentBinding
+                        .inflate(LayoutInflater.from(context), this, false);
+
+                builder.setView(processingPaymentBinding.getRoot());
+                builder.setPositiveButton("Action1", (dialog, which) -> {
+
+                });
+
+                builder.show();
+
             } else {
                 throw new NullPointerException("OttuPaymentViewProvider == null");
             }

@@ -170,4 +170,15 @@
         <item name="colorPrimaryContainer">@color/blueScale1</item>
     </style>
 
+    <style name="Widget.Ottu.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator.Medium">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Ottu.CircularProgressIndicator</item>
+        <item name="trackCornerRadius">4dp</item>
+        <item name="indicatorSize">48dp</item>
+    </style>
+
+    <style name="ThemeOverlay.Ottu.CircularProgressIndicator" parent="">
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryContainer">@color/grayScale18</item>
+    </style>
+
 </resources>

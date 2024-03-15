@@ -39,8 +39,20 @@ public class OttuPaymentButton extends ConstraintLayout {
 
     }
 
-    public enum Type {
-        Icon, Text
+    public void setText(String text) {
+        if (binding == null) return;
+
+        binding.tvPaymentText.setText(text);
+        binding.tvPaymentText.setVisibility(VISIBLE);
+        binding.ivIcon.setVisibility(GONE);
+    }
+
+    public void setIcon(int icon) {
+        if (binding == null) return;
+
+        binding.tvPaymentText.setText(icon);
+        binding.tvPaymentText.setVisibility(VISIBLE);
+        binding.ivIcon.setVisibility(GONE);
     }
 
 }

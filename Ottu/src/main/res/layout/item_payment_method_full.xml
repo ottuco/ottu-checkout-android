@@ -10,8 +10,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivPaymentMethod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/icon_payment_method_size"
+        android:layout_height="@dimen/icon_payment_method_size"
         android:layout_marginStart="@dimen/default_padding_medium"
         app:layout_constraintBottom_toBottomOf="@id/tvPaymentDescription"
         app:layout_constraintEnd_toStartOf="@id/tvPaymentTitle"

@@ -76,6 +76,8 @@ public class OttuPaymentMethodsBottomSheet extends BottomSheetDialogFragment {
         data.add(createPaymentMethod("STC Pay", "3"));
         data.add(createPaymentMethod("Credit Card", "4"));
         data.add(createPaymentMethod("KNET", "5"));
+        data.add(createPaymentMethod("Benefit Pay", "6"));
+        data.add(createPaymentMethod("Ottu PG", "7"));
 
         return data;
     }

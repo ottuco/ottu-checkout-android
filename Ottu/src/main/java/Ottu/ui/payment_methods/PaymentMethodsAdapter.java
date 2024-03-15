@@ -87,6 +87,10 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
                     return R.drawable.ic_saved_card;
                 case "5":
                     return R.drawable.ic_knet;
+                case "6":
+                    return R.drawable.ic_benefitpay;
+                case "7":
+                    return R.drawable.ic_ottu;
                 default:
                     return R.drawable.card_visa;
             }

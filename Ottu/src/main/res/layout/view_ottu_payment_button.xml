@@ -20,6 +20,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/Ottu.TextAppearance.Button"
         android:layout_width="wrap_content"
+        android:id="@+id/tvPaymentText"
         android:text="Pay (12.000 KWD)"
         android:textAllCaps="false"
         android:textStyle="bold"

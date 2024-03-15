@@ -6,6 +6,8 @@
     <dimen name="item_payment_method_compact_height">56dp</dimen>
     <dimen name="item_payment_method_full_height">72dp</dimen>
 
+    <dimen name="icon_payment_method_size">40dp</dimen>
+
     <dimen name="default_padding_small">8dp</dimen>
     <dimen name="default_padding_medium">16dp</dimen>
     <dimen name="default_padding_large">24dp</dimen>

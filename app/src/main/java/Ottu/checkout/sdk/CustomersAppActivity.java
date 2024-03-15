@@ -4,10 +4,10 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentManager;
 
 import Ottu.payment.sdk.databinding.ActivityCustomersAppBinding;
-import Ottu.ui.payment.OttuPaymentViewProvider;
+import Ottu.ui.payment.OttuPaymentButton;
+import Ottu.ui.payment.OttuPaymentView;
 
 public class CustomersAppActivity extends AppCompatActivity {
 
@@ -21,12 +21,16 @@ public class CustomersAppActivity extends AppCompatActivity {
 
         binding.ottuPaymentView.setViewProvider(this::getSupportFragmentManager);
 
-        binding.switchContent.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+        binding.switchUiMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
+        });
+
+        binding.switchContentType.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            binding.ottuPaymentView.setType(isChecked ? OttuPaymentView.Type.COLLAPSED : OttuPaymentView.Type.EXPANDED);
         });
     }
 }

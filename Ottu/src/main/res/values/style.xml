@@ -186,4 +186,14 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
+    <style name="Ottu.MaterialAlertDialog" parent="MaterialAlertDialog.Material3">
+        <item name="shapeAppearance">@style/ShapeAppearance.Ottu.MaterialAlertDialog</item>
+        <item name="shapeAppearanceOverlay">@null</item>
+    </style>
+
+    <style name="ShapeAppearance.Ottu.MaterialAlertDialog" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
 </resources>

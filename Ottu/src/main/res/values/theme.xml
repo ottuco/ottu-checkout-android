@@ -181,4 +181,24 @@
         <item name="colorPrimaryContainer">@color/grayScale18</item>
     </style>
 
+    <style name="ThemeOverlay.Ottu.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurfaceContainerHigh">@color/white</item>
+        <item name="alertDialogStyle">@style/Ottu.MaterialAlertDialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Ottu.MaterialAlertDialog.Button.Positive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Ottu.MaterialAlertDialog.Button.Negative</item>
+    </style>
+
+    <style name="Widget.Ottu.MaterialAlertDialog.Button.Negative" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/grayScale20</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.Ottu.MaterialAlertDialog.Button.Positive" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
 </resources>

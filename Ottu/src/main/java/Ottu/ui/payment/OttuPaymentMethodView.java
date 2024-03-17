@@ -1,18 +1,22 @@
 package Ottu.ui.payment;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.transition.ChangeBounds;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import Ottu.R;
 import Ottu.databinding.DialogProcessingPaymentBinding;
 import Ottu.databinding.LayoutOttuPaymentMethodBinding;
 import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
@@ -48,17 +52,28 @@ public class OttuPaymentMethodView extends FrameLayout {
             if (viewProvider != null) {
 //                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
 
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
 
                 DialogProcessingPaymentBinding processingPaymentBinding = DialogProcessingPaymentBinding
                         .inflate(LayoutInflater.from(context), this, false);
 
                 builder.setView(processingPaymentBinding.getRoot());
-                builder.setPositiveButton("Action1", (dialog, which) -> {
-
-                });
+//                builder.setPositiveButton("Positive", (dialog, which) -> {
+//
+//                });
+//
+//                builder.setNegativeButton("Negative", (dialog, which) -> {
+//
+//                });
 
                 builder.show();
+
+                new Handler().postDelayed(
+                        (Runnable) () -> {
+                            processingPaymentBinding.ivIconResult.setImageResource(R.drawable.ic_success);
+                            processingPaymentBinding.getRoot().transitionToEnd();
+                        }, 2500
+                );
 
             } else {
                 throw new NullPointerException("OttuPaymentViewProvider == null");

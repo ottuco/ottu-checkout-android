@@ -35,7 +35,6 @@ public class OttuPaymentButton extends ConstraintLayout {
 
 //        binding.container.setEnabled(false);
 //        binding.container.setActivated(true);
-//        binding.container.setSelected(true);
 
     }
 
@@ -49,6 +48,8 @@ public class OttuPaymentButton extends ConstraintLayout {
 
     public void setIcon(int icon) {
         if (binding == null) return;
+
+        binding.container.setSelected(true);
 
         binding.tvPaymentText.setText(icon);
         binding.tvPaymentText.setVisibility(VISIBLE);

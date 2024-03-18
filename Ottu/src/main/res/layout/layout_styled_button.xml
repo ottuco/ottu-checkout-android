@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Ottu.Button"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_button_height"
     android:clickable="true"
     android:focusable="true">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvPaymentText"
+        android:id="@+id/tvText"
         style="@style/Ottu.TextAppearance.Button"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:duplicateParentState="true"
-        android:text="Pay (12.000 KWD)"
         android:textAllCaps="false"
         android:textStyle="bold" />
 

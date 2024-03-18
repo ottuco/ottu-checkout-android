@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple android:color="@color/colorPaymentButtonDisabled"
+<ripple android:color="@color/grayScale22"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape >
@@ -9,7 +9,7 @@
     </item>
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <solid android:color="@color/grayScale2" />
+            <solid android:color="@color/grayScale22" />
             <corners android:radius="40dp" />
         </shape>
     </item>

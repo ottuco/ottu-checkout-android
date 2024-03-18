@@ -53,7 +53,6 @@
     <string name="enter_valid_cvv">Enter valid CVV</string>
     <string name="confirm_phone_number">Mobile Number</string>
     <string name="otp">OTP</string>
-    <string name="send_otp">Send OTP</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="pay">Pay</string>
     <string name="cant_send_otp">Couldn\'t send OTP</string>
@@ -81,6 +80,7 @@
 
     <string name="text_change">Change</string>
     <string name="text_add_number_description">Please enter your Phone No. below and we will text you the Confirmation Code</string>
+    <string name="text_send_otp">Send OTP</string>
 
     <string name="hint_cvv_code">CVV</string>
     <string name="hint_phone_number">Phone number</string>

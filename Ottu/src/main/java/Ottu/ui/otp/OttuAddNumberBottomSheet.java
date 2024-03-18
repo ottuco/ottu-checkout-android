@@ -1,6 +1,7 @@
 package Ottu.ui.otp;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -53,4 +55,16 @@ public class OttuAddNumberBottomSheet extends BottomSheetDialogFragment {
 
         return dialog;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupViews();
+    }
+
+    private void setupViews() {
+        binding.btnSendOtp.tvText.setText(getString(R.string.text_send_otp));
+        binding.btnSendOtp.container.setActivated(true);
+    }
+
 }

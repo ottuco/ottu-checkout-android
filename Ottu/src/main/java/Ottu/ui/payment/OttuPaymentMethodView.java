@@ -49,10 +49,12 @@ public class OttuPaymentMethodView extends FrameLayout {
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentMethodBinding.inflate(LayoutInflater.from(context), this, true);
 
+//        binding.btnPayment.setActivated(true);
+
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {
 //                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
-//                OttuAddNumberBottomSheet.show(viewProvider.provideFragmentManager());
+                OttuAddNumberBottomSheet.show(viewProvider.provideFragmentManager());
 
 //                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
 //

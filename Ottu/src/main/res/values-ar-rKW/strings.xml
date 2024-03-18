@@ -54,7 +54,7 @@
     <string name="enter_valid_cvv">أدخل رمز CVV صالحًا</string>
     <string name="confirm_phone_number">رقم الهاتف المحمول</string>
     <string name="otp">كلمة المرور لمرة واحدة</string>
-    <string name="send_otp">إرسال كلمة المرور لمرة واحدة</string>
+    <string name="text_send_otp">إرسال كلمة المرور لمرة واحدة</string>
     <string name="enter_otp">ادخل كلمة مرور لمرة واحدة</string>
     <string name="pay">ادفع</string>
     <string name="cant_send_otp">تعذر إرسال كلمة مرور لمرة واحدة</string>

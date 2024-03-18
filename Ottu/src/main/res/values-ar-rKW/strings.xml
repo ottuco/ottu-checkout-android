@@ -54,7 +54,6 @@
     <string name="enter_valid_cvv">أدخل رمز CVV صالحًا</string>
     <string name="confirm_phone_number">رقم الهاتف المحمول</string>
     <string name="otp">كلمة المرور لمرة واحدة</string>
-    <string name="text_send_otp">إرسال كلمة المرور لمرة واحدة</string>
     <string name="enter_otp">ادخل كلمة مرور لمرة واحدة</string>
     <string name="pay">ادفع</string>
     <string name="cant_send_otp">تعذر إرسال كلمة مرور لمرة واحدة</string>
@@ -70,6 +69,7 @@
     <string name="title_applied_fees">Applied Fees</string>
     <string name="title_total">Total</string>
     <string name="title_add_stc_number">Add STC Number</string>
+    <string name="title_save_stc_number">Save My STC Pay Number</string>
 
     <string name="dialog_title_proccessing_payment">Processing Payment</string>
     <string name="dialog_title_payment_failed">Payment failed\nError occurred with payment</string>
@@ -82,6 +82,8 @@
 
     <string name="text_change">Change</string>
     <string name="text_add_number_description">Please enter your Phone No. below and we will text you the Confirmation Code</string>
+    <string name="text_send_otp">إرسال كلمة المرور لمرة واحدة</string>
+    <string name="text_save_stc_number_description">Saved Numbers don’t require verification codes with each payment</string>
 
     <string name="hint_cvv_code">CVV</string>
     <string name="hint_phone_number">Phone number</string>

@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
-    style="@style/Ottu.Button"
+    style="@style/Ottu.PaymentButton"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_button_height"
     android:clickable="true"

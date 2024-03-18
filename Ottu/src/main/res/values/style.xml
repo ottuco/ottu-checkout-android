@@ -170,8 +170,12 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="Ottu.Button" parent="Theme.Button">
+    <style name="Ottu.PaymentButton" parent="Theme.Button">
         <item name="android:background">@drawable/selector_button_payment</item>
+    </style>
+
+    <style name="Ottu.Button" parent="Theme.Button">
+        <item name="android:background">@drawable/selector_button</item>
     </style>
 
     <style name="Ottu.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">

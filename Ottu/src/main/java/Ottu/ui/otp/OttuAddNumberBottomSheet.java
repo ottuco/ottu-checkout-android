@@ -1,25 +1,22 @@
 package Ottu.ui.otp;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import Ottu.R;
 import Ottu.databinding.DialogAddNumberBinding;
-import Ottu.databinding.DialogPaymentMethodsBinding;
+import Ottu.util.TextWatcherAdapter;
 
 
 public class OttuAddNumberBottomSheet extends BottomSheetDialogFragment {
@@ -63,8 +60,30 @@ public class OttuAddNumberBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupViews() {
+        validatePhoneNumber();
+
+        binding.viewSavePaymentMethod.tvSaveMethodTitle.setText(getString(R.string.title_save_stc_number));
+        binding.viewSavePaymentMethod.tvSaveMethodDescription.setText(getString(R.string.text_save_stc_number_description));
+
+        binding.viewSavePaymentMethod.getRoot().setOnClickListener(view -> {
+            binding.viewSavePaymentMethod.switchSaveMethod.toggle();
+        });
+
         binding.btnSendOtp.tvText.setText(getString(R.string.text_send_otp));
-        binding.btnSendOtp.container.setActivated(true);
+    }
+
+    private void validatePhoneNumber() {
+        int maxPhoneNumberLength = getResources().getInteger(R.integer.max_length_phone_number);
+
+        binding.btnSendOtp.container.setEnabled(binding.etAddNumber.length() == maxPhoneNumberLength);
+
+        binding.etAddNumber.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void afterTextChanged(@NonNull Editable s) {
+                super.afterTextChanged(s);
+                binding.btnSendOtp.container.setEnabled(s.length() == maxPhoneNumberLength);
+            }
+        });
     }
 
 }

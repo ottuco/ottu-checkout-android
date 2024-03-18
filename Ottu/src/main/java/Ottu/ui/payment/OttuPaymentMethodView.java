@@ -49,8 +49,6 @@ public class OttuPaymentMethodView extends FrameLayout {
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentMethodBinding.inflate(LayoutInflater.from(context), this, true);
 
-//        binding.btnPayment.setActivated(true);
-
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {
 //                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());

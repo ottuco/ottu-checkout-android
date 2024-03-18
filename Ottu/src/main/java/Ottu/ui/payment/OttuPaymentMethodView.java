@@ -52,7 +52,7 @@ public class OttuPaymentMethodView extends FrameLayout {
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {
 //                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
-                OttuAddNumberBottomSheet.show(viewProvider.provideFragmentManager());
+//                OttuAddNumberBottomSheet.show(viewProvider.provideFragmentManager());
 
 //                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
 //

@@ -29,7 +29,7 @@
         style="@style/Ottu.TextAppearance.TitleMedium4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="82dp"
+        android:layout_marginTop="96dp"
         android:gravity="center"
         android:text="@string/text_add_number_description"
         app:layout_constraintBottom_toTopOf="@id/tilAddNumber"
@@ -46,9 +46,9 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/default_padding_large"
         android:hint="@string/hint_phone_number"
-        app:placeholderText="@string/placeholder_phone_number"
         app:layout_constraintBottom_toTopOf="@id/viewSavePaymentMethod"
-        app:layout_constraintTop_toBottomOf="@id/tvAddNumberDescription">
+        app:layout_constraintTop_toBottomOf="@id/tvAddNumberDescription"
+        app:placeholderText="@string/placeholder_phone_number">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAddNumber"
@@ -63,14 +63,15 @@
         layout="@layout/view_save_payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="82dp"
+        android:layout_marginBottom="96dp"
         app:layout_constraintBottom_toTopOf="@id/btnSendOtp"
         app:layout_constraintTop_toBottomOf="@id/tilAddNumber" />
 
-    <Ottu.ui.payment.OttuPaymentButton
+    <include
         android:id="@+id/btnSendOtp"
+        layout="@layout/layout_styled_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_button_height"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

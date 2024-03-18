@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:clickable="true"
     android:id="@+id/container"
-    android:focusable="true"
     style="@style/Ottu.Button"
-    android:layout_height="@dimen/view_payment_button_height">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_button_height"
+    android:clickable="true"
+    android:focusable="true">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivIcon"
@@ -18,17 +18,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentText"
         style="@style/Ottu.TextAppearance.Button"
         android:layout_width="wrap_content"
-        android:id="@+id/tvPaymentText"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
         android:text="Pay (12.000 KWD)"
         android:textAllCaps="false"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:duplicateParentState="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

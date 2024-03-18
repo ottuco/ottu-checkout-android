@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         style="@style/Widget.Ottu.TextInputLayout"
         android:layout_marginTop="20dp"
-        android:hint="@string/text_cvv">
+        android:hint="@string/hint_cvv_code">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCvvCode"

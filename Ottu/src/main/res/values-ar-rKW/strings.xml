@@ -69,6 +69,7 @@
     <string name="title_amount">Amount</string>
     <string name="title_applied_fees">Applied Fees</string>
     <string name="title_total">Total</string>
+    <string name="title_add_stc_number">Add STC Number</string>
 
     <string name="dialog_title_proccessing_payment">Processing Payment</string>
     <string name="dialog_title_payment_failed">Payment failed\nError occurred with payment</string>
@@ -80,6 +81,8 @@
     <string name="dialog_action_try_again">Try Again</string>
 
     <string name="text_change">Change</string>
-    <string name="text_cvv">CVV</string>
+    <string name="text_add_number_description">Please enter your Phone No. below and we will text you the Confirmation Code</string>
+
+    <string name="hint_cvv_code">CVV</string>
 
 </resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/default_padding_medium">
+
+    <View
+        android:id="@+id/viewDragHandle"
+        style="@style/Theme.BottomSheet.DragHandle"
+        android:layout_width="32dp"
+        android:layout_height="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAddNumberTitle"
+        style="@style/Ottu.TextAppearance.TitleMedium2"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/default_padding_medium"
+        android:text="@string/title_add_stc_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewDragHandle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAddNumberDescription"
+        style="@style/Ottu.TextAppearance.TitleMedium4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/text_add_number_description"
+        app:layout_constraintBottom_toTopOf="@id/tilAddNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddNumberTitle"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilAddNumber"
+        style="@style/Widget.Ottu.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/default_padding_large"
+        android:hint="@string/hint_phone_number"
+        app:layout_constraintBottom_toTopOf="@id/viewSavePaymentMethod"
+        app:layout_constraintTop_toBottomOf="@id/tvAddNumberDescription">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etAddNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <include
+        android:id="@+id/viewSavePaymentMethod"
+        layout="@layout/view_save_payment_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/btnSendOtp"
+        app:layout_constraintTop_toBottomOf="@id/tilAddNumber" />
+
+    <Ottu.ui.payment.OttuPaymentButton
+        android:id="@+id/btnSendOtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

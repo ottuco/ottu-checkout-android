@@ -63,6 +63,29 @@
             app:layout_constraintTop_toTopOf="@id/tvSwitchUiMode" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSwitchLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="EN/AR"
+            android:textColor="@color/teal_700"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/switchLanguage"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/switchUiMode" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/tvSwitchLanguage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvSwitchLanguage"
+            app:layout_constraintTop_toTopOf="@id/tvSwitchLanguage" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSwitchContentType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,7 +96,7 @@
             app:layout_constraintEnd_toStartOf="@id/switchContentType"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/switchUiMode" />
+            app:layout_constraintTop_toBottomOf="@id/switchLanguage" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchContentType"

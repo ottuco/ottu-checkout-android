@@ -62,14 +62,14 @@
     <string name="couldnt_verify_otp">تعذر التحقق من كلمة المرور لمرة واحدة</string>
     <string name="enter_mono">الرجاء إدخال رقم الهاتف المحمول</string>
 
-    <string name="title_payment_method">Payment Method</string>
-    <string name="title_selected_payment_method">Select Payment Method</string>
-    <string name="title_payment_details">Payment Details</string>
-    <string name="title_amount">Amount</string>
-    <string name="title_applied_fees">Applied Fees</string>
-    <string name="title_total">Total</string>
-    <string name="title_add_stc_number">Add STC Number</string>
-    <string name="title_save_stc_number">Save My STC Pay Number</string>
+    <string name="title_payment_method">طريقة الدفع</string>
+    <string name="title_selected_payment_method">اختر طريقة الدفع</string>
+    <string name="title_payment_details">تفاصيل الدفع</string>
+    <string name="title_amount">المبلغ</string>
+    <string name="title_applied_fees">الرسوم المُطبَّقة</string>
+    <string name="title_total">المجموع</string>
+    <string name="title_add_stc_number">إضافة رقم (STC)</string>
+    <string name="title_save_stc_number">احفظ رقم الدفع الخاص بشركة STC</string>
 
     <string name="dialog_title_proccessing_payment">Processing Payment</string>
     <string name="dialog_title_payment_failed">Payment failed\nError occurred with payment</string>
@@ -77,15 +77,15 @@
 
     <string name="dialog_message_proccessing_payment">Please wait while we process your payment</string>
 
-    <string name="dialog_action_close">Close</string>
+    <string name="dialog_action_close">قريب</string>
     <string name="dialog_action_try_again">Try Again</string>
 
-    <string name="text_change">Change</string>
-    <string name="text_add_number_description">Please enter your Phone No. below and we will text you the Confirmation Code</string>
+    <string name="text_change">الصَّرف</string>
+    <string name="text_add_number_description">يرجى إدخال رقم هاتفك أدناه، سنرسل لك رمز التأكيد عبر رسالة نصية</string>
     <string name="text_send_otp">إرسال كلمة المرور لمرة واحدة</string>
-    <string name="text_save_stc_number_description">Saved Numbers don’t require verification codes with each payment</string>
+    <string name="text_save_stc_number_description">الأرقام المحفوظة لا تتطلب رموز تحقق مع كل عملية دفع</string>
 
-    <string name="hint_cvv_code">CVV</string>
-    <string name="hint_phone_number">Phone number</string>
+    <string name="hint_cvv_code">رمز الأمان</string>
+    <string name="hint_phone_number">رقم الهاتف</string>
 
 </resources>

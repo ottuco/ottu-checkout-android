@@ -62,6 +62,15 @@ public class OttuAddNumberBottomSheet extends BottomSheetDialogFragment {
     private void setupViews() {
         validatePhoneNumber();
 
+        binding.etAddNumber.setOnFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                binding.etAddNumber.setHint(R.string.placeholder_phone_number);
+            } else {
+                binding.etAddNumber.setHint("");
+            }
+        });
+
+
         binding.viewSavePaymentMethod.tvSaveMethodTitle.setText(getString(R.string.title_save_stc_number));
         binding.viewSavePaymentMethod.tvSaveMethodDescription.setText(getString(R.string.text_save_stc_number_description));
 

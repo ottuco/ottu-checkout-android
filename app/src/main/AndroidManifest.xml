@@ -24,6 +24,7 @@
 
         <activity
             android:name="Ottu.checkout.sdk.CustomersAppActivity"
+            android:configChanges="locale"
             android:exported="false" />
 
     </application>

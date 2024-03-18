@@ -70,6 +70,15 @@
     <string name="title_applied_fees">Applied Fees</string>
     <string name="title_total">Total</string>
 
+    <string name="dialog_title_proccessing_payment">Processing Payment</string>
+    <string name="dialog_title_payment_failed">Payment failed\nError occurred with payment</string>
+    <string name="dialog_title_payment_success">Your Payment is done successfully!</string>
+
+    <string name="dialog_message_proccessing_payment">Please wait while we process your payment</string>
+
+    <string name="dialog_action_close">Close</string>
+    <string name="dialog_action_try_again">Try Again</string>
+
     <string name="text_change">Change</string>
     <string name="text_cvv">CVV</string>
 

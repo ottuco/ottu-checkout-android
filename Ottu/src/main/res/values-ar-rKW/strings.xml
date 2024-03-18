@@ -84,5 +84,6 @@
     <string name="text_add_number_description">Please enter your Phone No. below and we will text you the Confirmation Code</string>
 
     <string name="hint_cvv_code">CVV</string>
+    <string name="hint_phone_number">Phone number</string>
 
 </resources>

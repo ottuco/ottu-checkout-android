@@ -19,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import Ottu.R;
 import Ottu.databinding.DialogProcessingPaymentBinding;
 import Ottu.databinding.LayoutOttuPaymentMethodBinding;
+import Ottu.ui.otp.OttuAddNumberBottomSheet;
 import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
 
 
@@ -51,29 +52,16 @@ public class OttuPaymentMethodView extends FrameLayout {
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {
 //                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
+                OttuAddNumberBottomSheet.show(viewProvider.provideFragmentManager());
 
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
-
-                DialogProcessingPaymentBinding processingPaymentBinding = DialogProcessingPaymentBinding
-                        .inflate(LayoutInflater.from(context), this, false);
-
-                builder.setView(processingPaymentBinding.getRoot());
-//                builder.setPositiveButton("Positive", (dialog, which) -> {
+//                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
 //
-//                });
+//                DialogProcessingPaymentBinding processingPaymentBinding = DialogProcessingPaymentBinding
+//                        .inflate(LayoutInflater.from(context), this, false);
 //
-//                builder.setNegativeButton("Negative", (dialog, which) -> {
+//                builder.setView(processingPaymentBinding.getRoot());
 //
-//                });
-
-                builder.show();
-
-                new Handler().postDelayed(
-                        (Runnable) () -> {
-                            processingPaymentBinding.ivIconResult.setImageResource(R.drawable.ic_success);
-                            processingPaymentBinding.getRoot().transitionToEnd();
-                        }, 2500
-                );
+//                builder.show();
 
             } else {
                 throw new NullPointerException("OttuPaymentViewProvider == null");

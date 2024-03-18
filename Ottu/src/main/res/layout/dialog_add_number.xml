@@ -29,6 +29,7 @@
         style="@style/Ottu.TextAppearance.TitleMedium4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="82dp"
         android:gravity="center"
         android:text="@string/text_add_number_description"
         app:layout_constraintBottom_toTopOf="@id/tilAddNumber"
@@ -45,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/default_padding_large"
         android:hint="@string/hint_phone_number"
+        app:placeholderText="@string/placeholder_phone_number"
         app:layout_constraintBottom_toTopOf="@id/viewSavePaymentMethod"
         app:layout_constraintTop_toBottomOf="@id/tvAddNumberDescription">
 
@@ -61,6 +63,7 @@
         layout="@layout/view_save_payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="82dp"
         app:layout_constraintBottom_toTopOf="@id/btnSendOtp"
         app:layout_constraintTop_toBottomOf="@id/tilAddNumber" />
 

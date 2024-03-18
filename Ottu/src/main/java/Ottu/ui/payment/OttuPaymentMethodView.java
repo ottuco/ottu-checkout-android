@@ -49,6 +49,9 @@ public class OttuPaymentMethodView extends FrameLayout {
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentMethodBinding.inflate(LayoutInflater.from(context), this, true);
 
+        binding.tvPaymentFeesCurrencyValue.setVisibility(INVISIBLE);
+        binding.tvPaymentTotalCurrencyValue.setVisibility(INVISIBLE);
+
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {
 //                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
@@ -74,11 +77,11 @@ public class OttuPaymentMethodView extends FrameLayout {
 
         switch (type) {
             case COLLAPSED:
-                binding.groupViewType.setVisibility(GONE);
+                binding.containerDetails.setVisibility(GONE);
                 beginDelayedTransition();
                 break;
             case EXPANDED:
-                binding.groupViewType.setVisibility(VISIBLE);
+                binding.containerDetails.setVisibility(VISIBLE);
                 beginDelayedTransition();
                 break;
         }

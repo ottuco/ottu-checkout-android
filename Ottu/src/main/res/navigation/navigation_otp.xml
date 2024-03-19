@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_otp"
+    app:startDestination="@id/addNumberFragment">
+
+    <fragment
+        android:id="@+id/addNumberFragment"
+        android:name="Ottu.ui.otp.AddNumberFragment"
+        android:label="AddNumberFragment"
+        tools:layout="@layout/fragment_add_number_otp">
+        <action
+            android:id="@+id/action_to_enterOtpFragment"
+            app:destination="@id/enterOtpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/enterOtpFragment"
+        android:name="Ottu.ui.otp.EnterOtpFragment"
+        android:label="EnterOtpFragment"
+        tools:layout="@layout/fragment_enter_otp"/>
+
+</navigation>

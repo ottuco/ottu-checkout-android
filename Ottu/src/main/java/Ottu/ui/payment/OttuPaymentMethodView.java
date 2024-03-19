@@ -1,26 +1,18 @@
 package Ottu.ui.payment;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.transition.ChangeBounds;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import Ottu.R;
-import Ottu.databinding.DialogProcessingPaymentBinding;
 import Ottu.databinding.LayoutOttuPaymentMethodBinding;
-import Ottu.ui.otp.OttuAddNumberBottomSheet;
-import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
+import Ottu.ui.otp.OttuOtpBottomSheet;
 
 
 public class OttuPaymentMethodView extends FrameLayout {
@@ -55,7 +47,7 @@ public class OttuPaymentMethodView extends FrameLayout {
         binding.btnSelectedPayment.setListener(() -> {
             if (viewProvider != null) {
 //                OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager());
-                OttuAddNumberBottomSheet.show(viewProvider.provideFragmentManager());
+                OttuOtpBottomSheet.show(viewProvider.provideFragmentManager());
 
 //                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
 //

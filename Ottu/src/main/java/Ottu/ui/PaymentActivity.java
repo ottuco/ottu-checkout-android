@@ -652,8 +652,11 @@ public class PaymentActivity extends AppCompatActivity {
 
         // for the new response format it is needed to add `payment_services` to the `payment_methods` list
         for (PaymentService paymentService : listPaymentServices) {
-            if (paymentService.flow.equals("apple_pay")) {
+            if (paymentService.flow.equals("apple_pay") ||
+                    paymentService.flow.equals("google_pay") ||
+                    paymentService.flow.equals("urpay")) {
                 // ApplePay is not relevant for Android so skip it
+                // GooglePay and URPay are not supported yet
                 continue;
             }
 

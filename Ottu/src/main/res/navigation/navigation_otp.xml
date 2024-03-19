@@ -12,12 +12,16 @@
         tools:layout="@layout/fragment_add_number_otp">
         <action
             android:id="@+id/action_to_enterOtpFragment"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
             app:destination="@id/enterOtpFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/enterOtpFragment"
         android:name="Ottu.ui.otp.EnterOtpFragment"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"
         android:label="EnterOtpFragment"
         tools:layout="@layout/fragment_enter_otp"/>
 

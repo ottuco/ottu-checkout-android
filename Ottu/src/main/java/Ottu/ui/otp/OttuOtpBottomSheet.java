@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import Ottu.R;
 import Ottu.databinding.DialogOtpContainerBinding;
@@ -27,6 +28,9 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
     private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
 
     private int maxPhoneNumberLength;
+    private int maxOtpCodeLength;
+
+    private State state = State.ADD_NUMBER;
 
     public static void show(FragmentManager fragmentManager) {
         OttuOtpBottomSheet dialog = new OttuOtpBottomSheet();
@@ -62,6 +66,7 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         maxPhoneNumberLength = getResources().getInteger(R.integer.max_length_phone_number);
+        maxOtpCodeLength = getResources().getInteger(R.integer.max_length_otp_code);
         setupBackPressed();
         setupViews();
         setupObservers();
@@ -73,12 +78,10 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
 
     private void setupObservers() {
         viewModel.getPhoneNumber().observe(getViewLifecycleOwner(), this::onPhoneChanged);
+        viewModel.getOtpCodeLiveData().observe(getViewLifecycleOwner(), this::onOtpCodeChanged);
     }
 
     private void setupViews() {
-        binding.btnSendOtp.tvText.setText(getString(R.string.text_send_otp));
-        binding.btnSendOtp.container.setEnabled(viewModel.getPhoneNumberLength() == maxPhoneNumberLength);
-
         changeState(State.ADD_NUMBER);
 
         NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
@@ -101,8 +104,16 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
                 }
             });
 
-            binding.btnSendOtp.getRoot().setOnClickListener(v -> {
-                navController.navigate(R.id.action_to_enterOtpFragment, getPhoneNumberBundle());
+            binding.btnOtpActions.getRoot().setOnClickListener(v -> {
+                switch (state) {
+                    case ADD_NUMBER:
+                        navController.navigate(R.id.action_to_enterOtpFragment, getPhoneNumberBundle());
+                        break;
+                    case ENTER_OTP:
+                        Snackbar.make(binding.getRoot(), "Confirm OTP", Snackbar.LENGTH_SHORT).show();
+                        dismiss();
+                        break;
+                }
             });
         }
 
@@ -122,21 +133,33 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void changeState(State state) {
+        this.state = state;
+
         switch (state) {
             case ADD_NUMBER:
                 binding.tvTitle.setText(getString(R.string.title_add_stc_number));
+                binding.btnOtpActions.tvText.setText(getString(R.string.text_send_otp));
                 binding.btnBack.setVisibility(View.GONE);
+                binding.btnOtpActions.container.setEnabled(viewModel.getPhoneNumberLength() == maxPhoneNumberLength);
                 break;
             case ENTER_OTP:
                 binding.tvTitle.setText(getString(R.string.enter_otp));
+                binding.btnOtpActions.tvText.setText(getString(R.string.confirm));
                 binding.btnBack.setVisibility(View.VISIBLE);
+                binding.btnOtpActions.container.setEnabled(viewModel.getOtpCodeLength() == maxOtpCodeLength);
                 break;
         }
     }
 
     private void onPhoneChanged(String phone) {
         if (binding != null) {
-            binding.btnSendOtp.container.setEnabled(phone.length() == maxPhoneNumberLength);
+            binding.btnOtpActions.container.setEnabled(phone.length() == maxPhoneNumberLength);
+        }
+    }
+
+    private void onOtpCodeChanged(String otpCode) {
+        if (binding != null) {
+            binding.btnOtpActions.container.setEnabled(otpCode.length() == maxOtpCodeLength);
         }
     }
 

@@ -1,6 +1,7 @@
 package Ottu.ui.otp;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import Ottu.R;
 import Ottu.databinding.FragmentEnterOtpBinding;
+import Ottu.util.DITest;
+import Ottu.util.TextWatcherAdapter;
 
 public class EnterOtpFragment extends Fragment {
 
     private FragmentEnterOtpBinding binding;
 
     private String phoneNumber;
+
+    private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
 
     @Nullable
     @Override
@@ -40,6 +47,19 @@ public class EnterOtpFragment extends Fragment {
 
         binding.btnResendOtp.tvText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         binding.btnResendOtp.tvText.setText(getString(R.string.text_resend));
+        binding.btnResendOtp.getRoot().setOnClickListener(view -> resend());
+
+        binding.etOtpCode.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void afterTextChanged(@NonNull Editable s) {
+                super.afterTextChanged(s);
+                viewModel.setOtpCode(s.toString());
+            }
+        });
+    }
+
+    private void resend() {
+        Snackbar.make(binding.getRoot(), "Resend", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

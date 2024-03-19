@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     android:padding="@dimen/default_padding_medium">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack"
+        style="@style/Widget.Ottu.Button.IconButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:icon="@drawable/ic_back"
+        app:iconSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTitle" />
+
     <View
         android:id="@+id/viewDragHandle"
         style="@style/Theme.BottomSheet.DragHandle"

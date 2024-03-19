@@ -37,6 +37,8 @@
     <color name="colorPaymentButtonIconEnabled">@color/grayScale5</color>
     <color name="colorPaymentButtonDisabled">@color/grayScale16</color>
 
+    <color name="colorBackButton">@color/grayScale15</color>
+
     <color name="colorStcPayIcon">#4F008C</color>
     <color name="colorVisaIcon">#0E4595</color>
 
@@ -66,6 +68,7 @@
     <color name="grayScale22">#3C3C42</color>
 
     <color name="purpleScale1">#6750A4</color>
+    <color name="purpleScale2">#CAC4D0</color>
 
     <color name="redScale1">#F0252B</color>
     <color name="redScale2">#FF3B30</color>

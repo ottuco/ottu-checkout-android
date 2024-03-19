@@ -10,6 +10,8 @@
     <color name="colorPaymentButtonIconEnabled">@color/grayScale5</color>
     <color name="colorPaymentButtonDisabled">@color/grayScale17</color>
 
+    <color name="colorBackButton">@color/purpleScale2</color>
+
     <color name="colorStcPayIcon">@color/white</color>
     <color name="colorVisaIcon">@color/white</color>
 

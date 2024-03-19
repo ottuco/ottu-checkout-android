@@ -19,7 +19,7 @@ public class AddNumberFragment extends Fragment {
 
     private FragmentAddNumberOtpBinding binding;
 
-    private OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
+    private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
 
     @Nullable
     @Override

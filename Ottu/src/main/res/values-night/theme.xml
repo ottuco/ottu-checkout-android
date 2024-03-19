@@ -173,4 +173,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Widget.Ottu.Button.IconButton" parent="Widget.Material3.Button.IconButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Ottu.Button.IconButton</item>
+    </style>
+
+    <style name="ThemeOverlay.Ottu.Button.IconButton" parent="ThemeOverlay.Material3.Button">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/purpleScale2</item>
+    </style>
+
+
 </resources>

@@ -148,7 +148,17 @@
         <item name="android:textColor">@color/grayScale9</item>
     </style>
 
-    <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button"/>
+    <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button" />
+
+    <style name="Widget.Ottu.Button.IconButton" parent="Widget.Material3.Button.IconButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Ottu.Button.IconButton</item>
+
+    </style>
+
+    <style name="ThemeOverlay.Ottu.Button.IconButton" parent="ThemeOverlay.Material3.Button">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/grayScale15</item>
+    </style>
 
     <style name="Theme.BottomSheet.DragHandle" parent="">
         <item name="android:background">@drawable/bottom_sheet_drag_handle</item>
@@ -188,8 +198,12 @@
     <style name="ThemeOverlay.Ottu.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorSurfaceContainerHigh">@color/white</item>
         <item name="alertDialogStyle">@style/Ottu.MaterialAlertDialog</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.Ottu.MaterialAlertDialog.Button.Positive</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.Ottu.MaterialAlertDialog.Button.Negative</item>
+        <item name="buttonBarPositiveButtonStyle">
+            @style/Widget.Ottu.MaterialAlertDialog.Button.Positive
+        </item>
+        <item name="buttonBarNegativeButtonStyle">
+            @style/Widget.Ottu.MaterialAlertDialog.Button.Negative
+        </item>
     </style>
 
     <style name="Widget.Ottu.MaterialAlertDialog.Button.Negative" parent="Widget.Material3.Button.TextButton.Dialog">

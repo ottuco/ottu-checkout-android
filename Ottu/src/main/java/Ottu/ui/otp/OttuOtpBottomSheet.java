@@ -2,17 +2,14 @@ package Ottu.ui.otp;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -26,7 +23,7 @@ import Ottu.util.DITest;
 public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
 
     private DialogOtpContainerBinding binding;
-    private OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
+    private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
 
     private int maxPhoneNumberLength;
 
@@ -64,8 +61,13 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         maxPhoneNumberLength = getResources().getInteger(R.integer.max_length_phone_number);
+        setupBackPressed();
         setupViews();
         setupObservers();
+    }
+
+    private void setupBackPressed() {
+
     }
 
     private void setupObservers() {
@@ -75,6 +77,8 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
     private void setupViews() {
         binding.btnSendOtp.tvText.setText(getString(R.string.text_send_otp));
         binding.btnSendOtp.container.setEnabled(viewModel.getPhoneNumberLength() == maxPhoneNumberLength);
+
+        changeState(State.ADD_NUMBER);
 
         NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
         NavController navController;
@@ -86,15 +90,42 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
         }
 
         if (navController != null) {
+            binding.btnBack.setOnClickListener(v -> navController.navigateUp());
+
+            navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
+                if (AddNumberFragment.class.getSimpleName().equals(navDestination.getLabel())) {
+                    changeState(State.ADD_NUMBER);
+                } else if (EnterOtpFragment.class.getSimpleName().equals(navDestination.getLabel())) {
+                    changeState(State.ENTER_OTP);
+                }
+            });
+
             binding.btnSendOtp.getRoot().setOnClickListener(v -> navController.navigate(R.id.action_to_enterOtpFragment));
         }
 
+    }
+
+    private void changeState(State state) {
+        switch (state) {
+            case ADD_NUMBER:
+                binding.tvTitle.setText(getString(R.string.title_add_stc_number));
+                binding.btnBack.setVisibility(View.GONE);
+                break;
+            case ENTER_OTP:
+                binding.tvTitle.setText(getString(R.string.enter_otp));
+                binding.btnBack.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     private void onPhoneChanged(String phone) {
         if (binding != null) {
             binding.btnSendOtp.container.setEnabled(phone.length() == maxPhoneNumberLength);
         }
+    }
+
+    private enum State {
+        ADD_NUMBER, ENTER_OTP
     }
 
 }

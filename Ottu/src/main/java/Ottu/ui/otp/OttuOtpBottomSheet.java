@@ -18,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import Ottu.R;
 import Ottu.databinding.DialogOtpContainerBinding;
 import Ottu.util.DITest;
+import Ottu.util.PhoneNumberUtil;
 
 
 public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
@@ -100,9 +101,24 @@ public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
                 }
             });
 
-            binding.btnSendOtp.getRoot().setOnClickListener(v -> navController.navigate(R.id.action_to_enterOtpFragment));
+            binding.btnSendOtp.getRoot().setOnClickListener(v -> {
+                navController.navigate(R.id.action_to_enterOtpFragment, getPhoneNumberBundle());
+            });
         }
 
+    }
+
+    private @Nullable Bundle getPhoneNumberBundle() {
+        String phoneNumber = viewModel.getPhoneNumber().getValue();
+
+        if (phoneNumber == null) return null;
+
+        String countryCode = getString(R.string.text_phone_prefix);
+        String formattedPhoneNumber = PhoneNumberUtil.formatPhoneNumber(countryCode, phoneNumber);
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.args_phone_number), formattedPhoneNumber);
+
+        return bundle;
     }
 
     private void changeState(State state) {

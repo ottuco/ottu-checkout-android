@@ -82,8 +82,12 @@
 
     <string name="text_change">الصَّرف</string>
     <string name="text_add_number_description">يرجى إدخال رقم هاتفك أدناه، سنرسل لك رمز التأكيد عبر رسالة نصية</string>
+    <string name="text_enter_otp_description">يرجى إدخال الرمز الذي أرسلناه إليك\n%1$s</string>
     <string name="text_send_otp">إرسال كلمة المرور لمرة واحدة</string>
     <string name="text_save_stc_number_description">الأرقام المحفوظة لا تتطلب رموز تحقق مع كل عملية دفع</string>
+    <string name="text_otp_code_failure">الرمز المؤقت غير صحيح أو منتهي الصلاحية</string>
+    <string name="text_not_get_otp_code">لم أحصل على الرمز</string>
+    <string name="text_resend">Resend</string>
 
     <string name="hint_cvv_code">رمز الأمان</string>
     <string name="hint_phone_number">رقم الهاتف</string>

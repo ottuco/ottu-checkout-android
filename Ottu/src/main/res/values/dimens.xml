@@ -2,7 +2,8 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="view_selected_payment_height">57dp</dimen>
-    <dimen name="view_button_height">53dp</dimen>
+    <dimen name="view_button_size">53dp</dimen>
+    <dimen name="view_button_size_small">40dp</dimen>
     <dimen name="item_payment_method_compact_height">56dp</dimen>
     <dimen name="item_payment_method_full_height">72dp</dimen>
 

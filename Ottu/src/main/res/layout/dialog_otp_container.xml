@@ -8,8 +8,8 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnBack"
         style="@style/Widget.Ottu.Button.IconButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/view_button_size_small"
+        android:layout_height="@dimen/view_button_size_small"
         app:icon="@drawable/ic_back"
         app:iconSize="16dp"
         app:layout_constraintBottom_toBottomOf="@id/tvTitle"
@@ -51,7 +51,7 @@
         android:id="@+id/btnSendOtp"
         layout="@layout/layout_styled_button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_button_height"
+        android:layout_height="@dimen/view_button_size"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

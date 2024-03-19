@@ -1,7 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/red"
-    android:layout_height="500dp">
+    android:layout_height="wrap_content">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvEnterOtpDescription"
+        style="@style/Ottu.TextAppearance.TitleMedium4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/etOtpCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/text_enter_otp_description" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etOtpCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toTopOf="@id/tvOtpCodeFailure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEnterOtpDescription" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvOtpCodeFailure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_padding_small"
+        android:gravity="center"
+        android:text="@string/text_otp_code_failure"
+        android:textColor="@color/redScale1"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tvNotGetOtpText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etOtpCode"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNotGetOtpText"
+        style="@style/Ottu.TextAppearance.TitleMedium4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="@string/text_not_get_otp_code"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/btnResendOtp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOtpCodeFailure"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <include
+        android:id="@+id/btnResendOtp"
+        layout="@layout/layout_styled_button"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_button_size"
+        android:layout_marginTop="@dimen/default_padding_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNotGetOtpText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

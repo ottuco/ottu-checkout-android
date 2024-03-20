@@ -13,16 +13,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import Ottu.R;
 import Ottu.databinding.DialogOtpContainerBinding;
+import Ottu.util.BaseBottomSheetDialogFragment;
 import Ottu.util.DITest;
 import Ottu.util.PhoneNumberUtil;
 
 
-public class OttuOtpBottomSheet extends BottomSheetDialogFragment {
+public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
 
     private DialogOtpContainerBinding binding;
     private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());

@@ -92,6 +92,7 @@
 
     <string name="hint_cvv_code">CVV</string>
     <string name="hint_phone_number">Phone number</string>
+    <string name="hint_otp_code" translatable="false">0000</string>
 
     <string name="placeholder_phone_number" translatable="false">xx xx xxx</string>
 

@@ -148,6 +148,25 @@
         <item name="android:textColor">@color/grayScale9</item>
     </style>
 
+    <style name="Widget.Ottu.TextInputLayout.Otp" parent="Widget.Ottu.TextInputLayout">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Ottu.TextInputLayout.Otp</item>
+    </style>
+
+    <style name="ThemeOverlay.Ottu.TextInputLayout.Otp" parent="ThemeOverlay.Ottu.TextInputLayout">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundMode">filled</item>
+<!--        <item name="android:background">@color/white</item>-->
+        <item name="editTextStyle">@style/Theme.Ottu.TextInputEditText.Otp</item>
+    </style>
+
+    <style name="Theme.Ottu.TextInputEditText.Otp" parent="Theme.Ottu.TextInputEditText">
+        <item name="android:alpha">0.65</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:letterSpacing">0.8</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button" />
 
     <style name="Widget.Ottu.Button.IconButton" parent="Widget.Material3.Button.IconButton">

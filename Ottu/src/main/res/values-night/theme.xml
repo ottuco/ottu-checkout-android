@@ -182,5 +182,8 @@
         <item name="colorOnPrimary">@color/purpleScale2</item>
     </style>
 
+    <style name="ThemeOverlay.Ottu.TextInputLayout.Otp" parent="ThemeOverlay.Ottu.TextInputLayout">
+        <item name="editTextStyle">@style/Theme.Ottu.TextInputEditText.Otp</item>
+    </style>
 
 </resources>

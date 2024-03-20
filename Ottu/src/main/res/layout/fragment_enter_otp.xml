@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="52dp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvEnterOtpDescription"
@@ -12,22 +12,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/etOtpCode"
+        app:layout_constraintBottom_toTopOf="@id/tilOtpCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@string/text_enter_otp_description" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etOtpCode"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilOtpCode"
+        style="@style/Widget.Ottu.TextInputLayout.Otp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_otp_edit_text_size"
         android:layout_marginTop="40dp"
+        android:backgroundTint="@color/red"
+        app:hintEnabled="false"
         app:layout_constraintBottom_toTopOf="@id/tvOtpCodeFailure"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEnterOtpDescription" />
+        app:layout_constraintTop_toBottomOf="@id/tvEnterOtpDescription">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etOtpCode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:hint="@string/hint_otp_code"
+            android:maxLength="@integer/max_length_otp_code" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvOtpCodeFailure"
@@ -42,7 +55,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tvNotGetOtpText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etOtpCode"
+        app:layout_constraintTop_toBottomOf="@id/tilOtpCode"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView

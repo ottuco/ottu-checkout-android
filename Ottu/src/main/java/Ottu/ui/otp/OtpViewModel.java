@@ -34,4 +34,9 @@ public class OtpViewModel extends ViewModel {
     public MutableLiveData<String> getOtpCodeLiveData() {
         return otpCodeLiveData;
     }
+
+    public void clear() {
+        setPhoneNumber(null);
+        setOtpCode(null);
+    }
 }

@@ -1,5 +1,6 @@
 package Ottu.ui.payment_methods;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,6 @@ import androidx.transition.ChangeBounds;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +26,17 @@ import Ottu.util.SwipeToDeleteCallback;
 
 public class OttuPaymentMethodsBottomSheet extends BaseBottomSheetDialogFragment {
 
+    private final OnPaymentClickListener listener;
     private DialogPaymentMethodsBinding binding;
 
-    public static void show(FragmentManager fragmentManager) {
-        OttuPaymentMethodsBottomSheet dialog = new OttuPaymentMethodsBottomSheet();
+    public static void show(FragmentManager fragmentManager, OnPaymentClickListener listener) {
+        OttuPaymentMethodsBottomSheet dialog = new OttuPaymentMethodsBottomSheet(listener);
 
         dialog.show(fragmentManager, OttuPaymentMethodsBottomSheet.class.getSimpleName());
+    }
+
+    private OttuPaymentMethodsBottomSheet(OnPaymentClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -54,7 +58,10 @@ public class OttuPaymentMethodsBottomSheet extends BaseBottomSheetDialogFragment
     }
 
     private void setupViews() {
-        PaymentMethodsAdapter adapter = new PaymentMethodsAdapter(createPaymentMethods());
+        PaymentMethodsAdapter adapter = new PaymentMethodsAdapter(createPaymentMethods(), method -> {
+            listener.onPaymentClicked(method);
+            dismiss();
+        });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(requireContext(), adapter));
 
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -87,6 +94,13 @@ public class OttuPaymentMethodsBottomSheet extends BaseBottomSheetDialogFragment
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.name = name;
         paymentMethod.type = type;
+
+        if (type.equals("3") || type.equals("4")) {
+            paymentMethod.desc = "*8282 | Expires on 01/39";
+            paymentMethod.cardNumber = "****8282";
+            paymentMethod.cvv = true;
+        }
+
         return paymentMethod;
     }
 

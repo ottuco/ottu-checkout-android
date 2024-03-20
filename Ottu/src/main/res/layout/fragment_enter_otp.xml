@@ -7,17 +7,31 @@
     android:paddingHorizontal="52dp">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvEnterOtpDescription"
+        android:id="@+id/tvEnterOtpText"
         style="@style/Ottu.TextAppearance.TitleMedium4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/tilOtpCode"
+        app:layout_constraintBottom_toTopOf="@id/tvEnterOtpNumberText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="@string/text_enter_otp_description" />
+        android:text="@string/text_enter_otp_description" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvEnterOtpNumberText"
+        style="@style/Ottu.TextAppearance.TitleMedium4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textDirection="ltr"
+        app:layout_constraintBottom_toTopOf="@id/tilOtpCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEnterOtpText"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/text_phone_format" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilOtpCode"
@@ -30,13 +44,14 @@
         app:layout_constraintBottom_toTopOf="@id/tvOtpCodeFailure"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEnterOtpDescription">
+        app:layout_constraintTop_toBottomOf="@id/tvEnterOtpNumberText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etOtpCode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:imeOptions="actionDone"
             android:hint="@string/hint_otp_code"
             android:maxLength="@integer/max_length_otp_code" />
 

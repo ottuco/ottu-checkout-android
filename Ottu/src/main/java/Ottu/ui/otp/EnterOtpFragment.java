@@ -12,11 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import Ottu.R;
 import Ottu.databinding.FragmentEnterOtpBinding;
-import Ottu.util.DITest;
+import Ottu.util.PrototypeUtil;
 import Ottu.util.TextWatcherAdapter;
 
 public class EnterOtpFragment extends Fragment {
@@ -25,7 +23,7 @@ public class EnterOtpFragment extends Fragment {
 
     private String phoneNumber;
 
-    private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
+    private final OtpViewModel viewModel = (OtpViewModel) PrototypeUtil.getViewModel(OtpViewModel.class.getSimpleName());
 
     @Nullable
     @Override
@@ -44,7 +42,7 @@ public class EnterOtpFragment extends Fragment {
     }
 
     private void setupViews() {
-        binding.tvEnterOtpDescription.setText(getString(R.string.text_enter_otp_description, phoneNumber));
+        binding.tvEnterOtpNumberText.setText(phoneNumber);
 
         binding.btnResendOtp.tvText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         binding.btnResendOtp.tvText.setText(getString(R.string.text_resend));

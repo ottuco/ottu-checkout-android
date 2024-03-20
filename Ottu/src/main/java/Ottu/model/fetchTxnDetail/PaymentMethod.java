@@ -17,4 +17,11 @@ public class PaymentMethod{
     public boolean can_save_card = false;
     public String public_key_url;
     public String redirect_url;
+
+
+    //TEST
+    public String desc;
+    public String cardNumber;
+    public boolean cvv;
+
 }

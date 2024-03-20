@@ -3,14 +3,14 @@ package Ottu.ui.payment;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import Ottu.databinding.LayoutOttuPaymentSelectionBinding;
-import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
+import Ottu.model.fetchTxnDetail.PaymentMethod;
+import Ottu.util.PrototypeUtil;
 
 
 public class OttuPaymentSelectionView extends LinearLayoutCompat {
@@ -36,22 +36,48 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentSelectionBinding.inflate(LayoutInflater.from(context), this, true);
 
-        binding.btnSelectedPayment.getRoot().setOnClickListener(view -> {
+        binding.btnSelectedPayment.setOnClickListener(view -> {
             if (listener != null) {
-                listener.onSelectedPaymentClick();
+                listener.onPaymentSelectionClick();
             }
         });
 
     }
 
-    public void setListener(OttuPaymentSelectionListener listener) {
-        this.listener = listener;
+    public void select(@Nullable PaymentMethod paymentMethod) {
+        if (paymentMethod == null) {
+            showUnselectedPayment();
+        } else {
+            showSelectedPayment(paymentMethod);
+        }
     }
 
-    public enum Type {
-        UNSELECTED,
-        SELECTED,
-        SELECTED_WITH_DESCRIPTION
+    private void showUnselectedPayment() {
+        binding.viewSelectedPayment.getRoot().setVisibility(GONE);
+        binding.viewUnselectedPayment.getRoot().setVisibility(VISIBLE);
+    }
+
+    private void showSelectedPayment(PaymentMethod paymentMethod) {
+        binding.viewSelectedPayment.getRoot().setVisibility(VISIBLE);
+        binding.viewUnselectedPayment.getRoot().setVisibility(GONE);
+
+        //Test
+        if (paymentMethod.cardNumber != null) {
+            binding.viewSelectedPayment.tvSelectedPaymentDescription.setVisibility(VISIBLE);
+            binding.viewSelectedPayment.tvSelectedPaymentDescription.setText(paymentMethod.cardNumber);
+        } else {
+            binding.viewSelectedPayment.tvSelectedPaymentDescription.setVisibility(GONE);
+        }
+
+        binding.tilCvvCode.setVisibility(paymentMethod.cvv ? VISIBLE : GONE);
+
+        binding.viewSelectedPayment.tvSelectedPayment.setText(paymentMethod.name);
+
+        binding.viewSelectedPayment.ivPaymentMethod.setImageResource(PrototypeUtil.getPaymentIconByType(paymentMethod.type));
+    }
+
+    public void setListener(OttuPaymentSelectionListener listener) {
+        this.listener = listener;
     }
 
 }

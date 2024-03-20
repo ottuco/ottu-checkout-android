@@ -13,20 +13,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.snackbar.Snackbar;
 
 import Ottu.R;
 import Ottu.databinding.DialogOtpContainerBinding;
 import Ottu.util.BaseBottomSheetDialogFragment;
-import Ottu.util.DITest;
+import Ottu.util.PrototypeUtil;
 import Ottu.util.PhoneNumberUtil;
 
 
 public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
 
     private DialogOtpContainerBinding binding;
-    private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
+    private final OtpViewModel viewModel = (OtpViewModel) PrototypeUtil.getViewModel(OtpViewModel.class.getSimpleName());
 
     private int maxPhoneNumberLength;
     private int maxOtpCodeLength;
@@ -57,7 +57,8 @@ public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
 
         dialog.setOnShowListener(dialog1 -> {
-            dialog.getBehavior().setPeekHeight(binding.getRoot().getHeight(), true);
+            dialog.getBehavior().setShouldRemoveExpandedCorners(false);
+            dialog.getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
         });
 
         return dialog;
@@ -68,13 +69,8 @@ public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         maxPhoneNumberLength = getResources().getInteger(R.integer.max_length_phone_number);
         maxOtpCodeLength = getResources().getInteger(R.integer.max_length_otp_code);
-        setupBackPressed();
         setupViews();
         setupObservers();
-    }
-
-    private void setupBackPressed() {
-
     }
 
     private void setupObservers() {
@@ -125,8 +121,7 @@ public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
 
         if (phoneNumber == null) return null;
 
-        String countryCode = getString(R.string.text_phone_prefix);
-        String formattedPhoneNumber = PhoneNumberUtil.formatPhoneNumber(countryCode, phoneNumber);
+        String formattedPhoneNumber = PhoneNumberUtil.formatPhoneNumber(requireContext(), phoneNumber);
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.args_phone_number), formattedPhoneNumber);
 

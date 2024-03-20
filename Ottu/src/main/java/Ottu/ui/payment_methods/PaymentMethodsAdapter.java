@@ -13,6 +13,7 @@ import Ottu.R;
 import Ottu.databinding.ItemPaymentMethodCompactBinding;
 import Ottu.databinding.ItemPaymentMethodFullBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
+import Ottu.util.PrototypeUtil;
 import Ottu.util.SwipableAdapter;
 
 public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAdapter.ViewHolder>
@@ -22,9 +23,11 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
     private static final int FULL_VIEW_TYPE = 1;
 
     private final List<PaymentMethod> data;
+    private final OnPaymentClickListener listener;
 
-    public PaymentMethodsAdapter(List<PaymentMethod> data) {
+    public PaymentMethodsAdapter(List<PaymentMethod> data, OnPaymentClickListener listener) {
         this.data = data;
+        this.listener = listener;
     }
 
     @NonNull
@@ -76,25 +79,6 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         public abstract void bind(PaymentMethod paymentMethod);
 
-        public int getIconByType(String type) {
-            switch (type) {
-                case "1":
-                    return R.drawable.ic_google_pay;
-                case "2":
-                case "3":
-                    return R.drawable.ic_stc_pay;
-                case "4":
-                    return R.drawable.ic_saved_card;
-                case "5":
-                    return R.drawable.ic_knet;
-                case "6":
-                    return R.drawable.ic_benefitpay;
-                case "7":
-                    return R.drawable.ic_ottu;
-                default:
-                    return R.drawable.card_visa;
-            }
-        }
     }
 
     private class CompactViewHolder extends ViewHolder {
@@ -108,9 +92,10 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         @Override
         public void bind(PaymentMethod paymentMethod) {
-            binding.ivPaymentMethod.setImageResource(getIconByType(paymentMethod.type));
+            binding.ivPaymentMethod.setImageResource(PrototypeUtil.getPaymentIconByType(paymentMethod.type));
             binding.tvPaymentTitle.setText(paymentMethod.name);
             binding.tvPaymentValue.setText("+1.000 KWD");
+            binding.getRoot().setOnClickListener(view -> listener.onPaymentClicked(paymentMethod));
         }
     }
 
@@ -125,10 +110,11 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         @Override
         public void bind(PaymentMethod paymentMethod) {
-            binding.ivPaymentMethod.setImageResource(getIconByType(paymentMethod.type));
+            binding.ivPaymentMethod.setImageResource(PrototypeUtil.getPaymentIconByType(paymentMethod.type));
             binding.tvPaymentTitle.setText(paymentMethod.name);
-            binding.tvPaymentDescription.setText("*8282 | Expires on 01/39");
+            binding.tvPaymentDescription.setText(paymentMethod.desc);
             binding.tvPaymentValue.setText("+1.000 KWD");
+            binding.getRoot().setOnClickListener(view -> listener.onPaymentClicked(paymentMethod));
         }
     }
 

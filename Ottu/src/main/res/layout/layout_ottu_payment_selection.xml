@@ -5,25 +5,43 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/btnSelectedPayment"
-        layout="@layout/view_branded_selected_payment"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Theme.Container.Secondary"
+        android:background="@drawable/button_select_payment_rounded"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/btnSelectedPayment">
+
+        <include
+            android:id="@+id/viewUnselectedPayment"
+            layout="@layout/view_unselected_payment"/>
+
+        <include
+            android:id="@+id/viewSelectedPayment"
+            android:visibility="gone"
+            layout="@layout/view_branded_selected_payment"/>
+
+    </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilCvvCode"
+        style="@style/Widget.Ottu.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.Ottu.TextInputLayout"
+        android:visibility="gone"
         android:layout_marginTop="20dp"
         android:hint="@string/hint_cvv_code">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCvvCode"
             android:layout_width="match_parent"
-            android:maxLength="@integer/max_length_cvv_code"
-            android:textAlignment="viewStart"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
             android:inputType="numberPassword"
-            android:layout_height="wrap_content" />
+            android:maxLength="@integer/max_length_cvv_code"
+            android:textAlignment="viewStart" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

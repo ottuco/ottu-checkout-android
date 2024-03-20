@@ -12,14 +12,14 @@ import androidx.fragment.app.Fragment;
 
 import Ottu.R;
 import Ottu.databinding.FragmentAddNumberOtpBinding;
-import Ottu.util.DITest;
+import Ottu.util.PrototypeUtil;
 import Ottu.util.TextWatcherAdapter;
 
 public class AddNumberFragment extends Fragment {
 
     private FragmentAddNumberOtpBinding binding;
 
-    private final OtpViewModel viewModel = (OtpViewModel) DITest.getViewModel(OtpViewModel.class.getSimpleName());
+    private final OtpViewModel viewModel = (OtpViewModel) PrototypeUtil.getViewModel(OtpViewModel.class.getSimpleName());
 
     @Nullable
     @Override
@@ -44,7 +44,6 @@ public class AddNumberFragment extends Fragment {
 //                binding.etAddNumber.setHint("");
 //            }
 //        });
-
 
         binding.viewSavePaymentMethod.tvSaveMethodTitle.setText(getString(R.string.title_save_stc_number));
         binding.viewSavePaymentMethod.tvSaveMethodDescription.setText(getString(R.string.text_save_stc_number_description));

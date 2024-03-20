@@ -155,7 +155,6 @@
     <style name="ThemeOverlay.Ottu.TextInputLayout.Otp" parent="ThemeOverlay.Ottu.TextInputLayout">
         <item name="boxBackgroundColor">@color/white</item>
         <item name="boxBackgroundMode">filled</item>
-<!--        <item name="android:background">@color/white</item>-->
         <item name="editTextStyle">@style/Theme.Ottu.TextInputEditText.Otp</item>
     </style>
 
@@ -165,6 +164,7 @@
         <item name="android:gravity">center</item>
         <item name="android:letterSpacing">0.8</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textColorHint">@color/grayScale23</item>
     </style>
 
     <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button" />

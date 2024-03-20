@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,6 +62,10 @@ public class OttuPaymentMethodView extends FrameLayout {
             } else {
                 throw new NullPointerException("OttuPaymentViewProvider == null");
             }
+        });
+
+        binding.btnPayment.setOnClickListener(v -> {
+            Toast.makeText(context, "Pay", Toast.LENGTH_SHORT).show();
         });
     }
 

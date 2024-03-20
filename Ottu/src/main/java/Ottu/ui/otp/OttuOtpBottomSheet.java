@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -110,7 +111,7 @@ public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
                         navController.navigate(R.id.action_to_enterOtpFragment, getPhoneNumberBundle());
                         break;
                     case ENTER_OTP:
-                        Snackbar.make(binding.getRoot(), "Confirm OTP", Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Confirm OTP", Toast.LENGTH_SHORT).show();
                         dismiss();
                         break;
                 }

@@ -6,6 +6,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,7 +60,7 @@ public class EnterOtpFragment extends Fragment {
     }
 
     private void resend() {
-        Snackbar.make(binding.getRoot(), "Resend", Snackbar.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "Resend", Toast.LENGTH_SHORT).show();
     }
 
     @Override

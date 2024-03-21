@@ -16,7 +16,7 @@ import Ottu.util.PrototypeUtil;
 public class OttuPaymentSelectionView extends LinearLayoutCompat {
 
     private LayoutOttuPaymentSelectionBinding binding;
-    private OttuPaymentSelectionListener listener;
+    private PaymentSelectionListener listener;
 
     public OttuPaymentSelectionView(@NonNull Context context) {
         super(context);
@@ -76,7 +76,7 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
         binding.viewSelectedPayment.ivPaymentMethod.setImageResource(PrototypeUtil.getPaymentIconByType(paymentMethod.type));
     }
 
-    public void setListener(OttuPaymentSelectionListener listener) {
+    public void setListener(PaymentSelectionListener listener) {
         this.listener = listener;
     }
 

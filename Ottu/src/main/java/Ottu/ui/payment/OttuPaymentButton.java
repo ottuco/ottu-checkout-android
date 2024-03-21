@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import Ottu.R;
 import Ottu.databinding.ViewOttuPaymentButtonBinding;
 
 
@@ -41,6 +42,8 @@ public class OttuPaymentButton extends ConstraintLayout {
     public void setText(String text) {
         if (binding == null) return;
 
+        binding.container.setBackgroundResource(R.drawable.selector_button_payment);
+
         binding.tvPaymentText.setText(text);
         binding.tvPaymentText.setVisibility(VISIBLE);
         binding.ivIcon.setVisibility(GONE);
@@ -49,11 +52,11 @@ public class OttuPaymentButton extends ConstraintLayout {
     public void setIcon(int icon) {
         if (binding == null) return;
 
-        binding.container.setSelected(true);
+        binding.container.setBackgroundResource(R.drawable.selector_button_payment_branded);
 
-        binding.tvPaymentText.setText(icon);
-        binding.tvPaymentText.setVisibility(VISIBLE);
-        binding.ivIcon.setVisibility(GONE);
+        binding.tvPaymentText.setVisibility(GONE);
+        binding.ivIcon.setImageResource(icon);
+        binding.ivIcon.setVisibility(VISIBLE);
     }
 
 }

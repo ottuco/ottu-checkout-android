@@ -5,8 +5,7 @@
     style="@style/Ottu.PaymentButton"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_button_size"
-    android:clickable="true"
-    android:focusable="true">
+    android:duplicateParentState="true">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivIcon"

@@ -18,13 +18,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import Ottu.R;
 import Ottu.databinding.DialogOtpContainerBinding;
-import Ottu.util.BaseBottomSheetDialogFragment;
-import Ottu.util.PrototypeUtil;
+import Ottu.ui.BaseBottomSheetDialogFragment;
 import Ottu.util.PhoneNumberUtil;
+import Ottu.util.PrototypeUtil;
 
 
 public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
 
+    private final OtpCodeResultListener listener;
     private DialogOtpContainerBinding binding;
     private final OtpViewModel viewModel = (OtpViewModel) PrototypeUtil.getViewModel(OtpViewModel.class.getSimpleName());
 
@@ -33,10 +34,14 @@ public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
 
     private State state = State.ADD_NUMBER;
 
-    public static void show(FragmentManager fragmentManager) {
-        OttuOtpBottomSheet dialog = new OttuOtpBottomSheet();
+    public static void show(@NonNull FragmentManager fragmentManager, @NonNull OtpCodeResultListener listener) {
+        OttuOtpBottomSheet dialog = new OttuOtpBottomSheet(listener);
 
         dialog.show(fragmentManager, OttuOtpBottomSheet.class.getSimpleName());
+    }
+
+    private OttuOtpBottomSheet(OtpCodeResultListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -107,7 +112,7 @@ public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
                         navController.navigate(R.id.action_to_enterOtpFragment, getPhoneNumberBundle());
                         break;
                     case ENTER_OTP:
-                        Toast.makeText(requireContext(), "Confirm OTP", Toast.LENGTH_SHORT).show();
+                        listener.onOtpCodeSuccess();
                         dismiss();
                         break;
                 }

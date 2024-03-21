@@ -1,4 +1,4 @@
-package Ottu.util;
+package Ottu.ui;
 
 import android.app.Dialog;
 import android.view.View;

@@ -23,7 +23,7 @@ import java.util.List;
 import Ottu.R;
 import Ottu.databinding.DialogPaymentMethodsBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
-import Ottu.util.BaseBottomSheetDialogFragment;
+import Ottu.ui.BaseBottomSheetDialogFragment;
 import Ottu.util.SwipeToDeleteCallback;
 
 public class OttuPaymentMethodsBottomSheet extends BaseBottomSheetDialogFragment {

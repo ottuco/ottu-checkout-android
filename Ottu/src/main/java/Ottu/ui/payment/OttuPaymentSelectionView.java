@@ -12,6 +12,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import Ottu.databinding.LayoutOttuPaymentSelectionBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
 import Ottu.util.PrototypeUtil;
+import Ottu.util.SingleClickListener;
 import Ottu.util.TextWatcherAdapter;
 
 
@@ -38,12 +39,14 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentSelectionBinding.inflate(LayoutInflater.from(context), this, true);
 
-        binding.btnSelectedPayment.setOnClickListener(view -> {
-            if (listener != null) {
-                listener.onPaymentSelectionClick();
+        binding.btnSelectedPayment.setOnClickListener(new SingleClickListener() {
+            @Override
+            public void onSingleClick() {
+                if (listener != null) {
+                    listener.onPaymentSelectionClick();
+                }
             }
         });
-
     }
 
     public void select(@Nullable PaymentMethod paymentMethod) {

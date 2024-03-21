@@ -33,10 +33,6 @@ public class OttuPaymentButton extends ConstraintLayout {
 
     private void init(@NonNull Context context) {
         binding = ViewOttuPaymentButtonBinding.inflate(LayoutInflater.from(context), this, true);
-
-//        binding.container.setEnabled(false);
-//        binding.container.setActivated(true);
-
     }
 
     public void setText(String text) {

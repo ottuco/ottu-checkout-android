@@ -167,7 +167,7 @@
         <item name="android:textColorHint">@color/grayScale23</item>
     </style>
 
-    <style name="Theme.Button" parent="TextAppearance.MaterialComponents.Button" />
+    <style name="Theme.Button" parent="TextAppearance.Material3.BodyMedium" />
 
     <style name="Widget.Ottu.Button.IconButton" parent="Widget.Material3.Button.IconButton">
         <item name="materialThemeOverlay">@style/ThemeOverlay.Ottu.Button.IconButton</item>

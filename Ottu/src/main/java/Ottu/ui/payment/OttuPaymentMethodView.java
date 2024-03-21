@@ -2,6 +2,7 @@ package Ottu.ui.payment;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import Ottu.ui.otp.OtpCodeResultListener;
 import Ottu.ui.otp.OttuOtpBottomSheet;
 import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
 import Ottu.util.PrototypeUtil;
+import Ottu.util.SingleClickListener;
 
 
 public class OttuPaymentMethodView extends FrameLayout implements PaymentSelectionListener, OtpCodeResultListener {
@@ -69,7 +71,12 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
 
         binding.btnSelectedPayment.setListener(this);
 
-        binding.btnPayment.setOnClickListener(v -> makePayment());
+        binding.btnPayment.setOnClickListener(new SingleClickListener() {
+            @Override
+            public void onSingleClick() {
+                makePayment();
+            }
+        });
     }
 
     @Override

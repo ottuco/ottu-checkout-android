@@ -162,8 +162,10 @@
     </style>
 
     <style name="Ottu.TextAppearance.Button" parent="Theme.TextAppearance.Button">
+        <item name="android:fontFamily">@font/font_montserrat</item>
+        <item name="fontFamily">@font/font_montserrat</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:letterSpacing">0.04</item>
+        <item name="android:letterSpacing">0.038</item>
         <item name="fontWeight">600</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">17sp</item>

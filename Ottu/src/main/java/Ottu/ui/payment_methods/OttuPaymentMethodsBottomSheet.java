@@ -1,6 +1,6 @@
 package Ottu.ui.payment_methods;
 
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,18 @@ public class OttuPaymentMethodsBottomSheet extends BaseBottomSheetDialogFragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DialogPaymentMethodsBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+
+        dialog.setOnShowListener(dialog1 -> {
+            dialog.getBehavior().setShouldRemoveExpandedCorners(false);
+        });
+
+        return dialog;
     }
 
     @Override

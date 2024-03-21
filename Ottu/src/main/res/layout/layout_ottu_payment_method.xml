@@ -5,31 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/containerDetails"
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupWithoutButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="tvPaymentTitle, btnSelectedPayment, containerPaymentDetails" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPaymentTitle"
+        style="@style/Ottu.TextAppearance.TitleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_payment_method"
+        app:layout_constraintBottom_toTopOf="@id/btnSelectedPayment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Ottu.ui.payment.OttuPaymentSelectionView
+        android:id="@+id/btnSelectedPayment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@id/containerPaymentDetails"
+        app:layout_constraintTop_toBottomOf="@id/tvPaymentTitle" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvPaymentTitle"
-            style="@style/Ottu.TextAppearance.TitleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_payment_method"
-            app:layout_constraintBottom_toTopOf="@id/btnSelectedPayment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Ottu.ui.payment.OttuPaymentSelectionView
-            android:id="@+id/btnSelectedPayment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toTopOf="@id/tvPaymentDetailsTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvPaymentTitle" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerPaymentDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/btnPayment"
+        app:layout_constraintTop_toBottomOf="@id/btnSelectedPayment">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPaymentDetailsTitle"
@@ -42,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnSelectedPayment" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineVerticalCenter"
@@ -186,6 +193,7 @@
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/containerDetails" />
+        app:layout_constraintTop_toBottomOf="@id/containerPaymentDetails"
+        app:layout_goneMarginTop="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

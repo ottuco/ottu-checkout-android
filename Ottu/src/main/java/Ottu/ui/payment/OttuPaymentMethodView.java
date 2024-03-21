@@ -89,7 +89,7 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     private void makePayment() {
         PaymentMethod paymentMethod = viewModel.getSelectedPaymentMethod();
         if (paymentMethod != null) {
-            if (paymentMethod.type.equals("2") || paymentMethod.type.equals("3")) {
+            if (paymentMethod.type.equals("2")) {
                 if (viewProvider != null) {
                     OttuOtpBottomSheet.show(viewProvider.provideFragmentManager(), this);
                 }
@@ -102,16 +102,17 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     private void invalidateType() {
         if (binding == null) return;
 
-        switch (type) {
-            case COLLAPSED:
-                binding.containerDetails.setVisibility(GONE);
-                beginDelayedTransition();
-                break;
-            case EXPANDED:
-                binding.containerDetails.setVisibility(VISIBLE);
-                beginDelayedTransition();
-                break;
+        PaymentMethod method = viewModel.getSelectedPaymentMethod();
+
+        int detailsVisibility = type == Type.COLLAPSED ? GONE : VISIBLE;
+
+        if (method != null && method.cvv) {
+            binding.containerPaymentDetails.setVisibility(detailsVisibility);
+        } else {
+            binding.groupWithoutButton.setVisibility(detailsVisibility);
         }
+
+        beginDelayedTransition();
     }
 
     private void invalidatePaymentButton() {
@@ -123,7 +124,7 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
         if (paymentMethod == null) return;
 
         if (PrototypeUtil.isBrandedPayment(paymentMethod.type)) {
-            binding.btnPayment.setIcon(PrototypeUtil.getPaymentIconByType(paymentMethod.type));
+            binding.btnPayment.setIcon(PrototypeUtil.getPaymentButtonIconByType(paymentMethod.type));
         } else {
             binding.btnPayment.setText("Pay (12.000 KWD)");
         }
@@ -162,8 +163,8 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
         int maxCvvCodeLength = getResources().getInteger(R.integer.max_length_cvv_code);
 
         if (paymentMethod != null) {
-            if (paymentMethod.cvv && cvvCode != null) {
-                isEnabled = cvvCode.length() == maxCvvCodeLength;
+            if (paymentMethod.cvv) {
+                isEnabled = cvvCode != null && cvvCode.length() == maxCvvCodeLength;
             } else {
                 isEnabled = true;
             }

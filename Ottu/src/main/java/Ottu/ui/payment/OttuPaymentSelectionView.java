@@ -1,6 +1,7 @@
 package Ottu.ui.payment;
 
 import android.content.Context;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import Ottu.databinding.LayoutOttuPaymentSelectionBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
 import Ottu.util.PrototypeUtil;
+import Ottu.util.TextWatcherAdapter;
 
 
 public class OttuPaymentSelectionView extends LinearLayoutCompat {
@@ -70,6 +72,13 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
         }
 
         binding.tilCvvCode.setVisibility(paymentMethod.cvv ? VISIBLE : GONE);
+        binding.etCvvCode.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void afterTextChanged(@NonNull Editable s) {
+                super.afterTextChanged(s);
+                listener.onCvvCodeChanged(s.toString());
+            }
+        });
 
         binding.viewSelectedPayment.tvSelectedPayment.setText(paymentMethod.name);
 

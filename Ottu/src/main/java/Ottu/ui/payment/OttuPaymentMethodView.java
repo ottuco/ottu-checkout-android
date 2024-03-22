@@ -101,7 +101,10 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
                     OttuOtpBottomSheet.show(viewProvider.provideFragmentManager(), this);
                 }
             } else {
-                Toast.makeText(getContext(), "Pay", Toast.LENGTH_SHORT).show();
+                PrototypeUtil.showProcessingPaymentDialog(getContext(), this, () -> {
+                    binding.btnSelectedPayment.select(null);
+                    Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                });
             }
         }
     }

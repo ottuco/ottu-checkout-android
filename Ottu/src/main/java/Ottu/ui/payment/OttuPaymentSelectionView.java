@@ -58,11 +58,21 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
     }
 
     private void showUnselectedPayment() {
+        if (binding == null) return;
+
+        Editable cvvCode = binding.etCvvCode.getText();
+        if (cvvCode != null && !cvvCode.toString().isEmpty()) {
+            binding.etCvvCode.setText("");
+        }
         binding.viewSelectedPayment.getRoot().setVisibility(GONE);
+        binding.tilCvvCode.setVisibility(GONE);
         binding.viewUnselectedPayment.getRoot().setVisibility(VISIBLE);
+
     }
 
     private void showSelectedPayment(PaymentMethod paymentMethod) {
+        if (binding == null) return;
+
         binding.viewSelectedPayment.getRoot().setVisibility(VISIBLE);
         binding.viewUnselectedPayment.getRoot().setVisibility(GONE);
 

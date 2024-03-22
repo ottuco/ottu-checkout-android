@@ -58,7 +58,7 @@ public class EnterOtpFragment extends Fragment {
     }
 
     private void resend() {
-        Toast.makeText(requireContext(), "Resend", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), getString(R.string.text_resend), Toast.LENGTH_SHORT).show();
     }
 
     @Override

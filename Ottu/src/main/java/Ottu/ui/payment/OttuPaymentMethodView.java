@@ -44,8 +44,11 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     private final Observer<Boolean> otpCodeResultObserver = isOtpResultSuccess -> {
         if (isOtpResultSuccess != null) {
             PrototypeUtil.showProcessingPaymentDialog(getContext(), this, () -> {
+                String message = viewModel.getSelectedPaymentMethod() != null
+                        ? viewModel.getSelectedPaymentMethod().name + " payment is done"
+                        : "Payment is done";
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 viewModel.setSelectedPaymentMethod(null);
-                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
             });
         }
     };
@@ -108,8 +111,11 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
                 }
             } else {
                 PrototypeUtil.showProcessingPaymentDialog(getContext(), this, () -> {
+                    String message = viewModel.getSelectedPaymentMethod() != null
+                            ? viewModel.getSelectedPaymentMethod().name + " payment is done"
+                            : "Payment is done";
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                     viewModel.setSelectedPaymentMethod(null);
-                    Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                 });
             }
         }

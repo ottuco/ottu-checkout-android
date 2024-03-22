@@ -59,6 +59,11 @@ public class AddNumberFragment extends Fragment {
             public void afterTextChanged(@NonNull Editable s) {
                 super.afterTextChanged(s);
                 viewModel.setPhoneNumber(s.toString());
+
+                int maxLengthPhoneNumber = getResources().getInteger(R.integer.max_length_phone_number);
+                boolean isValidPhoneNumber = maxLengthPhoneNumber == s.toString().length();
+                binding.tilAddNumber.setErrorEnabled(!isValidPhoneNumber);
+                binding.tilAddNumber.setError(isValidPhoneNumber ? null : getString(R.string.phone_number_notcorrect));
             }
         });
     }

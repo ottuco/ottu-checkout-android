@@ -69,7 +69,7 @@ public class OttuPaymentMethodsBottomSheet extends BaseBottomSheetDialogFragment
     }
 
     private void setupViews() {
-        PaymentMethodsAdapter adapter = new PaymentMethodsAdapter(PrototypeUtil.createPaymentMethods(), method -> {
+        PaymentMethodsAdapter adapter = new PaymentMethodsAdapter(PrototypeUtil.createPaymentMethods(requireContext()), method -> {
             listener.onPaymentClicked(method);
             dismiss();
         });

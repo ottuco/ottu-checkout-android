@@ -87,6 +87,8 @@
     <string name="text_otp_code_failure">OTP is invalid or expired.</string>
     <string name="text_not_get_otp_code">I didn’t get a code</string>
     <string name="text_resend">Resend</string>
+    <string name="text_credit_card">Credit Card</string>
+    <string name="text_pay_with_value">Pay %1$s</string>
 
     <string name="text_phone_format" translatable="false">+965 %1$s %2$s</string>
 

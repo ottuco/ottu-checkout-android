@@ -87,7 +87,9 @@
     <string name="text_save_stc_number_description">الأرقام المحفوظة لا تتطلب رموز تحقق مع كل عملية دفع</string>
     <string name="text_otp_code_failure">الرمز المؤقت غير صحيح أو منتهي الصلاحية</string>
     <string name="text_not_get_otp_code">لم أحصل على الرمز</string>
-    <string name="text_resend">Resend</string>
+    <string name="text_resend">إعادة إرسال</string>
+    <string name="text_credit_card">بطاقة الائتمان</string>
+    <string name="text_pay_with_value">ادفع %1$s</string>
 
     <string name="hint_cvv_code">رمز الأمان</string>
     <string name="hint_phone_number">رقم الهاتف</string>

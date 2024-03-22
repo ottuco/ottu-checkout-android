@@ -2,7 +2,6 @@ package Ottu.ui.payment;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -35,19 +34,15 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     private Type type;
 
     private final Observer<PaymentMethod> selectedMethodObserver = method -> {
-        Log.e("TAG", "selectedMethodObserver: " + method);
         invalidatePaymentButton();
     };
 
     private final Observer<String> cvvCodeObserver = cvvCode -> {
-        Log.e("TAG", "cvvCodeObserver: " + cvvCode);
         checkPaymentButtonAccessibility();
     };
 
     private final Observer<Boolean> otpCodeResultObserver = isOtpResultSuccess -> {
-        Log.e("TAG", "otpCodeResultObserver: " + isOtpResultSuccess);
-
-        if (isOtpResultSuccess) {
+        if (isOtpResultSuccess != null) {
             PrototypeUtil.showProcessingPaymentDialog(getContext(), this, () -> {
                 viewModel.setSelectedPaymentMethod(null);
                 Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
@@ -73,7 +68,7 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     private void init(@NonNull Context context) {
         binding = LayoutOttuPaymentMethodBinding.inflate(LayoutInflater.from(context), this, true);
 
-        checkPaymentButtonAccessibility();
+        invalidatePaymentButton();
 
         binding.tvPaymentFeesCurrencyValue.setVisibility(INVISIBLE);
         binding.tvPaymentTotalCurrencyValue.setVisibility(INVISIBLE);
@@ -145,7 +140,7 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
         if (paymentMethod != null && PrototypeUtil.isBrandedPayment(paymentMethod.type)) {
             binding.btnPayment.setIcon(PrototypeUtil.getPaymentButtonIconByType(paymentMethod.type));
         } else {
-            binding.btnPayment.setText("Pay (12.000 KWD)");
+            binding.btnPayment.setText(getContext().getString(R.string.text_pay_with_value, "(12.000 KWD)"));
         }
     }
 
@@ -162,11 +157,12 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
         boolean isEnabled = false;
         PaymentMethod paymentMethod = viewModel.getSelectedPaymentMethod();
         String cvvCode = viewModel.getCvvCode();
+        int minCvvCodeLength = getResources().getInteger(R.integer.min_length_cvv_code);
         int maxCvvCodeLength = getResources().getInteger(R.integer.max_length_cvv_code);
 
         if (paymentMethod != null) {
             if (paymentMethod.cvv) {
-                isEnabled = cvvCode != null && cvvCode.length() == maxCvvCodeLength;
+                isEnabled = cvvCode != null && (cvvCode.length() >= minCvvCodeLength && cvvCode.length() <= maxCvvCodeLength);
             } else {
                 isEnabled = true;
             }
@@ -194,6 +190,5 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     public enum Type {
         COLLAPSED, EXPANDED
     }
-
 
 }

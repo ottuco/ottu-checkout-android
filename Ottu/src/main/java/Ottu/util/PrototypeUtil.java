@@ -39,13 +39,13 @@ public class PrototypeUtil {
         return viewModels.get(key);
     }
 
-    public static List<PaymentMethod> createPaymentMethods() {
+    public static List<PaymentMethod> createPaymentMethods(Context context) {
         ArrayList<PaymentMethod> data = new ArrayList<>();
 
         data.add(createPaymentMethod("Google Pay", "1"));
         data.add(createPaymentMethod("STC Pay", "2"));
-        data.add(createPaymentMethod("Credit Card", "3"));
-        data.add(createPaymentMethod("Credit Card", "4"));
+        data.add(createPaymentMethod(context.getString(R.string.text_credit_card), "3"));
+        data.add(createPaymentMethod(context.getString(R.string.text_credit_card), "4"));
         data.add(createPaymentMethod("KNET", "5"));
         data.add(createPaymentMethod("Benefit Pay", "6"));
         data.add(createPaymentMethod("Ottu PG", "7"));

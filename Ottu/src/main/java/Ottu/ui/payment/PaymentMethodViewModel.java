@@ -13,6 +13,9 @@ public class PaymentMethodViewModel extends ViewModel {
     private final MutableLiveData<Boolean> otpCodeResultLiveData = new MutableLiveData<>();
 
     public void setSelectedPaymentMethod(PaymentMethod paymentMethod) {
+        if (paymentMethod == null) {
+            clear();
+        }
         selectedPaymentMethodLiveData.setValue(paymentMethod);
     }
 
@@ -44,4 +47,9 @@ public class PaymentMethodViewModel extends ViewModel {
         return cvvCodeLiveData.getValue();
     }
 
+    //Test
+    public void clear() {
+        cvvCodeLiveData.setValue(null);
+        otpCodeResultLiveData.setValue(null);
+    }
 }

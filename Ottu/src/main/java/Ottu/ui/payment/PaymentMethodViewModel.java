@@ -10,6 +10,7 @@ public class PaymentMethodViewModel extends ViewModel {
 
     private final MutableLiveData<PaymentMethod> selectedPaymentMethodLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> cvvCodeLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> otpCodeResultLiveData = new MutableLiveData<>();
 
     public void setSelectedPaymentMethod(PaymentMethod paymentMethod) {
         selectedPaymentMethodLiveData.setValue(paymentMethod);
@@ -19,6 +20,10 @@ public class PaymentMethodViewModel extends ViewModel {
         cvvCodeLiveData.setValue(cvvCode);
     }
 
+    public void setOtpCodeResult(boolean isSuccess) {
+        otpCodeResultLiveData.setValue(isSuccess);
+    }
+
     public MutableLiveData<String> getCvvCodeLiveData() {
         return cvvCodeLiveData;
     }
@@ -26,6 +31,11 @@ public class PaymentMethodViewModel extends ViewModel {
     public MutableLiveData<PaymentMethod> getSelectedPaymentMethodLiveData() {
         return selectedPaymentMethodLiveData;
     }
+
+    public MutableLiveData<Boolean> getOtpCodeResultLiveData() {
+        return otpCodeResultLiveData;
+    }
+
     public @Nullable PaymentMethod getSelectedPaymentMethod() {
         return selectedPaymentMethodLiveData.getValue();
     }
@@ -33,6 +43,5 @@ public class PaymentMethodViewModel extends ViewModel {
     public @Nullable String getCvvCode() {
         return cvvCodeLiveData.getValue();
     }
-
 
 }

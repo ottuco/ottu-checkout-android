@@ -19,29 +19,26 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import Ottu.R;
 import Ottu.databinding.DialogOtpContainerBinding;
 import Ottu.ui.BaseBottomSheetDialogFragment;
+import Ottu.ui.payment.PaymentMethodViewModel;
 import Ottu.util.PhoneNumberUtil;
 import Ottu.util.PrototypeUtil;
 
 
 public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
 
-    private final OtpCodeResultListener listener;
     private DialogOtpContainerBinding binding;
     private final OtpViewModel viewModel = (OtpViewModel) PrototypeUtil.getViewModel(OtpViewModel.class.getSimpleName());
+    private final PaymentMethodViewModel sharedViewModel = (PaymentMethodViewModel) PrototypeUtil.getViewModel(PaymentMethodViewModel.class.getSimpleName());
 
     private int maxPhoneNumberLength;
     private int maxOtpCodeLength;
 
     private State state = State.ADD_NUMBER;
 
-    public static void show(@NonNull FragmentManager fragmentManager, @NonNull OtpCodeResultListener listener) {
-        OttuOtpBottomSheet dialog = new OttuOtpBottomSheet(listener);
+    public static void show(@NonNull FragmentManager fragmentManager) {
+        OttuOtpBottomSheet dialog = new OttuOtpBottomSheet();
 
         dialog.show(fragmentManager, OttuOtpBottomSheet.class.getSimpleName());
-    }
-
-    private OttuOtpBottomSheet(OtpCodeResultListener listener) {
-        this.listener = listener;
     }
 
     @Override
@@ -112,7 +109,7 @@ public class OttuOtpBottomSheet extends BaseBottomSheetDialogFragment {
                         navController.navigate(R.id.action_to_enterOtpFragment, getPhoneNumberBundle());
                         break;
                     case ENTER_OTP:
-                        listener.onOtpCodeSuccess();
+                        sharedViewModel.setOtpCodeResult(true);
                         dismiss();
                         break;
                 }

@@ -3,11 +3,13 @@ package Ottu.ui.payment;
 import android.content.Context;
 import android.text.Editable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.lifecycle.Observer;
 
 import Ottu.databinding.LayoutOttuPaymentSelectionBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
@@ -20,6 +22,14 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
 
     private LayoutOttuPaymentSelectionBinding binding;
     private PaymentSelectionListener listener;
+
+    private final PaymentMethodViewModel viewModel = (PaymentMethodViewModel) PrototypeUtil
+            .getViewModel(PaymentMethodViewModel.class.getSimpleName());
+
+    private final Observer<PaymentMethod> selectedMethodObserver = method -> {
+        Log.e("TAG", "selectedMethodObserver: " + method);
+        select(method);
+    };
 
     public OttuPaymentSelectionView(@NonNull Context context) {
         super(context);
@@ -43,13 +53,25 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
             @Override
             public void onSingleClick() {
                 if (listener != null) {
-                    listener.onPaymentSelectionClick();
+                    listener.onSelectPaymentClicked();
                 }
             }
         });
     }
 
-    public void select(@Nullable PaymentMethod paymentMethod) {
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        viewModel.getSelectedPaymentMethodLiveData().observeForever(selectedMethodObserver);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        viewModel.getSelectedPaymentMethodLiveData().removeObserver(selectedMethodObserver);
+    }
+
+    private void select(@Nullable PaymentMethod paymentMethod) {
         if (paymentMethod == null) {
             showUnselectedPayment();
         } else {
@@ -89,7 +111,7 @@ public class OttuPaymentSelectionView extends LinearLayoutCompat {
             @Override
             public void afterTextChanged(@NonNull Editable s) {
                 super.afterTextChanged(s);
-                listener.onCvvCodeChanged(s.toString());
+                viewModel.setCvvCode(s.toString());
             }
         });
 

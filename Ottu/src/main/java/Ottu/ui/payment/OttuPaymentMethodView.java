@@ -17,14 +17,13 @@ import androidx.transition.TransitionManager;
 import Ottu.R;
 import Ottu.databinding.LayoutOttuPaymentMethodBinding;
 import Ottu.model.fetchTxnDetail.PaymentMethod;
-import Ottu.ui.otp.OtpCodeResultListener;
 import Ottu.ui.otp.OttuOtpBottomSheet;
 import Ottu.ui.payment_methods.OttuPaymentMethodsBottomSheet;
 import Ottu.util.PrototypeUtil;
 import Ottu.util.SingleClickListener;
 
 
-public class OttuPaymentMethodView extends FrameLayout implements PaymentSelectionListener, OtpCodeResultListener {
+public class OttuPaymentMethodView extends FrameLayout implements PaymentSelectionListener {
 
     private LayoutOttuPaymentMethodBinding binding;
 
@@ -36,14 +35,24 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     private Type type;
 
     private final Observer<PaymentMethod> selectedMethodObserver = method -> {
-        if (binding != null) {
-            binding.btnSelectedPayment.select(method);
-        }
+        Log.e("TAG", "selectedMethodObserver: " + method);
         invalidatePaymentButton();
     };
 
     private final Observer<String> cvvCodeObserver = cvvCode -> {
+        Log.e("TAG", "cvvCodeObserver: " + cvvCode);
         checkPaymentButtonAccessibility();
+    };
+
+    private final Observer<Boolean> otpCodeResultObserver = isOtpResultSuccess -> {
+        Log.e("TAG", "otpCodeResultObserver: " + isOtpResultSuccess);
+
+        if (isOtpResultSuccess) {
+            PrototypeUtil.showProcessingPaymentDialog(getContext(), this, () -> {
+                viewModel.setSelectedPaymentMethod(null);
+                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+            });
+        }
     };
 
     public OttuPaymentMethodView(@NonNull Context context) {
@@ -84,6 +93,7 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
         super.onAttachedToWindow();
         viewModel.getSelectedPaymentMethodLiveData().observeForever(selectedMethodObserver);
         viewModel.getCvvCodeLiveData().observeForever(cvvCodeObserver);
+        viewModel.getOtpCodeResultLiveData().observeForever(otpCodeResultObserver);
     }
 
     @Override
@@ -91,6 +101,7 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
         super.onDetachedFromWindow();
         viewModel.getSelectedPaymentMethodLiveData().removeObserver(selectedMethodObserver);
         viewModel.getCvvCodeLiveData().removeObserver(cvvCodeObserver);
+        viewModel.getOtpCodeResultLiveData().removeObserver(otpCodeResultObserver);
     }
 
     private void makePayment() {
@@ -98,11 +109,11 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
         if (paymentMethod != null) {
             if (paymentMethod.type.equals("2")) {
                 if (viewProvider != null) {
-                    OttuOtpBottomSheet.show(viewProvider.provideFragmentManager(), this);
+                    OttuOtpBottomSheet.show(viewProvider.provideFragmentManager());
                 }
             } else {
                 PrototypeUtil.showProcessingPaymentDialog(getContext(), this, () -> {
-                    binding.btnSelectedPayment.select(null);
+                    viewModel.setSelectedPaymentMethod(null);
                     Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                 });
             }
@@ -131,9 +142,7 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
 
         PaymentMethod paymentMethod = viewModel.getSelectedPaymentMethod();
 
-        if (paymentMethod == null) return;
-
-        if (PrototypeUtil.isBrandedPayment(paymentMethod.type)) {
+        if (paymentMethod != null && PrototypeUtil.isBrandedPayment(paymentMethod.type)) {
             binding.btnPayment.setIcon(PrototypeUtil.getPaymentButtonIconByType(paymentMethod.type));
         } else {
             binding.btnPayment.setText("Pay (12.000 KWD)");
@@ -141,29 +150,12 @@ public class OttuPaymentMethodView extends FrameLayout implements PaymentSelecti
     }
 
     @Override
-    public void onPaymentSelectionClick() {
+    public void onSelectPaymentClicked() {
         if (viewProvider != null) {
             OttuPaymentMethodsBottomSheet.show(viewProvider.provideFragmentManager(), viewModel::setSelectedPaymentMethod);
         } else {
             throw new NullPointerException("OttuPaymentViewProvider == null");
         }
-    }
-
-    @Override
-    public void onCvvCodeChanged(String cvvCode) {
-        viewModel.setCvvCode(cvvCode);
-    }
-
-    @Override
-    public void onOtpCodeSuccess() {
-        PrototypeUtil.showProcessingPaymentDialog(getContext(), this, () -> {
-            Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    @Override
-    public void onOtpCodeFailure() {
-
     }
 
     private void checkPaymentButtonAccessibility() {

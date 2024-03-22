@@ -116,6 +116,8 @@ public class PrototypeUtil {
     public static void showProcessingPaymentDialog(Context context, ViewGroup root, OnDialogListener listener) {
         MaterialAlertDialogBuilder loadingBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
 
+        loadingBuilder.setCancelable(false);
+
         DialogProcessingPaymentBinding loadingProcessingPaymentBinding = DialogProcessingPaymentBinding
                 .inflate(LayoutInflater.from(context), root, false);
 
@@ -128,6 +130,7 @@ public class PrototypeUtil {
         new Handler().postDelayed(() -> {
             loadingDialog.dismiss();
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Ottu_MaterialAlertDialog);
+            builder.setCancelable(false);
 
             DialogPaymentResultBinding processingPaymentBinding = DialogPaymentResultBinding
                     .inflate(LayoutInflater.from(context), root, false);

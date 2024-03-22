@@ -35,8 +35,4 @@ public class OtpViewModel extends ViewModel {
         return otpCodeLiveData;
     }
 
-    public void clear() {
-        setPhoneNumber(null);
-        setOtpCode(null);
-    }
 }

@@ -47,6 +47,7 @@ import Ottu.model.StcPayMNumber.StcPayPayload;
 import Ottu.model.StcPayMNumber.StcPayResponce;
 import Ottu.model.StcPayOtp.StcOtpPayload;
 import Ottu.model.StcPayOtp.StcOtpResponce;
+import Ottu.model.fetchTxnDetail.PaymentService;
 import okhttp3.ResponseBody;
 
 import Ottu.R;
@@ -608,6 +609,10 @@ public class PaymentActivity extends AppCompatActivity {
 //                        SubmitUrlRedirect = response.body().submit_url;
                         listSavedCards = response.body().cards;
                         listPaymentMethods = response.body().payment_methods;
+
+                        // new response format handling (backward compatibility included)
+                        ArrayList<PaymentService> listPaymentServices = response.body().payment_services;
+                        mergePaymentMethodsAndServices(listPaymentServices);
 //                        UrlPublicKey = response.body().public_key_url;
 
                     } else {
@@ -635,6 +640,45 @@ public class PaymentActivity extends AppCompatActivity {
                 }
 
             });
+        }
+    }
+
+    void mergePaymentMethodsAndServices(ArrayList<PaymentService> listPaymentServices) {
+        if (listPaymentServices == null) {
+            // if there are no wallets (`payment_services`) then it is an old response format
+            // no need to do anything
+            return;
+        }
+
+        // for the new response format it is needed to add `payment_services` to the `payment_methods` list
+        for (PaymentService paymentService : listPaymentServices) {
+            if (paymentService.flow.equals("apple_pay") ||
+                    paymentService.flow.equals("google_pay") ||
+                    paymentService.flow.equals("urpay")) {
+                // ApplePay is not relevant for Android so skip it
+                // GooglePay and URPay are not supported yet
+                continue;
+            }
+
+            // some items (e.g. STC Pay) may appear in both `payment_methods` and `payment_services`
+            // so if there is a duplication it is needed to take only the value from `payment_services`
+            // the existing value in `payment_methods` is being removed
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                listPaymentMethods.removeIf(method -> method.code.equals(paymentService.code));
+            } else {
+                ArrayList<PaymentMethod> methodsToDelete = new ArrayList<>();
+                for (PaymentMethod paymentMethod : listPaymentMethods) {
+                    if (paymentMethod.code.equals(paymentService.code)) {
+                        methodsToDelete.add(paymentMethod);
+                    }
+                }
+                for (PaymentMethod method : methodsToDelete) {
+                    listPaymentMethods.remove(method);
+                }
+            }
+
+            // finally add a wallet to the list
+            listPaymentMethods.add(paymentService);
         }
     }
 
